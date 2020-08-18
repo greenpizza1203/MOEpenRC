@@ -126,7 +126,7 @@ public class SensorBNO055IMU extends LinearOpMode {
         });
 
         telemetry.addLine()
-                .addData("statu", () -> imu.getSystemStatus().toShortString())
+                .addData("statuss", () -> imu.getSystemStatus().toShortString())
                 .addData("calib", () -> imu.getCalibrationStatus().toString());
 
         telemetry.addLine()

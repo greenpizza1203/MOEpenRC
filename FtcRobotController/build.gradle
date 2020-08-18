@@ -1,7 +1,7 @@
 apply(plugin: "com.android.library")
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion(26)
 
     defaultConfig {
         minSdkVersion(25)
@@ -13,12 +13,12 @@ android {
 
 }
 
-apply from: "../moduleFlavors.gradle"
+//apply from: "../moduleFlavors.gradle"
 
 dependencies {
-    implementation "com.android.support:support-compat:26.1.0"
-    implementation "com.google.code.gson:gson:2.8.5"
-    implementation "org.openftc:tfod-google-ftcsdk-repackaged:5.0"
-    implementation "org.openftc:tfod-ftc-repackaged:5.0"
-    implementation fileTree(include: ["*.jar"], dir: "libs")
+    implementation("com.android.support:support-compat:26.1.0")
+    implementation("com.google.code.gson:gson:2.8.5")
+    implementation("org.openftc:tfod-google-ftcsdk-repackaged:5.0")
+    implementation("org.openftc:tfod-ftc-repackaged:5.0")
+    implementation(fileTree(include: ["*.jar"], dir: "libs"))
 }

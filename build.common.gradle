@@ -5,11 +5,11 @@
  * evolves. Rather, if it is necessary to customize the build process, do those edits in
  * the build.gradle file in TeamCode.
  *
- * This file contains the necessary content of the 'build.gradle' files for robot controller
- * applications built using the FTC SDK. Each individual 'build.gradle' in those applications
+ * This file contains the necessary content of the "build.gradle" files for robot controller
+ * applications built using the FTC SDK. Each individual "build.gradle" in those applications
  * can simply contain the one line:
  *
- *      apply from: '../build.common.gradle'
+ *      apply from: "../build.common.gradle"
  *
  * which will pick up this file here. This approach allows makes it easier to integrate
  * updates to the FTC SDK into your code.
@@ -17,27 +17,20 @@
 
 import java.util.regex.Pattern
 
-apply plugin: 'com.android.application'
+apply (plugin: "com.android.application")
 
 android {
 
-    compileSdkVersion 26
+    compileSdkVersion(26)
 
-    signingConfigs {
-        debug {
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-            storeFile rootProject.file('libs/ftc.debug.keystore')
-            storePassword 'android'
-        }
-    }
+
 
     aaptOptions {
         noCompress "tflite"
     }
 
     defaultConfig {
-        applicationId 'com.qualcomm.ftcrobotcontroller'
+        applicationId "com.qualcomm.ftcrobotcontroller"
         minSdkVersion 25
         targetSdkVersion 26
         multiDexEnabled false
@@ -54,7 +47,7 @@ android {
          * @see <a href="http://developer.android.com/tools/building/configuring-gradle.html">Configure Your Build</a>
          * @see <a href="http://developer.android.com/tools/publishing/versioning.html">Versioning Your App</a>
          */
-        def manifestFile = project(':FtcRobotController').file('src/main/AndroidManifest.xml');
+        def manifestFile = project(":FtcRobotController").file("src/main/AndroidManifest.xml");
         def manifestText = manifestFile.getText()
         //
         def vCodePattern = Pattern.compile("versionCode=\"(\\d+(\\.\\d+)*)\"")
@@ -71,16 +64,8 @@ android {
         versionName vName
     }
 
-    // Advanced user code might just want to use Vuforia directly, so we set up the libs as needed
-    // http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.BuildType.html
     buildTypes {
-//        release {
-//            // Disable debugging for release versions so it can be uploaded to Google Play.
-//            //debuggable true
-//            ndk {
-//                abiFilters "armeabi-v7a"
-//            }
-//        }
+
         debug {
             debuggable true
             jniDebuggable true
@@ -92,21 +77,20 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     sourceSets.main {
         jni.srcDirs = []
-        jniLibs.srcDir rootProject.file('libs')
+        jniLibs.srcDir rootProject.file("libs")
     }
 }
 
-apply from: '../moduleFlavors.gradle'
+apply from: "../moduleFlavors.gradle"
 
 repositories {
     flatDir {
-        dirs rootProject.file('libs')
+        dirs rootProject.file("libs")
     }
 }
-//apply from: 'build.release.gradle'

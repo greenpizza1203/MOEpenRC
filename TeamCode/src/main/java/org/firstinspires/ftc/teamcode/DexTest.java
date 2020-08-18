@@ -12,7 +12,7 @@ public class DexTest extends OpMode {
         Log.e("plz", "work");
     }
 
-    private int code = 141;
+    private int code = 140;
 
     public void init() {
 //        AppUtil.getInstance().showProgress(UILocation.BOTH, "progress", 0.5)

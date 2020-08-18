@@ -37,6 +37,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
 <resources>
+  <string name="version_name_for_manifest">OpenRC 5.4A</string>
+  <string name="app_name">OpenRC</string>
 
   <!-- Menu -->
   <string name="inspection_mode_menu_item">Self Inspect</string>
@@ -409,7 +411,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <string name="appNameUnknown">Unknown Application</string>
     <string name="appThemeChangeRestartNotifyDS">App color scheme has changed. The driver station will restart.</string>
     <string name="appThemeChangeRestartNotifyRC">App color scheme has changed. The robot controller will restart.</string>
-    <string name="app_name">RobotCore</string>
     <string name="buttonNameCancel">Cancel</string>
     <string name="buttonNameOK">OK</string>
     <string name="buttonWirelessApSettingsLabel">Wifi Settings</string>

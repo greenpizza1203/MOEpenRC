@@ -1,3 +1,5 @@
 package org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig
 
-class MOEGyroConfig(var initalAng: Double = 0.0)
+import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
+
+class MOEGyroConfig(var initalAng: Double = 90.0.toRadians())

@@ -6,10 +6,10 @@ import kotlin.math.pow
 
 fun Double.toFixed(digits: Int = 3): String {
     //for the sake of javascript
-    val multiplier = 10.0.pow(digits)
-    val temp = (this * multiplier).toInt()
-    return (temp.toDouble() / multiplier).toString()
-//    return "%.${digits}f".format(this)
+//    val multiplier = 10.0.pow(digits)
+//    val temp = (this * multiplier).toInt()
+//    return (temp.toDouble() / multiplier).toString()
+    return "%.${digits}f".format(this)
 }
 
 fun IntRange.coerceIn(indices: IntRange): IntRange {

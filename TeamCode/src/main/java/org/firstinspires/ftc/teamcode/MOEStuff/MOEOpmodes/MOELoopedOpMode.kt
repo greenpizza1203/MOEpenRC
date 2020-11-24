@@ -71,7 +71,7 @@ abstract class MOELoopedOpMode : OpMode(), OpModeInterface, MOEBotConstantsImpl 
         currTime = System.nanoTime()
         opModeIsActive = true
         internalLoop()
-        telemetry.addData((System.nanoTime() - currTime) / 1000000)
+        telemetry.addData("Loop time", (System.nanoTime() - currTime) / 1000000)
 
     }
 

@@ -11,8 +11,5 @@ class MOETurnPid(P: Double = 0.0,
 
     init {
         internalPid.getError = { setpoint, actual -> actual.closestAngleDifference(setpoint) }
-//        endCondition = { actual, setpoint, output ->
-//            abs(internalPid.getError(setpoint, actual)) < 0.5 &&
-//        }
     }
 }

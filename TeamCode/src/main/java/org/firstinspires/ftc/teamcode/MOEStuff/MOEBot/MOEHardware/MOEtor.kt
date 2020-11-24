@@ -31,13 +31,19 @@ class MOEtor(val config: MotorConfig) {
     val isBusy: Boolean
         get() = mMotor.isBusy
 
-    //    fun setPosition() {
-    //        mMotor.setPos
-    //    }
 
-    fun setPower(power: Double) {
-        mMotor.power = (powRange).lerp(power)
-    }
+//    fun getPower(power: Double) {
+//        mMotor.power = (powRange).lerp(power)
+//    }
+
+    var power: Double
+        get() = mMotor.power
+        set(value) {
+            mMotor.power = (powRange).lerp(value)
+        }
+//    fun setPower(power: Double) {
+//        mMotor.power = (powRange).lerp(power)
+//    }
 
     fun setMode(mode: DcMotor.RunMode) {
         mMotor.mode = mode

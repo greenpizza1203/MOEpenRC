@@ -52,7 +52,7 @@ object MOEConstants {
 
     object GyroConfig {
         val parameters = BNO055IMU.Parameters().apply {
-            angleUnit = BNO055IMU.AngleUnit.DEGREES
+            angleUnit = BNO055IMU.AngleUnit.RADIANS
             mode = BNO055IMU.SensorMode.IMU
             accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC
         }

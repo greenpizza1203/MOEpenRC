@@ -4,7 +4,6 @@ import android.util.Log
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEChassis.Powers
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig.MOEGyroConfig
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEHardware.initialHeight
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes.MOETeleOp
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.lerp
 import kotlin.math.abs
@@ -18,41 +17,7 @@ open class CompTeleOp : MOETeleOp() {
 //        Log.e("voltage", hardwareMap.voltageSensor["Expansion Hub 2"].voltage.toString())
     }
 
-    private fun initFoundation() {
-        robot.foundation.moveUp()
-    }
 
-
-    private fun initLift() {
-        robot.lift.resetEncoders()
-        robot.lift.setTargetPosition(10)
-        robot.lift.setRunToPosition()
-        robot.lift.setTargetTolorence(25)
-//        robot.lift.setPower(1.0)
-        gpad2.dpad.up.onKeyDown {
-            val liftCurPos = robot.lift.getAveragePosition()
-            if (liftCurPos < initialHeight * .9) {
-                robot.lift.moveToInitial()
-            } else {
-                robot.lift.moveUpSkystones(1.0)
-            }
-        }
-        gpad2.dpad.down.onKeyDown {
-            robot.lift.moveDownSkystones(1.0)
-        }
-
-        gpad2.a.onKeyDown {
-            if (robot.lift.getAveragePosition() >= lastHighest && !gpad2.b.isToggled) {
-                lastHighest = robot.lift.getAveragePosition()
-                robot.lift.target = 0.0
-            } else if (robot.lift.getAveragePosition() < lastHighest) {
-                robot.lift.target = lastHighest
-            }
-        }
-        gpad2.y.onKeyDown {
-            lastHighest = robot.lift.getAveragePosition()
-        }
-    }
 
     private fun addListeners() {
         gpad1.y.onKeyDown {
@@ -60,9 +25,6 @@ open class CompTeleOp : MOETeleOp() {
         }
     }
 
-    private fun initOuttake() {
-        robot.outtake.grabServo.setPosition(0.6)
-    }
 
     //    var oldTime = 0L
     override fun mainLoop() {
@@ -76,22 +38,7 @@ open class CompTeleOp : MOETeleOp() {
         log()
     }
 
-    var payloadPos = 0.35
-    var hitMax = false
-    private fun capstone() {
-        if (gpad2.back() && !hitMax) {
-            payloadPos += .01
-        } else if (gpad2.back() && hitMax) {
-            payloadPos -= .01
-        }
-        if (!hitMax && payloadPos >= .65) {
-            hitMax = true
-        }
-        if (hitMax && payloadPos <= 0.0) {
-            hitMax = false
-        }
-        robot.outtake.capstoneServo.setPosition(payloadPos)
-    }
+
 
     private fun dpadChassis() {
         val scale = 0.3
@@ -102,18 +49,6 @@ open class CompTeleOp : MOETeleOp() {
 
     }
 
-    private fun autonArms() {
-//        robot.autonArms.left.apply {
-//            if (gpad1.dpad.left.isToggled) lowerArm() else raiseArm()
-//        }
-//        robot.autonArms.right.apply {
-//            if (gpad1.dpad.right.isToggled) lowerArm() else raiseArm()
-//        }
-//        robot.autonArms.apply {
-//            if (gpad1.a.isToggled) closeClaws() else this.openClaws()
-//        }
-
-    }
 
     open fun log() {
         telemetry.addData("Runninge", this::class.simpleName)
@@ -135,6 +70,7 @@ open class CompTeleOp : MOETeleOp() {
         val scaleRot = 0.75
 
         val angle = robot.gyro.angle
+
         var rawY = gpad1.left.stick.y()
         var rawX = gpad1.left.stick.x()
         var rot = gpad1.right.stick.x()
@@ -156,17 +92,7 @@ open class CompTeleOp : MOETeleOp() {
         robot.chassis.setPower(Powers.fromMechanum(fwd, str, rot, maxPower))
     }
 
-    private fun intake() {
-        val outPower = if (gpad1.b()) 0.25 else 0.0
-        val harvesterPow = (outPower - gpad1.right.trigger())
-        robot.intake.setPower(harvesterPow)
-    }
 
-    private fun foundation() {
-        robot.foundation.apply {
-            if (gpad1.left.bumper()) moveDown() else moveUp()
-        }
-    }
 
     //    var target = 0.0
     var lastHighest = 0.0
@@ -176,66 +102,6 @@ open class CompTeleOp : MOETeleOp() {
     val intakeHeight = 200
     var liftJoystickSpeed = 45.0
 
-    open fun lift() {
-        var target = robot.lift.target
-
-        val up = gpad2.left.stick.y()
-        val liftCurPos = robot.lift.getPositions().average().toInt()
-
-
-        target += up * liftJoystickSpeed
-        if (gpad2.left.stick.y() > -0.1) {
-            target = target.coerceAtLeast(0.0)
-        }
-        if (liftCurPos < 0 && (gpad2.left.stick.y() > -.1)) {
-            robot.lift.resetEncoders()
-        }
-
-
-        liftPower = when {
-            liftCurPos > 50 -> 1.0
-            gpad2.left.stick.button() -> 1.0
-            liftCurPos in 0..50 -> 0.5
-            else -> 0.25
-        }
-
-
-        robot.lift.setPower(liftPower)
-        if (gpad1.right.trigger() > .1 && !gpad2.x.isPressed) {
-            robot.lift.setTargetPosition(intakeHeight)
-        } else {
-            robot.lift.setTargetPosition(target.toInt())
-        }
-        robot.lift.target = target
-
-    }
-
-    open fun outtake() {
-
-        if (gpad2.b.isToggled) {
-            telemetry.addData("grab servo", "grabbing")
-            robot.outtake.grab()
-        } else {
-            telemetry.addData("grab servo", "release")
-
-            robot.outtake.release()
-        }
-        val outtakeCurPos = robot.outtake.outtakeServo.getPosition()
-        val outtakeSpeed = .025
-
-        if (gpad2.left.trigger() > .1 && outtakeCurPos > .05) {
-            robot.outtake.outtakeServo.setPosition(outtakeCurPos - gpad2.left.trigger() * outtakeSpeed)
-        }
-        if (gpad2.right.trigger() > .1 && outtakeCurPos < .95) {
-            robot.outtake.outtakeServo.setPosition(outtakeCurPos + gpad2.right.trigger() * outtakeSpeed)
-        }
-        if (gpad2.left.bumper.isPressed) {
-            robot.outtake.moveIn()
-        } else if (gpad2.right.bumper.isPressed) {
-            robot.outtake.moveOut()
-        }
-
-    }
 
     override fun getGyroConfig(): MOEGyroConfig {
         return super.getGyroConfig().apply {

@@ -21,20 +21,20 @@ class MOEPipeline(private val instance: MOEPenCV) : OpenCvPipeline() {
             lastFrame = input
             frameRequested = false
         }
-        val subMatrix = input.submat(instance.config.autonConfig.cropRectangle)
-        val newMat = Mat(Size(798.0, 310.0), input.type())
-
-        Imgproc.resize(subMatrix, newMat.submat(Rect(0, 0, 798, 266)), Size(798.0, 266.0))
-
-        if (instance.config.drawOverlay) {
-            drawLines(newMat)
-        }
-        if (instance.config.processExtra) {
-            drawText(newMat)
-        }
+//        val subMatrix = input.submat(instance.config.autonConfig.cropRectangle)
+//        val newMat = Mat(Size(798.0, 310.0), input.type())
+//
+//        Imgproc.resize(subMatrix, newMat.submat(Rect(0, 0, 798, 266)), Size(798.0, 266.0))
+//
+//        if (instance.config.drawOverlay) {
+//            drawLines(newMat)
+//        }
+//        if (instance.config.processExtra) {
+//            drawText(newMat)
+//        }
 //        input.release()
 
-        return newMat
+        return input
     }
 
 

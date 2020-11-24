@@ -14,10 +14,10 @@ object OldMOEHardwareConstants {
     object DriveTrain {
         object Motors {
             object Configs {
-                val FrontLeft = MotorConfig("FLD", 1, 0, REVERSE)
-                val BackLeft = MotorConfig("BLD", 1, 1, REVERSE)
-                val BackRight = MotorConfig("BRD", 1, 2)
-                val FrontRight = MotorConfig("FRD", 1, 3)
+                val FrontLeft = MotorConfig("FLD", 2, 0, REVERSE)
+                val BackLeft = MotorConfig("BLD", 2, 1, REVERSE)
+                val FrontRight = MotorConfig("FRD", 2, 2)
+                val BackRight = MotorConfig("BRD", 2, 3)
             }
         }
     }

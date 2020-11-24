@@ -27,11 +27,11 @@ data class Powers(var FLP: Double, var FRP: Double, var BLP: Double, var BRP: Do
         }
 
         fun fromAng(degAng: Double, magnitude: Double, rot: Double, maxPower: Double = 1.0) = fromRadAngle(degAng.toRadians(), magnitude, rot, maxPower)
-        fun fromRadAngle(radAng: Double, magnitude: Double, rot: Double, maxPower: Double = 1.0): Powers {
+        private fun fromRadAngle(radAng: Double, magnitude: Double, rot: Double, maxPower: Double = 1.0): Powers {
             return fromMechanum(magnitude * sin(radAng), magnitude * cos(radAng), rot, maxPower)
         }
-
     }
+
 
     operator fun timesAssign(num: Double) {
         FLP *= num

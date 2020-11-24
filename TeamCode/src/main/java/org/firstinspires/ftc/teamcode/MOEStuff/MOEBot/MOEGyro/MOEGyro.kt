@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEGyro
 
 import android.util.Log
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig.MOEGyroConfig
-import org.firstinspires.ftc.teamcode.constants.Ref.moeOpMode
-import org.firstinspires.ftc.teamcode.constants.Ref.robot
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toEulerAngle
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toNormalAngle
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
@@ -14,11 +12,12 @@ abstract class MOEGyro {
     var config = MOEGyroConfig()
         set(value) {
             field = value
-            setInitialAngle(value.initalAng)
-//            offset = getRawAngle() - value.initalAng
+            setTo(value.initalAng)
         }
     var offset = 0.0
     private var eulerOffset = 0.0
+
+    /** 0 to 2PI*/
     val angle: Double
         get() = (getRawAngle() + offset).toNormalAngle()
 
@@ -34,21 +33,21 @@ abstract class MOEGyro {
      * Set the current angle as 0
      */
     fun setToZero() {
-        setInitialAngle(0.0)
+        setTo(0.0)
     }
 
-    private fun setInitialAngle(initialAng: Double) {
-        Log.e("setting gyro to ", initialAng.toString())
+    fun setTo(initialAng: Double) {
+//        Log.e("setting gyro to ", initialAng.toString())
         offset = initialAng - getRawAngle()
     }
 
-    /** 0 to 360*/
+    /** 0 to 2PI*/
     abstract fun getRawAngle(): Double
 
-    /** -179 to 180*/
+    /** -2PI to 2PI*/
     open fun getRawEulerAngle(): Double = getRawAngle().toEulerAngle()
 
-    open fun init(sync: Boolean = false) {}
+    open fun init(sync: Boolean = true) {}
 
 
     var eulerAngle: Double

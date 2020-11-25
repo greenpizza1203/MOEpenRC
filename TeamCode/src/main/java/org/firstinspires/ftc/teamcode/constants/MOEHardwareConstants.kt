@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig.MOEHardware.CRServoConfig
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig.MOEHardware.Ma3Config
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig.MOEHardware.MotorConfig
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig.MOEHardware.ServoConfig
 
 
 object MOEHardwareConstants {
@@ -24,10 +25,10 @@ object MOEHardwareConstants {
     }
 
     object Shooter {
-        val OuterFlywheel = MotorConfig("OF", 2, 0)
-        val InnerFlywheel = MotorConfig("IF", 2, 1)
-        val TriggerServo = CRServoConfig("ST", 2, 2)
-        val TriggerEncoder = Ma3Config("ST", 1, 0)
+        val OuterFlywheel = MotorConfig("OF", 1, 0)
+        val InnerFlywheel = MotorConfig("IF", 1, 1)
+        val TriggerServo = ServoConfig("ST", 1, 1)
+//        val TriggerEncoder = Ma3Config("ST", 1, 0)
 
     }
 }

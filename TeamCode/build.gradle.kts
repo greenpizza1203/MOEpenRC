@@ -45,13 +45,13 @@ android {
 dependencies {
     implementation(files("../libs/FtcRobotController-extremeTurbo-debug.aar"))
     implementation(embeddedKotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
-    implementation("org.openftc:easyopencv:1.3.2")
-    implementation("com.acmerobotics.dashboard:dashboard:0.3.10") {
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
+    compileOnly("org.openftc:easyopencv:1.3.2")
+    compileOnly("com.acmerobotics.dashboard:dashboard:0.3.10") {
         exclude("org.firstinspires.ftc")
     }
-    implementation("com.acmerobotics.roadrunner:core:0.5.1")
-    implementation("org.apache.commons:commons-math3:3.6.1")
+    compileOnly("com.acmerobotics.roadrunner:core:0.5.1")
+    compileOnly("org.apache.commons:commons-math3:3.6.1")
 }
 
 repositories {

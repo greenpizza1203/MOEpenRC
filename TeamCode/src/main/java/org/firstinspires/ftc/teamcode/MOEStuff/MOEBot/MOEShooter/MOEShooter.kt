@@ -9,7 +9,7 @@ class MOEShooter {
 
     val outer = MOEtor(MOEHardwareConstants.Shooter.OuterFlywheel)
     val inner = MOEtor(MOEHardwareConstants.Shooter.InnerFlywheel)
-    val trigger = MOETrigger()
+//    val trigger = MOETrigger()
 
     fun target(target: Double) {
         outer.velocity = target
@@ -22,7 +22,7 @@ class MOEShooter {
 
     }
 
-    fun shootRing() = trigger.rotate(180.toRadians())
+//    fun shootRing() = trigger.rotate(180.toRadians())
 
 
 }

@@ -22,8 +22,8 @@ open class UltimateGoalTeleOp : MOETeleOp() {
 
     private val targetVelocity = 4000.0
     private fun shooter() {
-        robot.shooter.trigger.loop { update() }
-        gpad1.x.onKeyDown { robot.shooter.shootRing() }
+//        robot.shooter.trigger.loop { update() }
+//        gpad1.x.onKeyDown { robot.shooter.shootRing() }
         gpad1.a.onKeyDown { robot.shooter.target(targetVelocity) }
         gpad1.a.onKeyUp { robot.intake.stop() }
     }
@@ -42,8 +42,8 @@ open class UltimateGoalTeleOp : MOETeleOp() {
 
     override fun mainLoop() {
         telemetry.addData("gyro", robot.gyro.angle)
-        telemetry.addData("ma3Wrapped", robot.shooter.trigger.encoder.position)
-        telemetry.addData("triggerTarget", robot.shooter.trigger.target)
+//        telemetry.addData("ma3Wrapped", robot.shooter.trigger.encoder.position)
+//        telemetry.addData("triggerTarget", robot.shooter.trigger.target)
         telemetry.addData("FL,FR,BL,BR", robot.chassis.motors.map { it.power })
         telemetry.addData("intake_motor", robot.intake.motor.power)
         telemetry.addData("innerVelocity", robot.shooter.inner.velocity)

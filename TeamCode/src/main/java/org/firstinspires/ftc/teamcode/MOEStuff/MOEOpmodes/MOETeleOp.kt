@@ -7,10 +7,10 @@ import org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes.MOEGamepad.MOEGamepad
 abstract class MOETeleOp : MOELoopedOpMode() {
     lateinit var gpad1: MOEGamepad
     lateinit var gpad2: MOEGamepad
-    final override fun moeInternalInit() {
+    override fun moeInternalInit() {
         setUpJoysticks()
         if (getRobotSubSystemConfig().useGyro) {
-            robot.gyro.init()
+            robot.gyro.init(false)
         }
     }
 
@@ -26,15 +26,6 @@ abstract class MOETeleOp : MOELoopedOpMode() {
 
     }
 
-    final override fun moeInternalPostInit() {
-//        telemetry.addData("Gryo", LOADING_ICON)
-//        telemetry.update()
-//        if (getRobotSubSystemConfig().useGyro) {
-//            robot.gyro.init(true)
-//        }
-//        telemetry.addData("Gryo", LOADING_ICON)
-    }
-
     override fun internalLoop() {
         gpad1.update()
         gpad2.update()
@@ -44,7 +35,6 @@ abstract class MOETeleOp : MOELoopedOpMode() {
     }
 
     private fun handleLoops() {
-//        Log.e("count", loops.size.toString())
         for (func in loops) func()
     }
 

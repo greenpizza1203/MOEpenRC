@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.Gamepad
 
 class MOEGamepad(val gamepad: Gamepad) {
     init {
-        gamepad.setJoystickDeadzone(0.10F)
+        gamepad.setJoystickDeadzone(0.12F)
     }
 
     val x = MOEButton { gamepad.x }

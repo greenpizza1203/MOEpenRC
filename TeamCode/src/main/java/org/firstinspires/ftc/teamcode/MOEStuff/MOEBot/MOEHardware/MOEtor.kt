@@ -20,10 +20,8 @@ class MOEtor(val config: MotorConfig) {
     private val powRange = 0.0..config.maxPow
 
     init {
-//        mMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-//        mMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        setDirection(config.direction)
-        setZeroPowerBehavior(config.zeroPowerBehavior)
+        mMotor.direction = config.direction
+        mMotor.zeroPowerBehavior = config.zeroPowerBehavior
     }
 
     val position: Int
@@ -50,17 +48,12 @@ class MOEtor(val config: MotorConfig) {
         mMotor.mode = mode
     }
 
-    fun setDirection(direction: Direction) {
-        mMotor.direction = direction
-    }
 
-    fun setZeroPowerBehavior(zeroPowerBehavior: ZeroPowerBehavior) {
-        mMotor.zeroPowerBehavior = zeroPowerBehavior
-    }
-
-    var velocity
+    var velocity: Double
         get() = mMotor.velocity
-        set(velocity) = mMotor.setVelocity(velocity, RADIANS)
+        set(velocity) {
+            mMotor.velocity = velocity
+        }
 
     fun resetEncoder() {
         val oldMOde = mMotor.mode

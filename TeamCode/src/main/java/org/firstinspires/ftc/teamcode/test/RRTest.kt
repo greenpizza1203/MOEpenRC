@@ -2,16 +2,13 @@ package org.firstinspires.ftc.teamcode.test
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
-import com.acmerobotics.roadrunner.geometry.Pose2d
-import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer
 import com.qualcomm.hardware.bosch.BNO055IMU
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
-import org.firstinspires.ftc.teamcode.test.rr.drive.StandardTrackingWheelLocalizer
+import org.firstinspires.ftc.teamcode.test.rr.drive.ThreeWheelOdo
 
 
 class RRTest : OpMode() {
@@ -20,7 +17,7 @@ class RRTest : OpMode() {
     lateinit var frontRight: DcMotorEx
     lateinit var backLeft: DcMotorEx
     lateinit var backRight: DcMotorEx
-    lateinit var localizer: StandardTrackingWheelLocalizer
+    lateinit var localizer: ThreeWheelOdo
     lateinit var gyro: BNO055IMU
     lateinit var dashboard: FtcDashboard
 
@@ -63,7 +60,7 @@ class RRTest : OpMode() {
         gyro.initialize(parameters)
 
 
-        localizer = StandardTrackingWheelLocalizer(hardwareMap)
+        localizer = ThreeWheelOdo(hardwareMap)
 
     }
 

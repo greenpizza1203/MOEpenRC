@@ -166,7 +166,7 @@ open class MOEPid(var P: Double = 0.0,
         val FOutput = F * tempSetPoint
 
         // Calculate P term
-        var Poutput = P * error
+        val Poutput = P * error
 
         // If this is our first time running this, we don't actually _have_ a previous input or output.
         // For sensor, sanely assume it was exactly where it is now.

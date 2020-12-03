@@ -40,10 +40,11 @@ class MOEChassis {
         backRightMotor.velocity = (BRV)
     }
 
-    fun turnPower(power: Double) = setPower(power, -power)
+    /** LEFT TURNS ARE POSITIVE*/
+    fun turnPower(power: Double) = setPower(-power, power)
 
-    fun turnRightPower(power: Double) = turnPower(power)
-    fun turnRightLeft(power: Double) = turnPower(-power)
+    fun turnLeftPower(power: Double) = turnPower(-power)
+    fun turnRightLeft(power: Double) = turnPower(power)
 
 
     fun turnVelocity(vel: Double) = setVelocity(vel, -vel)

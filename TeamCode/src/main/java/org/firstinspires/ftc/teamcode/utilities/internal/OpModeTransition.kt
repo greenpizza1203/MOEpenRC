@@ -5,10 +5,9 @@ import com.qualcomm.ftccommon.CommandList
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.robocol.Command
-import org.firstinspires.ftc.teamcode.teleop.CompTeleOp
 import kotlin.reflect.KClass
 
-fun initOtherOpMode(opMode: KClass<CompTeleOp>) {
+fun initOtherOpMode(opMode: KClass<TeleOp>) {
 
 //    val name = getOpModeName(opMode.java) ?: return
     Log.e("handlingCommand", opMode.toString())
@@ -23,7 +22,7 @@ fun initOtherOpMode(opMode: KClass<CompTeleOp>) {
 }
 
 fun main() {
-    val name = getOpModeName(CompTeleOp::class.java) ?: return
+    val name = getOpModeName(TeleOp::class.java) ?: return
     println(name)
     val command = getInitCommand(name)
     println(command)

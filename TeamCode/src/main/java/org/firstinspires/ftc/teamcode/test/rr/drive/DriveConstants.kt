@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.test.rr.drive
 
+import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints
 
 /*
@@ -13,6 +14,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints
  * These are not the only parameters; some are located in the localizer classes, drive base classes,
  * and op modes themselves.
  */
+@Config
 object DriveConstants {
     const val MAX_RPM = 312.0
 
@@ -28,7 +30,7 @@ object DriveConstants {
     var GEAR_RATIO = 1 // output (wheel) speed / input (motor) speed
 
     @JvmStatic
-    var TRACK_WIDTH = 12.83 // in
+    var TRACK_WIDTH = 15.60 // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -37,13 +39,13 @@ object DriveConstants {
      * empirically tuned.
      */
     @JvmField
-    var kV = 200 * 0.0001
+    var kV = 180 * 0.0001
 
     @JvmField
-    var kA = 50 * 0.0001
+    var kA = 20 * 0.0001
 
     @JvmField
-    var kStatic = 0.039
+    var kStatic =0.0
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,

@@ -14,7 +14,7 @@ class MOEServo(config: ServoConfig) {
 
     init {
         mServo.scaleRange(config.min, config.max)
-        mServo.direction=(config.direction)
+        mServo.direction = (config.direction)
     }
 
     fun getPosition(): Double = mServo.position

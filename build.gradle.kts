@@ -6,7 +6,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.0.2")
-        classpath(embeddedKotlin("gradle-plugin"))
+        classpath("com.android.tools.build:gradle:4.1.1")
+        classpath(kotlin("gradle-plugin","1.4.20"))
     }
+}
+
+extensions.findByName("buildScan")?.withGroovyBuilder {
+    setProperty("termsOfServiceUrl", "https://gradle.com/terms-of-service")
+    setProperty("termsOfServiceAgree", "yes")
 }

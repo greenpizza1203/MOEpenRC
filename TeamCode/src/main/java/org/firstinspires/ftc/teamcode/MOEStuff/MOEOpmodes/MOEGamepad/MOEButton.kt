@@ -51,5 +51,11 @@ class MOEButton(private val get: () -> Boolean) {
         }
     }
 
+    fun onToggle(function: (isToggled: Boolean) -> Unit) {
+        onKey {
+            function(isToggled)
+        }
+    }
+
 
 }

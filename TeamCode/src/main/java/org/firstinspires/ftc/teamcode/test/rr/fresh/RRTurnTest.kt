@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPid.MOERawPid
 import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
-import org.firstinspires.ftc.teamcode.test.rr.drive.StandardTrackingWheelLocalizer
+import org.firstinspires.ftc.teamcode.test.rr.drive.ThreeWheelOdo
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toDegrees
 
 @TeleOp
@@ -32,13 +32,13 @@ class RRTurnTest : OpMode() {
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE)
 
         forward.input = {
-            val d = ((drive.localizer as StandardTrackingWheelLocalizer).leftEncoder.currentPosition + (drive.localizer as StandardTrackingWheelLocalizer).rightEncoder.currentPosition) / 305.0
+            val d = ((drive.localizer as ThreeWheelOdo).leftEncoder.currentPosition + (drive.localizer as ThreeWheelOdo).rightEncoder.currentPosition) / 305.0
             d
         }
         forward.setpoint = { 0.0 }
         forward.setOutputLimits(1.0)
         strafe.input = {
-            (drive.localizer as StandardTrackingWheelLocalizer).frontEncoder.currentPosition / 305.0
+            (drive.localizer as ThreeWheelOdo).strafeEncoder.currentPosition / 305.0
         }
         strafe.setpoint = { 0.0 }
         strafe.setOutputLimits(1.0)
@@ -81,11 +81,11 @@ class RRTurnTest : OpMode() {
         drive.updatePoseEstimate()
 //        if (drive.poseEstimate.heading !in 0.85 * PI..PI) return
         val packet = TelemetryPacket()
-        val localizer = drive.localizer as StandardTrackingWheelLocalizer
+        val localizer = drive.localizer as ThreeWheelOdo
 //        packet.put("left", localizer.leftEncoder.currentPosition)
 //        packet.put("right", localizer.rightEncoder.currentPosition)
         packet.put("vertical", localizer.leftEncoder.currentPosition + localizer.rightEncoder.currentPosition)
-        packet.put("strafe", localizer.frontEncoder.currentPosition)
+        packet.put("strafe", localizer.strafeEncoder.currentPosition)
         packet.put("gyro", imu.angularOrientation.firstAngle.toDouble().toDegrees())
 
 //        packet.put("min", PI * 0.8)

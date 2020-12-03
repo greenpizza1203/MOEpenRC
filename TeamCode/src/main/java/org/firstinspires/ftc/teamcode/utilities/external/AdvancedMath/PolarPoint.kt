@@ -15,7 +15,8 @@ data class PolarPoint(val r: Double, var radAng: Double) {
         return "($r,$degAng°)"
     }
 
-    fun rotate(angle: Double) {
+    fun rotate(angle: Double): PolarPoint {
         radAng += angle
+        return this
     }
 }

@@ -28,8 +28,8 @@ class MOEIMUGyro : MOEGyro() {
 
     private fun waitForGyroInit() {
         while (!moeOpMode.iIsStopRequested && !initFinished()) {
-            telemetry.addData("Gyro Status", imu.calibrationStatus)
-            telemetry.update()
+//            telemetry.addData("Gyro Status", imu.calibrationStatus)
+//            telemetry.update()
         }
 
     }

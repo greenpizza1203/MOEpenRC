@@ -4,39 +4,33 @@ import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPenCVConstants
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPenCVConstants.PINK
 import org.opencv.core.Mat
 import org.opencv.core.Point
-import org.opencv.core.Rect
 import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Imgproc.COLOR_BGR2HSV
 import org.openftc.easyopencv.OpenCvPipeline
 import kotlin.math.roundToInt
 
-class MOEPipeline(private val instance: MOEPenCV) : OpenCvPipeline() {
+open class MOEPipeline : OpenCvPipeline() {
     var lastFrame: Mat? = null
     var frameRequested = false
 
     //    lateinit var location: SkyStoneLocation
-    override fun processFrame(input: Mat): Mat {
+    final override fun processFrame(input: Mat): Mat {
         if (frameRequested) {
             lastFrame = input
             frameRequested = false
         }
-//        val subMatrix = input.submat(instance.config.autonConfig.cropRectangle)
-//        val newMat = Mat(Size(798.0, 310.0), input.type())
-//
-//        Imgproc.resize(subMatrix, newMat.submat(Rect(0, 0, 798, 266)), Size(798.0, 266.0))
-//
-//        if (instance.config.drawOverlay) {
-//            drawLines(newMat)
-//        }
-//        if (instance.config.processExtra) {
-//            drawText(newMat)
-//        }
-//        input.release()
+        val pre = preProcess(input)
+        return process(pre)
+    }
 
+    open fun preProcess(input: Mat): Mat {
         return input
     }
 
+    open fun process(input: Mat): Mat {
+        return input
+    }
 
     private fun drawText(newMat: Mat) {
         val croppedMat = Mat()

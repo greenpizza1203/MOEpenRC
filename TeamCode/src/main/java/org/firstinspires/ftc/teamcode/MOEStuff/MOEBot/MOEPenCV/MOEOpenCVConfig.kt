@@ -6,5 +6,6 @@ data class MOEOpenCVConfig(
         var useInternalCamera: Boolean = false,
         var enablePreview: Boolean = true,
         var drawOverlay: Boolean = false,
-        var processExtra: Boolean = false
+        var processExtra: Boolean = false,
+        var pipeline: MOEPipeline = MOEPipeline()
 )

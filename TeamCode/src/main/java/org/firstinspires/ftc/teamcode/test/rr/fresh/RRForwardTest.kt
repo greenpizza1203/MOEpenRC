@@ -60,7 +60,7 @@ class RRForwardTest : OpMode() {
 //        packet.put("input", heading)
         packet.put("power", output)
 //        packet.put("max", PI)
-        val heading = drive.poseEstimate.heading
+//        val heading = drive.poseEstimate.heading
 
 
         dashboard.sendTelemetryPacket(packet)

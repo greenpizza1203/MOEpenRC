@@ -43,15 +43,20 @@ class MOEBot(config: MOEBotConstantsImpl) {
     fun offsetValues(constants: MOEBotConstantsImpl) {
 
         if (robotConfig.useGyro) {
-            gyro.angle = constants.getRobotInitialState().robotInitial.radAng
+            gyro.angle = constants.getRobotInitialState().ang
         }
 
 
     }
 
     fun stop() {
-//        if (robotConfig.useOdometry) odometry.stop()
         if (robotConfig.useOpenCV) opencv.stop()
+        shooter.servoJob.cancel()
+        chassis.stop()
+        shooter.stop()
+        intake.stop()
+
+
     }
 
 }

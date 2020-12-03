@@ -4,12 +4,10 @@ import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
-import java.net.*
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.math.abs
 
 /**
@@ -50,13 +48,13 @@ class LocalizationTest : LinearOpMode() {
             drive.updatePoseEstimate()
             System.currentTimeMillis()
 //            telemetry.addData(drive.poseEstimate.)
-            telemetry.update()
-//            val poseEstimate = drive.poseEstimate
-//            telemetry.addData("y", poseEstimate.y)
-//            telemetry.addData("heading", poseEstimate.heading)
-//            telemetry.addData("wheels", (drive.localizer as ThreeTrackingWheelLocalizer).getWheelPositions())
-//
 //            telemetry.update()
+            val poseEstimate = drive.poseEstimate
+            telemetry.addData("y", poseEstimate.y)
+            telemetry.addData("heading", poseEstimate.heading)
+            telemetry.addData("wheels", (drive.localizer as ThreeTrackingWheelLocalizer).getWheelPositions())
+
+            telemetry.update()
         }
     }
 

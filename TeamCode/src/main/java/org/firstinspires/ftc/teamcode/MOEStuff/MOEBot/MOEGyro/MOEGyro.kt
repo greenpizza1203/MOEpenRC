@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toNormalAn
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
 
 abstract class MOEGyro {
-//
+    //
 //    var config = MOEGyroConfig()
 //        set(value) {
 //            field = value
@@ -21,25 +21,6 @@ abstract class MOEGyro {
             offset = value - getRawAngle()
         }
 
-    /**
-     * Sets an offset for the IMU angle values
-     * @param offset the offset to set
-     */
-
-    val radAng: Double
-        get() = angle.toRadians()
-
-    /**
-     * Set the current angle as 0
-     */
-    fun setToZero() {
-        setTo(0.0)
-    }
-
-    fun setTo(initialAng: Double) {
-//        Log.e("setting gyro to ", initialAng.toString())
-
-    }
 
     /** 0 to 2PI*/
     abstract fun getRawAngle(): Double

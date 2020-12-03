@@ -39,3 +39,9 @@ fun Mat.resize(size: Size): Mat {
     Imgproc.resize(this, dest, size)
     return dest
 }
+
+fun Mat.drawRect(rect: Rect, color: Scalar, thickness: Int = 3) {
+    Imgproc.rectangle(this,rect,color,thickness)
+//    Imgproc.rectangle(input, redRect, RED, 3)
+
+}

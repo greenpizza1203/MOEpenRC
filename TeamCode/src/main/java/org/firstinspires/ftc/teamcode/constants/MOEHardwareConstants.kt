@@ -21,15 +21,13 @@ object MOEHardwareConstants {
     }
 
     object Intake {
-        val IntakeMotor = MotorConfig("IN", 1, 0)
+        val IntakeMotor = MotorConfig("IN", 1, 3)
     }
 
     object Shooter {
         val OuterFlywheel = MotorConfig("OF", 1, 0)
         val InnerFlywheel = MotorConfig("IF", 1, 1)
-        val TriggerServo = ServoConfig("ST", 1, 1)
-//        val TriggerEncoder = Ma3Config("ST", 1, 0)
-
+        val TriggerServo = ServoConfig("RT", 2, 5, 0.2, 0.6)
     }
 }
 

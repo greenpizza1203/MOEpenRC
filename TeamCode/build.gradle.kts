@@ -3,13 +3,11 @@ import org.gradle.api.JavaVersion.VERSION_1_8
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("org.moeftc.hotcode") version "1.9"
+//    id("org.moeftc.hotcode") version "1.9"
 }
-
 android {
 
     compileSdkVersion(30)
-
 
     aaptOptions {
         noCompress("tflite")
@@ -29,12 +27,10 @@ android {
         isRenderscriptDebuggable = true
 
         ndk {
-
-            abiFilter("armeabi-v7a")
+            abiFilters.add("armeabi-v7a")
         }
-
     }
-
+    ndkVersion = ("21.3.6528147")
     compileOptions {
         sourceCompatibility = VERSION_1_8
         targetCompatibility = VERSION_1_8
@@ -44,14 +40,12 @@ android {
 
 dependencies {
     implementation(files("../libs/FtcRobotController-extremeTurbo-debug.aar"))
-    implementation(embeddedKotlin("stdlib-jdk8"))
-    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
-    compileOnly("org.openftc:easyopencv:1.3.2")
-    compileOnly("com.acmerobotics.dashboard:dashboard:0.3.10") {
-        exclude("org.firstinspires.ftc")
-    }
-    compileOnly("com.acmerobotics.roadrunner:core:0.5.1")
-    compileOnly("org.apache.commons:commons-math3:3.6.1")
+    implementation(kotlin("stdlib-jdk8","1.4.20"))
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.1")
+    implementation("org.openftc:easyopencv:1.4.1")
+
+    implementation("com.acmerobotics.roadrunner:core:0.5.2")
+    implementation("org.apache.commons:commons-math3:3.6.1")
 }
 
 repositories {

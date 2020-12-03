@@ -20,51 +20,55 @@ import com.acmerobotics.roadrunner.trajectory.constraints.MecanumConstraints
 import com.acmerobotics.roadrunner.util.NanoClock
 import com.qualcomm.hardware.bosch.BNO055IMU
 import com.qualcomm.hardware.lynx.LynxModule
+import com.qualcomm.robotcore.hardware.*
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode
 import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior
-import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.DcMotorSimple
-import com.qualcomm.robotcore.hardware.HardwareMap
+import org.firstinspires.ftc.teamcode.test.rr.drive.DriveConstants.BASE_CONSTRAINTS
+import org.firstinspires.ftc.teamcode.test.rr.drive.DriveConstants.TRACK_WIDTH
+import org.firstinspires.ftc.teamcode.test.rr.drive.DriveConstants.kA
+import org.firstinspires.ftc.teamcode.test.rr.drive.DriveConstants.kStatic
+import org.firstinspires.ftc.teamcode.test.rr.drive.DriveConstants.kV
 import org.firstinspires.ftc.teamcode.test.rr.util.DashboardUtil
 import org.firstinspires.ftc.teamcode.test.rr.util.LynxModuleUtil
 import java.util.*
+import kotlin.math.abs
 
 /*
 * Simple mecanum drive hardware implementation for REV hardware.
 */
 @Config
-class SampleMecanumDrive(hardwareMap: HardwareMap) : MecanumDrive(DriveConstants.kV, DriveConstants.kA, DriveConstants.kStatic, DriveConstants.TRACK_WIDTH, DriveConstants.TRACK_WIDTH, LATERAL_MULTIPLIER) {
+class SampleMecanumDrive(hardwareMap: HardwareMap) : MecanumDrive(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER) {
     enum class Mode {
         IDLE, TURN, FOLLOW_TRAJECTORY
     }
 
-    private val dashboard = FtcDashboard.getInstance()
-    private val telemetry = dashboard.telemetry
+    private val dashboard: FtcDashboard = FtcDashboard.getInstance()
     private val clock: NanoClock
-    var mode: Mode
+    private var mode: Mode
     private val turnController: PIDFController
     private var turnProfile: MotionProfile? = null
     private var turnStart = 0.0
     private val constraints: DriveConstraints
     private val follower: TrajectoryFollower
-    private val poseHistory: MutableList<Pose2d>
+    private val poseHistory: LinkedList<Pose2d>
     private val frontLeft: DcMotorEx
     private val backLeft: DcMotorEx
-    private val backRight: DcMotorEx
     private val frontRight: DcMotorEx
+    private val backRight: DcMotorEx
     private val motors: List<DcMotorEx>
     private val imu: BNO055IMU
+    private val batteryVoltageSensor: VoltageSensor
     private var lastPoseOnTurn: Pose2d? = null
     fun trajectoryBuilder(startPose: Pose2d): TrajectoryBuilder {
         return TrajectoryBuilder(startPose, constraints = constraints)
     }
 
-    fun trajectoryBuilder(startPose: Pose2d?, reversed: Boolean): TrajectoryBuilder {
-        return TrajectoryBuilder(startPose!!, reversed, constraints)
+    fun trajectoryBuilder(startPose: Pose2d, reversed: Boolean): TrajectoryBuilder {
+        return TrajectoryBuilder(startPose, reversed, constraints)
     }
 
-    fun trajectoryBuilder(startPose: Pose2d?, startHeading: Double): TrajectoryBuilder {
-        return TrajectoryBuilder(startPose!!, startHeading, constraints)
+    fun trajectoryBuilder(startPose: Pose2d, startHeading: Double): TrajectoryBuilder {
+        return TrajectoryBuilder(startPose, startHeading, constraints)
     }
 
     fun turnAsync(angle: Double) {
@@ -108,8 +112,11 @@ class SampleMecanumDrive(hardwareMap: HardwareMap) : MecanumDrive(DriveConstants
     fun update() {
         updatePoseEstimate()
         val currentPose = poseEstimate
-        val lastError = lastError
+//        val lastError = lastError
         poseHistory.add(currentPose)
+        if (POSE_HISTORY_LIMIT > -1 && poseHistory.size > POSE_HISTORY_LIMIT) {
+            poseHistory.removeFirst()
+        }
         val packet = TelemetryPacket()
         val fieldOverlay = packet.fieldOverlay()
         packet.put("mode", mode)
@@ -184,45 +191,65 @@ class SampleMecanumDrive(hardwareMap: HardwareMap) : MecanumDrive(DriveConstants
         }
     }
 
+    fun setPIDFCoefficients(runMode: RunMode?, coefficients: PIDFCoefficients) {
+        val compensatedCoefficients = PIDFCoefficients(
+                coefficients.p, coefficients.i, coefficients.d,
+                coefficients.f * 12 / batteryVoltageSensor.voltage
+        )
+        for (motor in motors) {
+            motor.setPIDFCoefficients(runMode, compensatedCoefficients)
+        }
+    }
+
+    fun setWeightedDrivePower(drivePower: Pose2d) {
+        var vel = drivePower
+        if ((abs(drivePower.x) + abs(drivePower.y)
+                        + abs(drivePower.heading)) > 1) {
+            // re-normalize the powers according to the weights
+            val denom = VX_WEIGHT * abs(drivePower.x) + VY_WEIGHT * abs(drivePower.y) + OMEGA_WEIGHT * abs(drivePower.heading)
+            vel = Pose2d(
+                    VX_WEIGHT * drivePower.x,
+                    VY_WEIGHT * drivePower.y,
+                    OMEGA_WEIGHT * drivePower.heading
+            ).div(denom)
+        }
+        setDrivePower(vel)
+    }
+
     override fun getWheelPositions(): List<Double> {
-        return listOf(0.0, 0.0, 0.0, 0.0)
-        //        List<Double> wheelPositions = new ArrayList<>();
-//        for (DcMotorEx motor : motors) {
-//            wheelPositions.add(encoderTicksToInches(motor.getCurrentPosition()));
-//        }
-//        return wheelPositions;
+        val wheelPositions: MutableList<Double> = ArrayList()
+        for (motor in motors) {
+            wheelPositions.add(motor.currentPosition.toDouble())
+        }
+        return wheelPositions
     }
 
     override fun getWheelVelocities(): List<Double>? {
-        return null
-        //        List<Double> wheelVelocities = new ArrayList<>();
-//        for (DcMotorEx motor : motors) {
-//            wheelVelocities.add(encoderTicksToInches(motor.getVelocity()));
-//        }
-//        return wheelVelocities;
+        val wheelVelocities: MutableList<Double> = ArrayList()
+        for (motor in motors) {
+            wheelVelocities.add((motor.velocity))
+        }
+        return wheelVelocities
     }
 
     override fun setMotorPowers(frontLeft: Double, rearLeft: Double, rearRight: Double, frontRight: Double) {
-//        FtcDashboard.getInstance()
-//        telemetry.addData("frontLeft", v)
-//        telemetry.addData("backLeft", v1)
-//        telemetry.addData("backRight", v2)
-//        telemetry.addData("frontRight", v3)
-//        telemetry.update()
-//        return;
         this.frontLeft.power = frontLeft
-        this.backLeft.power = rearLeft
-        this.backRight.power = rearRight
+        backLeft.power = rearLeft
+        backRight.power = rearRight
         this.frontRight.power = frontRight
     }
 
-    override val rawExternalHeading: Double
+    public override val rawExternalHeading: Double
         get() = imu.angularOrientation.firstAngle.toDouble()
 
     companion object {
-        var TRANSLATIONAL_PID = PIDCoefficients(0.0, 0.0, 0.0)
-        var HEADING_PID = PIDCoefficients(0.1, 0.0, 0.0)
+        var TRANSLATIONAL_PID = PIDCoefficients(8.0, 0.0, 0.0)
+        var HEADING_PID = PIDCoefficients(8.0, 0.0, 0.0)
         var LATERAL_MULTIPLIER = 1.0
+        var VX_WEIGHT = 1.0
+        var VY_WEIGHT = 1.0
+        var OMEGA_WEIGHT = 1.0
+        var POSE_HISTORY_LIMIT = 100
     }
 
     init {
@@ -231,11 +258,12 @@ class SampleMecanumDrive(hardwareMap: HardwareMap) : MecanumDrive(DriveConstants
         mode = Mode.IDLE
         turnController = PIDFController(HEADING_PID)
         turnController.setInputBounds(0.0, 2 * Math.PI)
-        constraints = MecanumConstraints(DriveConstants.BASE_CONSTRAINTS, DriveConstants.TRACK_WIDTH)
+        constraints = MecanumConstraints(BASE_CONSTRAINTS, TRACK_WIDTH)
         follower = HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5)
-        poseHistory = ArrayList()
+        poseHistory = LinkedList()
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap)
+        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next()
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
             module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO
         }
@@ -249,22 +277,25 @@ class SampleMecanumDrive(hardwareMap: HardwareMap) : MecanumDrive(DriveConstants
         // TODO: if your hub is mounted vertically, remap the IMU axes so that the z-axis points
         // upward (normal to the floor) using a command like the following:
         // BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
-        frontLeft = hardwareMap.get(DcMotorEx::class.java, "FLDM10")
-        backLeft = hardwareMap.get(DcMotorEx::class.java, "BLDM11")
-        backRight = hardwareMap.get(DcMotorEx::class.java, "BRDM12")
-        frontRight = hardwareMap.get(DcMotorEx::class.java, "FRDM13")
+        frontLeft = hardwareMap.get(DcMotorEx::class.java, "FLM20")
+        backLeft = hardwareMap.get(DcMotorEx::class.java, "BLM21")
+        frontRight = hardwareMap.get(DcMotorEx::class.java, "FRM22")
+        backRight = hardwareMap.get(DcMotorEx::class.java, "BRM23")
         motors = listOf(frontLeft, backLeft, backRight, frontRight)
         for (motor in motors) {
             val motorConfigurationType = motor.motorType.clone()
             motorConfigurationType.achieveableMaxRPMFraction = 1.0
             motor.motorType = motorConfigurationType
         }
+
         setZeroPowerBehavior(ZeroPowerBehavior.BRAKE)
+
 
         // TODO: reverse any motors using DcMotor.setDirection()
         frontLeft.direction = DcMotorSimple.Direction.REVERSE
         backLeft.direction = DcMotorSimple.Direction.REVERSE
         // TODO: if desired, use setLocalizer() to change the localization method
-        localizer = StandardTrackingWheelLocalizer(hardwareMap)
+//        localizer = LeftWheelOdo(hardwareMap,imu)
+        localizer = ThreeWheelOdo(hardwareMap)
     }
 }

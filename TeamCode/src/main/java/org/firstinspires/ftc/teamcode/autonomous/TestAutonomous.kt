@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode.autonomous
 
+import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.acmerobotics.roadrunner.geometry.Vector2d
+import com.acmerobotics.roadrunner.trajectory.Trajectory
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.Servo
@@ -11,24 +16,24 @@ import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
 class PracticeAutonomous : LinearOpMode() {
 
     val timer = ElapsedTime()
-    fun wait(waitTime:Double){
+    fun wait(waitTime: Double) {
         timer.reset()
-        while(timer.time() < waitTime && opModeIsActive) {
+        while (timer.time() < waitTime && opModeIsActive()) {
 
         }
     }
 
-    fun shootRing(){
+    fun shootRing() {
         trigger.setPosition(0.6)
         wait(0.35)
         trigger.setPosition(0.2)
     }
 
-lateinit var intakeMotor: DcMotor
-lateinit var outerShooterMotor: DcMotorEx
-lateinit var innerShooterMotor: DcMotorEx
-lateinit var trigger: Servo
-val Velocity = 2000
+    lateinit var intakeMotor: DcMotor
+    lateinit var outerShooterMotor: DcMotorEx
+    lateinit var innerShooterMotor: DcMotorEx
+    lateinit var trigger: Servo
+    val Velocity = 2000
 
     override fun runOpMode() {
         intakeMotor = hardwareMap.dcMotor["INM13"]
@@ -64,7 +69,7 @@ val Velocity = 2000
 
         waitForStart()
 
-        if (isStopRequested()){
+        if (isStopRequested()) {
             return
         }
 

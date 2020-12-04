@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 @Autonomous(group = "drive")
 class PracticeAutonomous : LinearOpMode() {
     @Throws(InterruptedException::class)
+
     override fun runOpMode() {
         val Velocity = 2000
         val timer = ElapsedTime()
@@ -19,7 +20,7 @@ class PracticeAutonomous : LinearOpMode() {
 //      Temporary Config for testing
 
 
-        val drive =SampleMecanumDrive(hardwareMap)
+        val drive =org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive(hardwareMap)
         val startPose = Pose2d(48.0, 12.0, Math.toRadians(0.0))
 
         drive.poseEstimate = startPose

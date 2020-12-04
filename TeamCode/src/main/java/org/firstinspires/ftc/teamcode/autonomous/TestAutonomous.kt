@@ -1,26 +1,45 @@
 package org.firstinspires.ftc.teamcode.autonomous
 
-import com.acmerobotics.roadrunner.geometry.Pose2d
-import com.acmerobotics.roadrunner.geometry.Vector2d
-import com.acmerobotics.roadrunner.trajectory.Trajectory
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.DcMotorEx
+import com.qualcomm.robotcore.hardware.Servo
 
 import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
 
 @Autonomous(group = "drive")
 class PracticeAutonomous : LinearOpMode() {
-    @Throws(InterruptedException::class)
+
+    val timer = ElapsedTime()
+    fun wait(waitTime:Double){
+        timer.reset()
+        while(timer.time() < waitTime && opModeIsActive) {
+
+        }
+    }
+
+    fun shootRing(){
+        trigger.setPosition(0.6)
+        wait(0.35)
+        trigger.setPosition(0.2)
+    }
+
+lateinit var intakeMotor: DcMotor
+lateinit var outerShooterMotor: DcMotorEx
+lateinit var innerShooterMotor: DcMotorEx
+lateinit var trigger: Servo
+val Velocity = 2000
 
     override fun runOpMode() {
-        val Velocity = 2000
-        val timer = ElapsedTime()
-        var Config: Int
-        Config = 1
+        intakeMotor = hardwareMap.dcMotor["INM13"]
+        outerShooterMotor = hardwareMap.dcMotor["OFM10"] as DcMotorEx
+        innerShooterMotor = hardwareMap.dcMotor["IFM11"] as DcMotorEx
+        trigger = hardwareMap.servo["STS11"]
+        var Config: Int = 1
 //      Temporary Config for testing
 
 
-        val drive =org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive(hardwareMap)
+        val drive = SampleMecanumDrive(hardwareMap)
         val startPose = Pose2d(48.0, 12.0, Math.toRadians(0.0))
 
         drive.poseEstimate = startPose
@@ -49,30 +68,21 @@ class PracticeAutonomous : LinearOpMode() {
             return
         }
 
-        drive.turn(Math.toRadians(1.0))
-        outerShooterMotor.velocity = Velocity
-        innerShooterMotor.velocity = Velocity
+//Start Turned
+        outerShooterMotor.velocity = Velocity.toDouble()
+        innerShooterMotor.velocity = Velocity.toDouble()
 
-        trigger.setPosition(0.6)
-        wait(0.35)
-        trigger.setPosition(0.2)
+        shootRing()
 
         drive.turn(Math.toRadians(2.0))
-        timer.reset()
 
-        trigger.setPosition(0.6)
-        wait(0.35)
-        trigger.setPosition(0.2)
+        shootRing()
 
         drive.turn(Math.toRadians(2.0))
-        timer.reset()
+        shootRing()
 
-        trigger.setPosition(0.6)
-        wait(0.35)
-        trigger.setPosition(0.2)
-
-        outerShooterMotor.velocity = 0
-        innerShooterMotor.velocity = 0
+        outerShooterMotor.velocity = 0.0
+        innerShooterMotor.velocity = 0.0
 
         drive.turn(Math.toRadians(-5.0))
 
@@ -85,16 +95,4 @@ class PracticeAutonomous : LinearOpMode() {
 
         }
     }
-    fun shootRing(){
-            trigger.setPosition(0.6)
-        wait(0.35)
-        trigger.setPosition(0.2)
-        }
-
-        fun wait(waitTime:Double){
-            timer.reset()
-            while(timer.time() < waitTime&& opModeIsActive) {
-
-            }
-        }
 }

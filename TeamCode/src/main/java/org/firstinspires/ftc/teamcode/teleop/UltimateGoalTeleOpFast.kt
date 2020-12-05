@@ -44,7 +44,7 @@ class UltimateGoalTeleOpFast : OpMode() {
         intakeMotor.zeroPowerBehavior = ZeroPowerBehavior.BRAKE
         outerShooterMotor = hardwareMap.get(DcMotorEx::class.java, "OFM10")
         innerShooterMotor = hardwareMap.get(DcMotorEx::class.java, "IFM11")
-        trigger = hardwareMap.servo["STS11"]
+        trigger = hardwareMap.servo["RTS25"]
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
             module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO
         }

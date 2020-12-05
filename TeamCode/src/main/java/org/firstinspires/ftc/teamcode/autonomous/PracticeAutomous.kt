@@ -16,14 +16,14 @@ import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
 class PracticeAutonomous : LinearOpMode() {
 
     val timer = ElapsedTime()
-    fun wait(waitTime: Double) {
+    fun wait(waitTime:Double){
         timer.reset()
-        while (timer.time() < waitTime && opModeIsActive()) {
+        while(timer.time() < waitTime && opModeIsActive()) {
 
         }
     }
 
-    fun shootRing() {
+    fun shootRing(){
         trigger.setPosition(0.6)
         wait(0.35)
         trigger.setPosition(0.2)
@@ -45,35 +45,35 @@ class PracticeAutonomous : LinearOpMode() {
 
 
         val drive = SampleMecanumDrive(hardwareMap)
-        val startPose = Pose2d(48.0, 12.0, Math.toRadians(0.0))
+        val startPose = Pose2d(-60.0, 24.0, Math.toRadians(180.0))
 
         drive.poseEstimate = startPose
 
         val traj1: Trajectory = drive.trajectoryBuilder(startPose)
-                .splineTo(Vector2d(36.0, 36.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(-24.0, 36.0), Math.toRadians(0.0))
                 //intake stacked rings
                 .build()
 
         val Configuration1: Trajectory = drive.trajectoryBuilder(traj1.end())
-                .splineTo(Vector2d(12.0, 84.0), Math.toRadians(0.0))
-                .splineTo(Vector2d(12.0, 72.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(12.0, 60.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(12.0, 72.0), Math.toRadians(180.0))
                 .build()
         val Configuration2: Trajectory = drive.trajectoryBuilder(traj1.end())
-                .splineTo(Vector2d(36.0, 108.0), Math.toRadians(0.0))
-                .splineTo(Vector2d(12.0, 72.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(36.0, 36.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(12.0, 36.0), Math.toRadians(180.0))
                 .build()
         val Configuration3: Trajectory = drive.trajectoryBuilder(traj1.end())
-                .splineTo(Vector2d(12.0, 132.0), Math.toRadians(0.0))
-                .splineTo(Vector2d(12.0, 72.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(60.0, 60.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(12.0, 60.0), Math.toRadians(180.0))
                 .build()
 
         waitForStart()
 
-        if (isStopRequested()) {
+        if (isStopRequested()){
             return
         }
 
-//Start Turned
+//Start Turned 1.0
         outerShooterMotor.velocity = Velocity.toDouble()
         innerShooterMotor.velocity = Velocity.toDouble()
 

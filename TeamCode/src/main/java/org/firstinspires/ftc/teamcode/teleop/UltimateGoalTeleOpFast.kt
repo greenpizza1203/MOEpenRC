@@ -61,7 +61,7 @@ class UltimateGoalTeleOpFast : OpMode() {
     override fun loop() {
         val startTime = System.nanoTime()
         handleToggles()
-        if (gamepad1.right_stick_button) gyroOffset = 90+gyro.angularOrientation.firstAngle.toDouble()
+        if (gamepad1.right_stick_button) gyroOffset = 90 + gyro.angularOrientation.firstAngle.toDouble()
         loopChassis()
         intakeMotor.power = if (aToggled) 1.0 else 0.0
         shooter()
@@ -90,7 +90,14 @@ class UltimateGoalTeleOpFast : OpMode() {
             outerShooterMotor.power = 0.0
             innerShooterMotor.power = 0.0
         }
-        if (timer.time() > 1.75) trigger.position = 0.2 else if (timer.time() > 1.4) trigger.position = 0.6 else if (timer.time() > 1.05) trigger.position = 0.2 else if (timer.time() > 0.7) trigger.position = 0.6 else if (timer.time() > 0.35) trigger.position = 0.2 else if (timer.time() > 0.0) trigger.position = 0.6
+        trigger.position = when {
+            timer.time() > 1.75 -> 0.2
+            timer.time() > 1.4 -> 0.6
+            timer.time() > 1.05 -> 0.2
+            timer.time() > 0.7 -> 0.6
+            timer.time() > 0.35 -> 0.2
+            else -> 0.6
+        }
     }
 
     fun fromMecanum(fwd: Double, str: Double, rot: Double) {

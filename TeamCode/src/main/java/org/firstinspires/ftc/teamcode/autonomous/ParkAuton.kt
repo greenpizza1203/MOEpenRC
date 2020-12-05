@@ -22,9 +22,11 @@ class ParkAuton : LinearOpMode() {
         val startPose = Pose2d(48.0, 9.0, Math.toRadians(0.0))
         drive.poseEstimate = startPose
         val traj1: Trajectory = drive.trajectoryBuilder(startPose)
-                .forward(75.0)
-                //intake stacked rings
+                .back(75.0)
                 .build()
         drive.followTrajectory(traj1)
+//        while(opModeIsActive()){
+//
+//        }
     }
 }

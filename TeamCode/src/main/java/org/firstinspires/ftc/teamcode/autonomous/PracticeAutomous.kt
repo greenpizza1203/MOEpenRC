@@ -50,7 +50,7 @@ class PracticeAutonomous : LinearOpMode() {
         drive.poseEstimate = startPose
 
         val traj1: Trajectory = drive.trajectoryBuilder(startPose)
-                .splineTo(Vector2d(36.0, 36.0), Math.toRadians(0.0))
+                .lineTo(Vector2d(36.0, 36.0))
                 //intake stacked rings
                 .build()
 
@@ -69,35 +69,32 @@ class PracticeAutonomous : LinearOpMode() {
 
         waitForStart()
 
-        if (isStopRequested()) {
-            return
-        }
 
 //Start Turned
-        outerShooterMotor.velocity = Velocity.toDouble()
-        innerShooterMotor.velocity = Velocity.toDouble()
+//        outerShooterMotor.velocity = Velocity.toDouble()
+//        innerShooterMotor.velocity = Velocity.toDouble()
+//
+//        shootRing()
+//
+//        drive.turn(Math.toRadians(2.0))
+//
+//        shootRing()
+//
+//        drive.turn(Math.toRadians(2.0))
+//        shootRing()
 
-        shootRing()
+//        outerShooterMotor.velocity = 0.0
+//        innerShooterMotor.velocity = 0.0
 
-        drive.turn(Math.toRadians(2.0))
-
-        shootRing()
-
-        drive.turn(Math.toRadians(2.0))
-        shootRing()
-
-        outerShooterMotor.velocity = 0.0
-        innerShooterMotor.velocity = 0.0
-
-        drive.turn(Math.toRadians(-5.0))
+//        drive.turn(Math.toRadians(-5.0))
 
         drive.followTrajectory(traj1)
-
-        when {
-            Config == 1 -> drive.followTrajectory(Configuration1)
-            Config == 2 -> drive.followTrajectory(Configuration2)
-            Config == 3 -> drive.followTrajectory(Configuration3)
-
-        }
+//
+//        when {
+//            Config == 1 -> drive.followTrajectory(Configuration1)
+//            Config == 2 -> drive.followTrajectory(Configuration2)
+//            Config == 3 -> drive.followTrajectory(Configuration3)
+//
+//        }
     }
 }

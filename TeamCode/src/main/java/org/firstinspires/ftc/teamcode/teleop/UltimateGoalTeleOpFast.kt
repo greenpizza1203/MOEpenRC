@@ -26,6 +26,9 @@ class UltimateGoalTeleOpFast : OpMode() {
     lateinit var outerShooterMotor: DcMotorEx
     lateinit var innerShooterMotor: DcMotorEx
     lateinit var trigger: Servo
+    lateinit var grabber: Servo
+    lateinit var angle: Servo
+    lateinit var arm: DcMotor
     var timer = ElapsedTime()
     override fun init() {
         gyro = hardwareMap.get(BNO055IMU::class.java, "imu")
@@ -45,6 +48,10 @@ class UltimateGoalTeleOpFast : OpMode() {
         outerShooterMotor = hardwareMap.get(DcMotorEx::class.java, "OFM10")
         innerShooterMotor = hardwareMap.get(DcMotorEx::class.java, "IFM11")
         trigger = hardwareMap.servo["RTS25"]
+        grabber = hardwareMap.servo["GWS21"]
+        angle = hardwareMap.servo["ACS20"]
+        arm = hardwareMap.get(DcMotorEx::class.java,"WAM12")
+        arm.zeroPowerBehavior = ZeroPowerBehavior.BRAKE
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
             module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO
         }
@@ -63,9 +70,15 @@ class UltimateGoalTeleOpFast : OpMode() {
         handleToggles()
         if (gamepad1.right_stick_button) gyroOffset = 90 + gyro.angularOrientation.firstAngle.toDouble()
         loopChassis()
-        intakeMotor.power = if (aToggled) 1.0 else 0.0
+        intakeMotor.power = if (aToggled) 1.0 else if(bToggled) -1.0 else 0.0
+        grabber.position = if (rbToggled) 0.4 else 0.05
+//        angle.position = if (lbToggled) 260.0 else 0.0
+        arm.power = gamepad2.right_stick_y.toDouble() * 0.3
         shooter()
+        powerShot()
         telemetry.addData("Loop ms", (System.nanoTime() - startTime) / 1000000.0)
+        telemetry.addData("innerVelocity", innerShooterMotor.velocity)
+        telemetry.addData("outerVelocity", outerShooterMotor.velocity)
     }
 
     fun loopChassis() {
@@ -81,7 +94,9 @@ class UltimateGoalTeleOpFast : OpMode() {
         fromMecanum(fwd, str, rot)
     }
 
-    var shooterTarget = 2000.0
+    var shooterTarget = 1900.0
+    var powerShotTarget = 1500.0
+
     private fun shooter() {
         if (yToggled) {
             outerShooterMotor.velocity = shooterTarget
@@ -90,13 +105,29 @@ class UltimateGoalTeleOpFast : OpMode() {
             outerShooterMotor.power = 0.0
             innerShooterMotor.power = 0.0
         }
+        if (yToggled){
         trigger.position = when {
-            timer.time() > 1.75 -> 0.2
-            timer.time() > 1.4 -> 0.6
-            timer.time() > 1.05 -> 0.2
-            timer.time() > 0.7 -> 0.6
-            timer.time() > 0.35 -> 0.2
-            else -> 0.6
+            timer.time() > 3.5 -> 0.2
+            timer.time() > 2.8 -> 0.7
+            timer.time() > 2.1 -> 0.2
+            timer.time() > 1.4 -> 0.7
+            timer.time() > 0.7 -> 0.2
+            else -> 0.7
+        }
+        }
+    }
+    fun powerShot(){
+        if (a2Toggled && !yToggled){
+            outerShooterMotor.velocity = powerShotTarget
+            innerShooterMotor.velocity = powerShotTarget
+        }else {
+            outerShooterMotor.power = 0.0
+            innerShooterMotor.power = 0.0
+        }
+
+        if(a2Toggled)trigger.position = when{
+            timer.time() > 0.7 -> 0.2
+            else -> 0.7
         }
     }
 
@@ -116,12 +147,28 @@ class UltimateGoalTeleOpFast : OpMode() {
     var aToggled = false
     var oldY = false
     var yToggled = false
+    var oldB = false
+    var bToggled = false
     var oldX = false
+    var rbToggled = false
+    var oldRB = false
+    var lbToggled = false
+    var oldLB = false
+    var a2Toggled = false
+    var olda2 = false
     fun handleToggles() {
         if (gamepad1.a && !oldA) aToggled = !aToggled
         oldA = gamepad1.a
         if (gamepad1.y && !oldY) yToggled = !yToggled
         oldY = gamepad1.y
+        if (gamepad1.b && !oldB) bToggled = !bToggled
+        oldB = gamepad1.b
+        if (gamepad1.right_bumper  && !oldRB) rbToggled = !rbToggled
+        oldRB = gamepad1.right_bumper
+        if (gamepad1.left_bumper  && !oldLB) lbToggled = !lbToggled
+        oldLB = gamepad1.left_bumper
+        if(gamepad2.a && !olda2) a2Toggled = !a2Toggled
+        olda2  = gamepad2.a
         if (gamepad1.x && !oldX) timer.reset()
         oldX = gamepad1.x
     }

@@ -95,7 +95,7 @@ class SampleMecanumDrive(hardwareMap: HardwareMap) : MecanumDrive(kV, kA, kStati
         mode = Mode.FOLLOW_TRAJECTORY
     }
 
-    fun followTrajectory(trajectory: Trajectory?) {
+    fun followTrajectory(trajectory: Trajectory) {
         followTrajectoryAsync(trajectory)
         waitForIdle()
     }

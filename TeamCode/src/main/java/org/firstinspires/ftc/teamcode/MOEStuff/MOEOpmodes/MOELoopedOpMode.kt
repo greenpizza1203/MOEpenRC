@@ -8,14 +8,13 @@ import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEBotConstantsImpl
 import org.firstinspires.ftc.teamcode.constants.OpModeInterface
 import org.firstinspires.ftc.teamcode.constants.Ref
 import org.firstinspires.ftc.teamcode.constants.Ref.setRobotRef
-import org.firstinspires.ftc.teamcode.utilities.internal.addData
 
 abstract class MOELoopedOpMode : OpMode(), OpModeInterface, MOEBotConstantsImpl {
     lateinit var robot: MOEBot
-    var opModeIsActive: Boolean = false
+    private var opModeIsActive: Boolean = false
 
     @Volatile
-    var isStopRequested = false
+    private var isStopRequested = false
 
     override fun iRequestOpModeStop() = requestOpModeStop()
 
@@ -28,7 +27,6 @@ abstract class MOELoopedOpMode : OpMode(), OpModeInterface, MOEBotConstantsImpl 
 //    @CallSuper
     override fun init() {
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE)
-        opModeIsActive = false
         setRefs()
         initRobot()
         moeInternalInit()
@@ -63,14 +61,15 @@ abstract class MOELoopedOpMode : OpMode(), OpModeInterface, MOEBotConstantsImpl 
     var currTime = 0L
     override fun loop() {
         if (firstTime) {
-            while (opModeIsActive && !initLoop()) {
+            if (!initLoop()) {
                 telemetry.addLine("Init is not complete, please wait")
+                return
             }
             offsetRobotValues()
             firstTime = false
+            opModeIsActive=true
         }
         currTime = System.nanoTime()
-        opModeIsActive = true
         internalLoop()
         telemetry.addData("Loop time", (System.nanoTime() - currTime) / 1000000)
 
@@ -87,7 +86,7 @@ abstract class MOELoopedOpMode : OpMode(), OpModeInterface, MOEBotConstantsImpl 
 
 
     private fun notifyInitFinished() {
-        telemetry.addData("waiting for start")
+        telemetry.addLine("waiting for start".toString())
         telemetry.update()
     }
 
@@ -101,6 +100,7 @@ abstract class MOELoopedOpMode : OpMode(), OpModeInterface, MOEBotConstantsImpl 
 
     override fun stop() {
         isStopRequested = true
+        opModeIsActive = false
         if (::robot.isInitialized) robot.stop()
     }
 }

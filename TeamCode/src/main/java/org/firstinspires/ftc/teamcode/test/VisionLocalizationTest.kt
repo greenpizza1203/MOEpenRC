@@ -20,33 +20,23 @@
  */
 package org.firstinspires.ftc.teamcode.test
 
+import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig.MOEHardware.MOEConfig
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEHighGoalPipeline
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPenCVConfig
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPipeline
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOERingPipeline
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPid.MOERawPid
 import org.firstinspires.ftc.teamcode.teleop.UltimateGoalTeleOp
-import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.MOEtion
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
-import org.openftc.easyopencv.OpenCvCamera
-import org.openftc.easyopencv.OpenCvCameraFactory
-import org.openftc.easyopencv.OpenCvCameraRotation
 
 @TeleOp
 class VisionLocalizationTest : UltimateGoalTeleOp() {
-    lateinit var webcam: OpenCvCamera
-    lateinit var pipeline: MOEHighGoalPipeline
     val turnPid = MOERawPid(0.003, 0.0, 0.0)
 
     override fun initOpMode() {
         super.initOpMode()
-        val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java, "Webcam 1"), cameraMonitorViewId)
-
-//        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class, "Webcam 1"));
-
-        pipeline = MOEHighGoalPipeline()
-        webcam.setPipeline(pipeline)
-        webcam.openCameraDeviceAsync { webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT) }
         turnPid.setOutputLimits(0.4)
 
     }
@@ -58,8 +48,7 @@ class VisionLocalizationTest : UltimateGoalTeleOp() {
             //Field centric driving
             driveVector.rotate(-robot.gyro.angle)
 
-            //TODO: pause viewport after init
-            val blueRect = pipeline.blueRect
+            val blueRect = (robot.opencv.pipeline as MOEHighGoalPipeline).blueRect
             val middleBlue = blueRect.x + (blueRect.width / 2.0)
             val pidRot = -turnPid.getOutput(middleBlue, 320.0)
 
@@ -74,18 +63,13 @@ class VisionLocalizationTest : UltimateGoalTeleOp() {
     override fun mainLoop() {
 
 
-        telemetry.addData("FPS", String.format("%.2f", webcam.fps))
-        telemetry.addData("Total frame time ms", webcam.totalFrameTimeMs)
-        telemetry.addData("Pipeline time ms", webcam.pipelineTimeMs)
-        telemetry.addData("Overhead time ms", webcam.overheadTimeMs)
-        telemetry.addData("Theoretical max FPS", webcam.currentPipelineMaxFps)
-
 
     }
 
-    override fun getRobotInitialState(): MOEtion {
-        return super.getRobotInitialState().also { it.ang = 270.toRadians() }
-    }
+    override val initialPose = Pose2d(heading = 270.toRadians())
+
+    override val openCVConfig = MOEPenCVConfig(MOEHighGoalPipeline())
+
 }
 
 

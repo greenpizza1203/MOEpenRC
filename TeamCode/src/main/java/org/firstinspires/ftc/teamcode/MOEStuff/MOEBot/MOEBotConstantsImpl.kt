@@ -1,11 +1,17 @@
 package org.firstinspires.ftc.teamcode.MOEStuff.MOEBot
 
+import com.acmerobotics.roadrunner.geometry.Pose2d
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig.MOEBotSubSystemConfig
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig.MOEVuforiaConfig
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEOpenCVConfig
-import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.MOEtion
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPenCVConfig
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPipeline
 
 interface MOEBotConstantsImpl {
+    val vuforiaConfig: MOEVuforiaConfig?
+        get() = null
+    val openCVConfig: MOEPenCVConfig?
+        get() = null
+
     fun getRobotSubSystemConfig(): MOEBotSubSystemConfig {
         return MOEBotSubSystemConfig()
     }
@@ -14,22 +20,10 @@ interface MOEBotConstantsImpl {
         return MOEBot(this)
     }
 
-
-    fun getRobotInitialState(): MOEtion {
-        return MOEtion()
-    }
-
-//    fun getGyroConfig(): MOEGyroConfig {
-//        return MOEGyroConfig(getRobotInitialState().robotInitial.radAng)
+    val initialPose
+        get() = Pose2d()
+//    fun getRobotInitialState(): Pose2d {
+//        return Pose2d()
 //    }
-
-    fun getVuforiaConfig(): MOEVuforiaConfig {
-        return MOEVuforiaConfig()
-    }
-
-    fun getOpenCVConfig(): MOEOpenCVConfig {
-        return MOEOpenCVConfig()
-    }
-
 
 }

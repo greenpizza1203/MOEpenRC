@@ -26,7 +26,7 @@ class PracticeAutonomous : LinearOpMode() {
 
     fun shootRing() {
         trigger.setPosition(0.7)
-        wait(0.4)
+        wait(0.15)
         trigger.setPosition(0.2)
     }
 
@@ -107,7 +107,6 @@ class PracticeAutonomous : LinearOpMode() {
                 .back(16.0)
                 .build()
 
-
         val Config1Part1: Trajectory = drive.trajectoryBuilder(startPose)
                 .splineTo(Vector2d(-24.0, 36.0), Math.toRadians(180.0))
                 .lineTo(Vector2d(0.0, 36.0))
@@ -162,6 +161,7 @@ class PracticeAutonomous : LinearOpMode() {
         val Config3Part4: Trajectory = drive.trajectoryBuilder(Config3Part3.end())
                 .splineTo(Vector2d(42.0,60.0), Math.toRadians(180.0))
                 .build()
+
         waitForStart()
 //        grabber.position = 0.05
 //
@@ -194,11 +194,11 @@ class PracticeAutonomous : LinearOpMode() {
         grabber.position = 0.05
         drive.followTrajectory(Config1Part1)
 
-        wait(0.4)
+        wait(0.15)
         shootRing()
-        wait(0.4)
+        wait(0.15)
         shootRing()
-        wait(0.4)
+        wait(0.15)
         shootRing()
 
         drive.followTrajectory(Config1Part2)
@@ -218,11 +218,11 @@ class PracticeAutonomous : LinearOpMode() {
 
             drive.followTrajectory(Config2Part1)
 
-            wait(0.4)
+            wait(0.15)
             shootRing()
-            wait(0.4)
+            wait(0.15)
             shootRing()
-            wait(0.4)
+            wait(0.15)
             shootRing()
 
             drive.followTrajectory(Config2Part2)
@@ -242,11 +242,11 @@ class PracticeAutonomous : LinearOpMode() {
 
             drive.followTrajectory(Config3Part1)
 
-            wait(0.4)
+            wait(0.15)
             shootRing()
-            wait(0.4)
+            wait(0.15)
             shootRing()
-            wait(0.4)
+            wait(0.15)
             shootRing()
 
             drive.followTrajectory(Config3Part2)

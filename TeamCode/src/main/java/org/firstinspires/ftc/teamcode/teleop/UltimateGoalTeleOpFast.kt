@@ -100,18 +100,18 @@ class UltimateGoalTeleOpFast : OpMode() {
         if (yToggled) {
             if (a2Toggled) {
                 trigger.position = when{
-            timer.time() > 0.35 -> 0.2
+            timer.time() > 0.15 -> 0.2
             else -> 0.7
             }
                 outerShooterMotor.velocity = powerShotTarget
                 innerShooterMotor.velocity = powerShotTarget
             } else {
                 trigger.position = when {
-            timer.time() > 1.75 -> 0.2
-            timer.time() > 1.4 -> 0.7
-            timer.time() > 1.05 -> 0.2
-            timer.time() > 0.7 -> 0.7
-            timer.time() > 0.35 -> 0.2
+            timer.time() > 0.75 -> 0.2
+            timer.time() > 0.6 -> 0.7
+            timer.time() > 0.45 -> 0.2
+            timer.time() > 0.3 -> 0.7
+            timer.time() > 0.15 -> 0.2
             else -> 0.7
                 }
                 outerShooterMotor.velocity = shooterTarget
@@ -122,30 +122,6 @@ class UltimateGoalTeleOpFast : OpMode() {
             innerShooterMotor.velocity = 0.0
         }
     }
-//        if (yToggled){
-//        trigger.position = when {
-//            timer.time() > 3.5 -> 0.2
-//            timer.time() > 2.8 -> 0.7
-//            timer.time() > 2.1 -> 0.2
-//            timer.time() > 1.4 -> 0.7
-//            timer.time() > 0.7 -> 0.2
-//            else -> 0.7
-//        }
-//        }
-//    }
-//    fun powerShot(){
-//        if (a2Toggled && !yToggled){
-//            outerShooterMotor.velocity = powerShotTarget
-//            innerShooterMotor.velocity = powerShotTarget
-//        }else {
-//            outerShooterMotor.power = 0.0
-//            innerShooterMotor.power = 0.0
-//        }
-//
-//        if(a2Toggled)trigger.position = when{
-//            timer.time() > 0.7 -> 0.2
-//            else -> 0.7
-//        }
 
 
     fun fromMecanum(fwd: Double, str: Double, rot: Double) {

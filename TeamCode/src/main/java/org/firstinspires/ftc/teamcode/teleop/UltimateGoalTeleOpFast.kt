@@ -75,10 +75,9 @@ class UltimateGoalTeleOpFast : OpMode() {
 //        angle.position = if (lbToggled) 260.0 else 0.0
         arm.power = gamepad2.right_stick_y.toDouble() * 0.3
         shooter()
-        powerShot()
         telemetry.addData("Loop ms", (System.nanoTime() - startTime) / 1000000.0)
-        telemetry.addData("innerVelocity", innerShooterMotor.velocity)
-        telemetry.addData("outerVelocity", outerShooterMotor.velocity)
+        telemetry.addData("innerVelocity", innerShooterMotor.getVelocity())
+        telemetry.addData("outerVelocity", outerShooterMotor.getVelocity())
     }
 
     fun loopChassis() {
@@ -99,37 +98,55 @@ class UltimateGoalTeleOpFast : OpMode() {
 
     private fun shooter() {
         if (yToggled) {
-            outerShooterMotor.velocity = shooterTarget
-            innerShooterMotor.velocity = shooterTarget
-        } else {
-            outerShooterMotor.power = 0.0
-            innerShooterMotor.power = 0.0
-        }
-        if (yToggled){
-        trigger.position = when {
-            timer.time() > 3.5 -> 0.2
-            timer.time() > 2.8 -> 0.7
-            timer.time() > 2.1 -> 0.2
+            if (a2Toggled) {
+                trigger.position = when{
+            timer.time() > 0.35 -> 0.2
+            else -> 0.7
+            }
+                outerShooterMotor.velocity = powerShotTarget
+                innerShooterMotor.velocity = powerShotTarget
+            } else {
+                trigger.position = when {
+            timer.time() > 1.75 -> 0.2
             timer.time() > 1.4 -> 0.7
-            timer.time() > 0.7 -> 0.2
+            timer.time() > 1.05 -> 0.2
+            timer.time() > 0.7 -> 0.7
+            timer.time() > 0.35 -> 0.2
             else -> 0.7
-        }
+                }
+                outerShooterMotor.velocity = shooterTarget
+                innerShooterMotor.velocity = shooterTarget
+            }
+        } else {
+            outerShooterMotor.velocity = 0.0
+            innerShooterMotor.velocity = 0.0
         }
     }
-    fun powerShot(){
-        if (a2Toggled && !yToggled){
-            outerShooterMotor.velocity = powerShotTarget
-            innerShooterMotor.velocity = powerShotTarget
-        }else {
-            outerShooterMotor.power = 0.0
-            innerShooterMotor.power = 0.0
-        }
+//        if (yToggled){
+//        trigger.position = when {
+//            timer.time() > 3.5 -> 0.2
+//            timer.time() > 2.8 -> 0.7
+//            timer.time() > 2.1 -> 0.2
+//            timer.time() > 1.4 -> 0.7
+//            timer.time() > 0.7 -> 0.2
+//            else -> 0.7
+//        }
+//        }
+//    }
+//    fun powerShot(){
+//        if (a2Toggled && !yToggled){
+//            outerShooterMotor.velocity = powerShotTarget
+//            innerShooterMotor.velocity = powerShotTarget
+//        }else {
+//            outerShooterMotor.power = 0.0
+//            innerShooterMotor.power = 0.0
+//        }
+//
+//        if(a2Toggled)trigger.position = when{
+//            timer.time() > 0.7 -> 0.2
+//            else -> 0.7
+//        }
 
-        if(a2Toggled)trigger.position = when{
-            timer.time() > 0.7 -> 0.2
-            else -> 0.7
-        }
-    }
 
     fun fromMecanum(fwd: Double, str: Double, rot: Double) {
         val flp = fwd + str + rot

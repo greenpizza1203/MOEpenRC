@@ -5,7 +5,6 @@ import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEBot
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEBotConstantsImpl
 import org.firstinspires.ftc.teamcode.constants.OpModeInterface
 import org.firstinspires.ftc.teamcode.constants.Ref
-import org.firstinspires.ftc.teamcode.utilities.internal.addData
 
 abstract class MOEAuton : LinearOpMode(), OpModeInterface, MOEBotConstantsImpl {
     lateinit var robot: MOEBot
@@ -58,7 +57,7 @@ abstract class MOEAuton : LinearOpMode(), OpModeInterface, MOEBotConstantsImpl {
 
 
     private fun notifyTelemetry(message: String) {
-        telemetry.addData(message)
+        telemetry.addLine(message.toString())
         telemetry.update()
     }
 

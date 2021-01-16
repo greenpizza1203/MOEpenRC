@@ -10,12 +10,6 @@ import java.io.IOException
 import kotlin.reflect.KClass
 
 
-fun Telemetry.addData(data: Any) {
-    this.addData(data.toString(), "")
-    //    this.update()
-}
-
-
 fun Bitmap.crop(frame: Rectangle): Bitmap {
     return Bitmap.createBitmap(this, frame.x, frame.y, frame.width, frame.height)
 }

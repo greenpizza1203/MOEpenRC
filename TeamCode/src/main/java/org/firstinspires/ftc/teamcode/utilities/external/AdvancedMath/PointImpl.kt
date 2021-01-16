@@ -52,4 +52,6 @@ interface PointImpl<T> : Cloneable<T> {
             else -> throw IllegalStateException("Point only has two components (x and y)")
         }
     }
+
+    fun simpleString(): String = "$x,$y"
 }

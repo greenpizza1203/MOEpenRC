@@ -13,7 +13,6 @@ class PPPoint(override var x: Double, override var y: Double, var isCriticalPoin
 
     override fun toString(): String = "Point [x=$x, y=$y, velocity=$velocity]"
 
-    fun simpleString(): String = super.toString()
 
     companion object {
 

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPenCV
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEShooter.MOEShooter
 
 
-class MOEBot(config: MOEBotConstantsImpl) {
+class MOEBot(val config: MOEBotConstantsImpl) {
 
     //    val autonArms = MOEAutonArms()
     val robotConfig = config.getRobotSubSystemConfig()
@@ -32,25 +32,22 @@ class MOEBot(config: MOEBotConstantsImpl) {
         if (robotConfig.useGyro) {
             gyro = MOEIMUGyro()
         }
-        if (robotConfig.useOpenCV && robotConfig.useVuforia) throw IllegalStateException("Can't use both opencv and vuforia")
-        if (robotConfig.useOpenCV) {
-            opencv = MOEPenCV(config.getOpenCVConfig())
-        } else if (robotConfig.useVuforia) {
-            vuforia = MOEVuforia(config.getVuforiaConfig())
+        if (config.openCVConfig != null && config.vuforiaConfig != null) throw IllegalStateException("Can't use both opencv and vuforia")
+        if (config.openCVConfig != null) {
+            opencv = MOEPenCV(config.openCVConfig!!)
+        } else if (config.vuforiaConfig != null) {
+            vuforia = MOEVuforia(config.vuforiaConfig!!)
         }
     }
 
     fun offsetValues(constants: MOEBotConstantsImpl) {
 
-        if (robotConfig.useGyro) {
-            gyro.angle = constants.getRobotInitialState().ang
-        }
+        if (robotConfig.useGyro) gyro.angle = constants.initialPose.heading
 
-
+        if (config.openCVConfig != null) opencv.webcam.pauseViewport()
     }
 
     fun stop() {
-        if (robotConfig.useOpenCV) opencv.stop()
         shooter.servoJob.cancel()
         chassis.stop()
         shooter.stop()

@@ -17,8 +17,8 @@ android {
         applicationId = "com.qualcomm.ftcrobotcontroller"
         minSdkVersion(25)
         targetSdkVersion(30)
-        versionCode = 38
-        versionName = "OpenRC 6.0"
+        versionCode = 39
+        versionName = "OpenRC 6.1"
     }
 
     buildTypes["debug"].apply {
@@ -30,7 +30,7 @@ android {
             abiFilters.add("armeabi-v7a")
         }
     }
-    ndkVersion = ("21.3.6528147")
+//    ndkVersion = ("21.3.6528147")
     compileOptions {
         sourceCompatibility = VERSION_1_8
         targetCompatibility = VERSION_1_8
@@ -45,8 +45,8 @@ dependencies {
     implementation("org.openftc:easyopencv:1.4.1")
 
     implementation("com.acmerobotics.roadrunner:core:0.5.2")
-    implementation("org.apache.commons:commons-math3:3.6.1")
-    implementation("org.processing:core:3.3.7")
+    compileOnly("org.apache.commons:commons-math3:3.6.1")
+    compileOnly("org.processing:core:3.3.7")
 
 //    implementation("com.intel.realsense:librealsense:2.34.0-ftc265@aar")
 

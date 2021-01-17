@@ -9,7 +9,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 @TeleOp(name = "TestTeleop", group = "Teleop")
-class TestTeleop() : OpMode() {
+class TestTeleop : OpMode() {
     lateinit var frontLeftMotor: DcMotor
     lateinit var frontRightMotor: DcMotor
     lateinit var backLeftMotor: DcMotor

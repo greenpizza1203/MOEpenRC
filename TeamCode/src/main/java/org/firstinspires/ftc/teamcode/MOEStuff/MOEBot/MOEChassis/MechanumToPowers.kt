@@ -18,7 +18,7 @@ data class Powers(var FLP: Double, var FRP: Double, var BLP: Double, var BRP: Do
             val blp = fwd - str + rot
             val brp = fwd + str - rot
             var powers = listOf(flp, frp, blp, brp)
-            val highestPower = abs(powers.maxBy { abs(it) }!!)
+            val highestPower = powers.maxOf { abs(it) }
             if (highestPower > maxPower) {
                 powers = powers.map { it * (maxPower / highestPower) }
             }

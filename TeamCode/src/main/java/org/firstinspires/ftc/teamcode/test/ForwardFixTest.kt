@@ -40,7 +40,7 @@ class ForwardFixTest : MOETeleOp() {
         telemetry.addData("raw", localizer.getRawPositions())
         telemetry.addData("wheels", localizer.getWheelPositions().map { it.toFixed() })
         telemetry.addData("pose", pose)
-        val scalar = (28575 / (2 * PI))
+//        val scalar = (28575 / (2 * PI))
 //        val heading = ((localizer.rightEncoder.motor.currentPosition + localizer.leftEncoder.motor.currentPosition) / scalar)
         val heading = robot.gyro.angle - 90.toRadians()
 //        val heading = pose.heading

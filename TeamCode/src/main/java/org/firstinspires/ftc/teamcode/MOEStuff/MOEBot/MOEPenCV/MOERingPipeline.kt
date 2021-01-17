@@ -18,7 +18,7 @@ class MOERingPipeline : MOEPipeline() {
     val submat = Rect(10, 10, 100, 100)
     override fun preview(input: Mat): Mat {
         //TODO: the stuff
-        val submat = Mat(input, submat)
+//        val submat = Mat(input, submat)
         return input
     }
 

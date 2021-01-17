@@ -100,19 +100,19 @@ class UltimateGoalTeleOpFast : OpMode() {
         if (yToggled) {
             if (a2Toggled) {
                 trigger.position = when{
-            timer.time() > 0.15 -> 0.2
-            else -> 0.7
-            }
+                    timer.time() > 0.15 -> 0.2
+                    else -> 0.85
+                }
                 outerShooterMotor.velocity = powerShotTarget
                 innerShooterMotor.velocity = powerShotTarget
             } else {
                 trigger.position = when {
-            timer.time() > 0.75 -> 0.2
-            timer.time() > 0.6 -> 0.7
-            timer.time() > 0.45 -> 0.2
-            timer.time() > 0.3 -> 0.7
-            timer.time() > 0.15 -> 0.2
-            else -> 0.7
+                    timer.time() > 0.75 -> 0.2
+                    timer.time() > 0.6 -> 0.85
+                    timer.time() > 0.45 -> 0.2
+                    timer.time() > 0.3 -> 0.85
+                    timer.time() > 0.15 -> 0.2
+                    else -> 0.85
                 }
                 outerShooterMotor.velocity = shooterTarget
                 innerShooterMotor.velocity = shooterTarget

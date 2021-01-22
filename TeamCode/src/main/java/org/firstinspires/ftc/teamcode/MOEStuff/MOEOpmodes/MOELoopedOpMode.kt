@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes
 
-//import androidx.annotation.CallSuper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEBot
@@ -23,8 +22,6 @@ abstract class MOELoopedOpMode : OpMode(), OpModeInterface, MOEBotConstantsImpl 
     override val iIsStopRequested: Boolean
         get() = isStopRequested
 
-    //    override fun iOpModeIsActive(): Boolean =
-//    @CallSuper
     override fun init() {
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE)
         setRefs()

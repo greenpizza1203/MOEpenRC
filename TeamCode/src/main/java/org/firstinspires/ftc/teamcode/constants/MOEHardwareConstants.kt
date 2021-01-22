@@ -27,7 +27,7 @@ object MOEHardwareConstants {
     object Shooter {
         val OuterFlywheel = MotorConfig("OF", 1, 0)
         val InnerFlywheel = MotorConfig("IF", 1, 1)
-        val TriggerServo = ServoConfig("RT", 2, 5, 0.2, 0.6)
+        val TriggerServo = ServoConfig("RT", 2, 5, 0.2, 0.85)
     }
 }
 

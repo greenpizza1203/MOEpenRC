@@ -14,7 +14,7 @@ class MOEShooter {
     val outer = MOEtor(MOEHardwareConstants.Shooter.OuterFlywheel)
     val inner = MOEtor(MOEHardwareConstants.Shooter.InnerFlywheel)
     val servo = MOEServo(MOEHardwareConstants.Shooter.TriggerServo)
-    private val targetVelocity = 2000.0
+    private val targetVelocity = 2300.0
 
     init {
         servo.setPosition(0.3)
@@ -30,10 +30,10 @@ class MOEShooter {
     }
 
     // time it takes for servo to extend out from rest
-    private val extendDuration = 700L
+    private val extendDuration = 150L
 
     // gap before extending servo out again
-    private val resetGap = 1000L
+    private val resetGap = 150L
     var servoJob: Job = GlobalScope.launch { }
     fun shoot() {
         if (servoJob.isActive) {

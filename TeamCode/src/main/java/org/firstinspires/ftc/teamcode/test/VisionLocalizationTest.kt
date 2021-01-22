@@ -22,11 +22,10 @@ package org.firstinspires.ftc.teamcode.test
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig.MOEHardware.MOEConfig
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEHighGoalPipeline
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.MOEHighGoalPipeline
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPenCVConfig
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPipeline
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOERingPipeline
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.centerX
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.Target
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPid.MOERawPid
 import org.firstinspires.ftc.teamcode.teleop.UltimateGoalTeleOp
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
@@ -49,13 +48,15 @@ class VisionLocalizationTest : UltimateGoalTeleOp() {
             driveVector.rotate(-robot.gyro.angle)
 
             val blueRect = (robot.opencv.pipeline as MOEHighGoalPipeline).blueRect
-            val middleBlue = blueRect.x + (blueRect.width / 2.0)
-            val pidRot = -turnPid.getOutput(middleBlue, 320.0)
 
-            telemetry.addData("rot", pidRot)
-            telemetry.addData("middleBlue", middleBlue)
 
-            val rot = if (gpad1.dpad.left()) gpad1.right.stick.x() else pidRot
+            val rot = when {
+                gpad1.dpad.left() -> gpad1.right.stick.x()
+                blueRect != null -> -turnPid.getOutput(blueRect.centerX(), 320.0)
+                else -> 0.0
+            }
+            telemetry.addData("rot", rot)
+//            telemetry.addData("middleBlue", middleBlue)
             setFromPolar(driveVector, rot)
         }
     }
@@ -63,12 +64,11 @@ class VisionLocalizationTest : UltimateGoalTeleOp() {
     override fun mainLoop() {
 
 
-
     }
 
     override val initialPose = Pose2d(heading = 270.toRadians())
 
-    override val openCVConfig = MOEPenCVConfig(MOEHighGoalPipeline())
+    override val openCVConfig = MOEPenCVConfig(MOEHighGoalPipeline(Target.RED))
 
 }
 

@@ -5,9 +5,13 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.teamcode.constants.Ref
 import org.firstinspires.ftc.teamcode.constants.Ref.hardwareMap
 import org.firstinspires.ftc.teamcode.constants.Ref.moeOpMode
+import org.opencv.core.Size
 import org.openftc.easyopencv.*
 
-
+data class MOEPenCVConfig(
+        var pipeline: MOEPipeline,
+        var resolution: Size = Size(800.0, 448.0)
+)
 class MOEPenCV(val config: MOEPenCVConfig) {
     var webcam: OpenCvCamera
 //    val pipeline = MOEPipeline(this)

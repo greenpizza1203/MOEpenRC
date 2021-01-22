@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOERingPipeline
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.MOERingPipeline
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes.MOEAuton
 
 class FancyAuton : MOEAuton() {

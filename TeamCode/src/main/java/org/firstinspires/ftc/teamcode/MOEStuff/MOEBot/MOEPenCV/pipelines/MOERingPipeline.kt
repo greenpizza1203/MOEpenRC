@@ -1,5 +1,6 @@
-package org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV
+package org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines
 
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPipeline
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 

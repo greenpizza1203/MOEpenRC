@@ -3,7 +3,7 @@ import org.gradle.api.JavaVersion.VERSION_1_8
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("org.moeftc.hotcode") version "1.9"
+    id("org.moeftc.hotcode") version "2.0"
 }
 android {
 

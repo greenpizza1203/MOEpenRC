@@ -1,16 +1,8 @@
 package org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV
 
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPenCVConstants.GREEN
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPenCVConstants.PINK
-import org.firstinspires.ftc.teamcode.constants.Ref
 import org.firstinspires.ftc.teamcode.constants.Ref.moeOpMode
 import org.opencv.core.Mat
-import org.opencv.core.Point
-import org.opencv.core.Size
-import org.opencv.imgproc.Imgproc
-import org.opencv.imgproc.Imgproc.COLOR_BGR2HSV
 import org.openftc.easyopencv.OpenCvPipeline
-import kotlin.math.roundToInt
 
 open class MOEPipeline : OpenCvPipeline() {
     var lastFrame: Mat? = null
@@ -25,13 +17,16 @@ open class MOEPipeline : OpenCvPipeline() {
             lastFrame = input
             frameRequested = false
         }
-       return if (!moeOpMode.isActive()) preview(input) else process(input)
+        var processed = process(input)
+        if (!moeOpMode.isActive()) processed = preview(processed)
+        return processed
 //        val pre = preProcess(input)
     }
 
     open fun preview(input: Mat): Mat {
-        return process(input)
+        return input
     }
+
     open fun process(input: Mat): Mat {
         return input
     }

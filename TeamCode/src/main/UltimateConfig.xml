@@ -1,21 +1,25 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <Robot type="FirstInspires-FTC">
-    <LynxUsbDevice name="Expansion Hub Portal 1" serialNumber="(embedded)" parentModuleAddress="173">
-        <LynxModule name="EXHUB?" port="2">
+    <LynxUsbDevice name="Expansion Hub Portal 1" parentModuleAddress="173"
+        serialNumber="(embedded)">
+        <LynxModule name="EXHUB" port="2">
             <goBILDA5202SeriesMotor name="FLM20" port="0" />
             <goBILDA5202SeriesMotor name="BLM21" port="1" />
-            <goBILDA5202SeriesMotor name="FRM22" port="2" />
-            <goBILDA5202SeriesMotor name="BRM23" port="3" />
-            <Servo name="RTS21" port="1" />
-            <LynxEmbeddedIMU name="imu" port="0" bus="0" />
+            <NeveRest40Gearmotor name="FRM22" port="2" />
+            <NeveRest60Gearmotor name="BRM23" port="3" />
+            <Servo name="ACS20" port="0" />
+            <Servo name="GWS21" port="1" />
+            <Servo name="RTS25" port="5" />
+            <LynxEmbeddedIMU name="imu 1" bus="0" port="0" />
         </LynxModule>
-        <LynxModule name="CHUB?" port="173">
+        <LynxModule name="CHUB" port="173">
             <goBILDA5202SeriesMotor name="OFM10" port="0" />
             <goBILDA5202SeriesMotor name="IFM11" port="1" />
+            <goBILDA5202SeriesMotor name="WAM12" port="2" />
             <goBILDA5202SeriesMotor name="INM13" port="3" />
             <Servo name="STS11" port="1" />
             <AnalogInput name="SPE21" port="0" />
-            <LynxEmbeddedIMU name="imu 1" port="0" bus="0" />
+            <LynxEmbeddedIMU name="imu" bus="0" port="0" />
         </LynxModule>
     </LynxUsbDevice>
 </Robot>

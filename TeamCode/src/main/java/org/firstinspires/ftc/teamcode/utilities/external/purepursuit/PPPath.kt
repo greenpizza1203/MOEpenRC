@@ -95,7 +95,7 @@ class PPPath(var points: List<PPPoint>, private val options: PPOptions) {
     fun getClosestPoint(currentPoint: PPPoint): PPPoint {
 //        val searchIndexes = ((lastKnownPointIndex - options.lookBack)..(lastKnownPointIndex + options.lookForward)).coerceIn(points.indices)
 
-        return points.minBy { it.distanceTo(currentPoint) }!!
+        return points.minByOrNull { it.distanceTo(currentPoint) }!!
         //        for (i in (lastKnownPointIndex - options.lookBack)..lastKnownPointIndex + options.lookForward) {
         //            if (i >= 0 && i < points.size) {
         //                val dist = points[i].distanceFrom(currentPoint)

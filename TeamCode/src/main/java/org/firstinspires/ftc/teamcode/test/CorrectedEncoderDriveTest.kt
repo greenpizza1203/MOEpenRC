@@ -19,7 +19,7 @@ class CorrectedEncoderDriveTest : OpMode() {
     lateinit var localizer: ThreeWheelOdo
     override fun init() {
 //        multi = MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().telemetry)
-        val voltage = hardwareMap.voltageSensor.first().voltage
+//        val voltage = hardwareMap.voltageSensor.first().voltage
         frontLeft = hardwareMap.dcMotor["FLM20"] as DcMotorEx
         frontLeft.direction = REVERSE
         backLeft = hardwareMap.dcMotor["BLM21"] as DcMotorEx

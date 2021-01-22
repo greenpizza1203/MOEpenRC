@@ -39,6 +39,7 @@ abstract class MOETeleOp : MOELoopedOpMode() {
 
     private val loops = mutableListOf<Pair<Any, Any.() -> Unit>>()
     fun <T : Any> T.loop(func: T.() -> Unit) {
+        @Suppress("UNCHECKED_CAST")
         loops.add(Pair(this, func as Any.() -> Unit))
     }
 

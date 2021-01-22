@@ -93,26 +93,26 @@ class UltimateGoalTeleOpFast : OpMode() {
         fromMecanum(fwd, str, rot)
     }
 
-    var shooterTarget = 1900.0
-    var powerShotTarget = 1500.0
+    var shooterTarget = 2300.0
+    var powerShotTarget = 1700.0
 
     private fun shooter() {
         if (yToggled) {
             if (a2Toggled) {
                 trigger.position = when{
-            timer.time() > 0.15 -> 0.2
-            else -> 0.7
-            }
+                    timer.time() > 0.15 -> 0.2
+                    else -> 0.85
+                }
                 outerShooterMotor.velocity = powerShotTarget
                 innerShooterMotor.velocity = powerShotTarget
             } else {
                 trigger.position = when {
-            timer.time() > 0.75 -> 0.2
-            timer.time() > 0.6 -> 0.7
-            timer.time() > 0.45 -> 0.2
-            timer.time() > 0.3 -> 0.7
-            timer.time() > 0.15 -> 0.2
-            else -> 0.7
+                    timer.time() > 0.75 -> 0.2
+                    timer.time() > 0.6 -> 0.85
+                    timer.time() > 0.45 -> 0.2
+                    timer.time() > 0.3 -> 0.85
+                    timer.time() > 0.15 -> 0.2
+                    else -> 0.85
                 }
                 outerShooterMotor.velocity = shooterTarget
                 innerShooterMotor.velocity = shooterTarget

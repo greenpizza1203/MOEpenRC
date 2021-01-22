@@ -51,6 +51,7 @@ class PracticeAutonomous : LinearOpMode() {
     lateinit var grabber: Servo
     lateinit var arm: DcMotor
     val Velocity = 1750
+    var PowerVelocity = 1500
 
     override fun runOpMode() {
         intakeMotor = hardwareMap.dcMotor["INM13"]
@@ -60,7 +61,7 @@ class PracticeAutonomous : LinearOpMode() {
         grabber = hardwareMap.servo["GWS21"]
         arm = hardwareMap.get(DcMotorEx::class.java, "WAM12")
         arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        var Config: Int = 2
+        var Config: Int = -1
 //      Temporary Config for testing
 
 
@@ -93,7 +94,7 @@ class PracticeAutonomous : LinearOpMode() {
             else -> 48.0
         }
 
-        val backward = drive.trajectoryBuilder(depotConfig.end())
+        val backward: Trajectory = drive.trajectoryBuilder(depotConfig.end())
                 .back(backwardsDistance)
                 .build()
 
@@ -162,68 +163,102 @@ class PracticeAutonomous : LinearOpMode() {
                 .splineTo(Vector2d(42.0,60.0), Math.toRadians(180.0))
                 .build()
 
+        val PowerShot1: Trajectory = drive.trajectoryBuilder(startPose)
+                .splineTo(Vector2d(-12.0,19.5), Math.toRadians(180.0))
+                .build()
+
+
         waitForStart()
-//        grabber.position = 0.05
-//
-//        drive.followTrajectory(tempConfig)
-//        drive.followTrajectory(tempConfig2)
-//
-//        telemetry.addData("inVelocity", innerShooterMotor.velocity)
-//        telemetry.addData("outVelocity", outerShooterMotor.velocity)
-//
-//        outerShooterMotor.velocity = Velocity.toDouble()
-//        innerShooterMotor.velocity = Velocity.toDouble()
-//        wait(1.5)
-//        shootRing()
-//        wait(1.5)
-//        shootRing()
-//        wait(1.5)
-//        shootRing()
-//
-//
-//        outerShooterMotor.velocity = 0.0
-//        innerShooterMotor.velocity = 0.0
-//
-//        drive.followTrajectory(tempConfig3)
-//        arm.power = 0.4
-//        wait(0.6)
-//        arm.power = 0.0
-//        grabber.position = 0.25
-//        }
-    if (Config == 1){
-        grabber.position = 0.05
-        drive.followTrajectory(Config1Part1)
+        if(Config == -1){
+            drive.followTrajectory(PowerShot1)
 
-        wait(0.15)
-        shootRing()
-        wait(0.15)
-        shootRing()
-        wait(0.15)
-        shootRing()
+            outerShooterMotor.velocity = PowerVelocity.toDouble()
+            innerShooterMotor.velocity = PowerVelocity.toDouble()
 
-        drive.followTrajectory(Config1Part2)
+            wait(0.15)
+            shootRing()
+            drive.turn(Math.toRadians(5.9))
+            wait(0.2)
+            shootRing()
+            wait(0.1)
+            drive.turn(Math.toRadians(5.6))
+            wait(0.2)
+            shootRing()
 
-        release()
+            outerShooterMotor.velocity = 0.0
+            innerShooterMotor.velocity = 0.0
+        }
+        if(Config == 0){
+            grabber.position = 0.05
 
-        drive.followTrajectory(Config1Part3)
+            drive.followTrajectory(tempConfig)
+            drive.followTrajectory(tempConfig2)
 
-        grab()
+            telemetry.addData("inVelocity", innerShooterMotor.velocity)
+            telemetry.addData("outVelocity", outerShooterMotor.velocity)
 
-        drive.followTrajectory(Config1Part4)
+            outerShooterMotor.velocity = Velocity.toDouble()
+            innerShooterMotor.velocity = Velocity.toDouble()
+            wait(0.15)
+            shootRing()
+            wait(0.15)
+            shootRing()
+            wait(0.15)
+            shootRing()
 
-        release()
-    }
+            outerShooterMotor.velocity = 0.0
+            innerShooterMotor.velocity = 0.0
+
+            drive.followTrajectory(tempConfig3)
+            arm.power = 0.4
+            wait(0.6)
+            arm.power = 0.0
+            grabber.position = 0.25
+        }
+        if (Config == 1){
+            grabber.position = 0.05
+            drive.followTrajectory(Config1Part1)
+
+            outerShooterMotor.velocity = Velocity.toDouble()
+            innerShooterMotor.velocity = Velocity.toDouble()
+            wait(0.15)
+            shootRing()
+            wait(0.15)
+            shootRing()
+            wait(0.15)
+            shootRing()
+
+            outerShooterMotor.velocity = 0.0
+            innerShooterMotor.velocity = 0.0
+
+            drive.followTrajectory(Config1Part2)
+
+            release()
+
+            drive.followTrajectory(Config1Part3)
+
+            grab()
+
+            drive.followTrajectory(Config1Part4)
+
+            release()
+        }
         if (Config == 2){
             grabber.position = 0.05
 
             drive.followTrajectory(Config2Part1)
 
+            outerShooterMotor.velocity = Velocity.toDouble()
+            innerShooterMotor.velocity = Velocity.toDouble()
             wait(0.15)
             shootRing()
             wait(0.15)
             shootRing()
             wait(0.15)
             shootRing()
+
+            outerShooterMotor.velocity = 0.0
+            innerShooterMotor.velocity = 0.0
 
             drive.followTrajectory(Config2Part2)
 
@@ -242,12 +277,17 @@ class PracticeAutonomous : LinearOpMode() {
 
             drive.followTrajectory(Config3Part1)
 
+            outerShooterMotor.velocity = Velocity.toDouble()
+            innerShooterMotor.velocity = Velocity.toDouble()
             wait(0.15)
             shootRing()
             wait(0.15)
             shootRing()
             wait(0.15)
             shootRing()
+
+            outerShooterMotor.velocity = 0.0
+            innerShooterMotor.velocity = 0.0
 
             drive.followTrajectory(Config3Part2)
 

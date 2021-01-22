@@ -50,10 +50,10 @@ class VisionLocalizationTest : UltimateGoalTeleOp() {
             val blueRect = (robot.opencv.pipeline as MOEHighGoalPipeline).blueRect
 
 
-            val rot = when {
-                gpad1.dpad.left() -> gpad1.right.stick.x()
-                blueRect != null -> -turnPid.getOutput(blueRect.centerX(), 320.0)
-                else -> 0.0
+            val rot = if (gpad1.dpad.left() && blueRect != null) {
+                -turnPid.getOutput(blueRect.centerX(), 320.0)
+            } else {
+                gpad1.right.stick.x()
             }
             telemetry.addData("rot", rot)
 //            telemetry.addData("middleBlue", middleBlue)

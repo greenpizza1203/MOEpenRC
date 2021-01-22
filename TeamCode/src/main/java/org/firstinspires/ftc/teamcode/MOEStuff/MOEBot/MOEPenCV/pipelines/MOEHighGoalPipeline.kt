@@ -72,7 +72,7 @@ class MOEHighGoalPipeline(target: Target) : MOEPipeline() {
             val centerX = (it.x + it.width / 2).toDouble()
             input.drawRect(it, RED)
             input.drawVerticalLine(centerX, RED)
-            input.drawText(size!!.width * 0.9, size!!.height * 0.95, centerX.roundToInt().toString(), color = RED)
+            input.drawText(size!!.width * 0.8, size!!.height * 0.95, centerX.roundToInt().toString(), color = RED)
         }
         blueRect?.let {
             val centerX = (it.x + it.width / 2).toDouble()

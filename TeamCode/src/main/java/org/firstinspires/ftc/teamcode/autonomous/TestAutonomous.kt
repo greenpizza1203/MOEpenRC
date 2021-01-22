@@ -44,6 +44,10 @@ class TestAutonomous : LinearOpMode() {
         arm.power = 0.0
     }
 
+    fun getRingStack(x:Int, y:Int, width:Int, height:Int): Int{
+        return -1;
+    }
+
     lateinit var intakeMotor: DcMotor
     lateinit var outerShooterMotor: DcMotorEx
     lateinit var innerShooterMotor: DcMotorEx

@@ -47,11 +47,11 @@ class VisionLocalizationTest : UltimateGoalTeleOp() {
             //Field centric driving
             driveVector.rotate(-robot.gyro.angle)
 
-            val blueRect = (robot.opencv.pipeline as MOEHighGoalPipeline).blueRect
+            val redRect = (robot.opencv.pipeline as MOEHighGoalPipeline).redRect
 
-
-            val rot = if (gpad1.dpad.left() && blueRect != null) {
-                -turnPid.getOutput(blueRect.centerX(), 320.0)
+            telemetry.addData("middleRed", redRect?.centerX())
+            val rot = if (gpad1.dpad.left() && redRect != null) {
+                -turnPid.getOutput(redRect.centerX(), 423.0)
             } else {
                 gpad1.right.stick.x()
             }

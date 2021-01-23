@@ -11,7 +11,7 @@ import org.openftc.easyopencv.OpenCvPipeline
 import org.openftc.easyopencv.OpenCvWebcam
 
 
-class MOEPipelineAssist(val hardwareMap: HardwareMap, pipeline: MOEPipeline) {
+class MOEPipelineAssist(val hardwareMap: HardwareMap, pipeline: OpenCvPipeline) {
     lateinit var webcam: OpenCvWebcam
 
     init {

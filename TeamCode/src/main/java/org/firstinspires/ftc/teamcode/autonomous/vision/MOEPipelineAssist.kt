@@ -20,8 +20,7 @@ class MOEPipelineAssist(val hardwareMap: HardwareMap, pipeline: OpenCvPipeline) 
         webcam.setPipeline(pipeline)
 
         webcam.openCameraDeviceAsync {
-//            webcam.setViewportRenderingPolicy()
-//            webcam.
+
             webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT)
         }
     }
@@ -31,9 +30,11 @@ class MOEPipelineAssist(val hardwareMap: HardwareMap, pipeline: OpenCvPipeline) 
 
 class TestRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : OpenCvPipeline() {
     @SuppressLint("SdCardPath")
-    override fun init(mat: Mat) {
+    override fun init(input: Mat) {
         val filename = "ring_${System.currentTimeMillis()}"
-        saveMatToDisk(mat, filename)
+        saveMatToDisk(input, filename)
+        val cropped = input.submat(y, y + height, x, x + width)
+        saveMatToDisk(cropped, "${filename}_cropped")
         Log.e("file", "saved to $filename")
     }
 

@@ -34,8 +34,6 @@ fun OpenCvCamera.startStreaming(res: Size, rotation: OpenCvCameraRotation) {
 //
 //}
 
-fun Mat.resize(width: Double, height: Double): Mat = resize(Size(width, height))
-
 fun Mat.resize(size: Size): Mat {
     val dest = Mat()
     Imgproc.resize(this, dest, size)

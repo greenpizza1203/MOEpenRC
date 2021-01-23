@@ -4,7 +4,11 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
+import org.opencv.core.Core
 import org.opencv.core.Mat
+import org.opencv.core.Scalar
+import org.opencv.core.Size
+import org.opencv.imgproc.Imgproc
 import org.openftc.easyopencv.OpenCvCameraFactory
 import org.openftc.easyopencv.OpenCvCameraRotation
 import org.openftc.easyopencv.OpenCvPipeline
@@ -32,7 +36,6 @@ class TestRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) 
     @SuppressLint("SdCardPath")
     override fun init(input: Mat) {
         val filename = "ring_${System.currentTimeMillis()}"
-        saveMatToDisk(input, filename)
         val cropped = input.submat(y, y + height, x, x + width)
         saveMatToDisk(cropped, "${filename}_cropped")
         Log.e("file", "saved to $filename")
@@ -40,6 +43,35 @@ class TestRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) 
 
     override fun processFrame(input: Mat): Mat {
         return input.submat(y, y + height, x, x + width)
+
+    }
+
+}
+
+class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : OpenCvPipeline() {
+    val frameHSV = Mat()
+    val small = Mat()
+    val lowH = 0.0
+    val highH = 180.0
+    val thresh = Mat()
+
+    @SuppressLint("SdCardPath")
+    override fun init(input: Mat) {
+        val filename = "ring_${System.currentTimeMillis()}"
+//        val cropped = input.submat(y, y + height, x, x + width)
+        saveMatToDisk(processFrame(input), "${filename}_cropped")
+        Log.e("file", "saved to $filename")
+    }
+
+    override fun processFrame(input: Mat): Mat {
+        val submat = input.submat(y, y + height, x, x + width)
+        Imgproc.resize(submat, small, Size(1.0, 4.0))
+        Imgproc.cvtColor(small, frameHSV, Imgproc.COLOR_RGB2HSV)
+        Core.inRange(frameHSV,
+                Scalar(lowH, 0.0, 0.0),
+                Scalar(highH, 0.0, 0.0),
+                thresh)
+        return thresh
 
     }
 

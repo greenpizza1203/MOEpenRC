@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines
 
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPipeline
+import org.opencv.core.Core
 import org.opencv.core.Mat
+import org.opencv.core.Scalar
+import org.opencv.imgproc.Imgproc
 
 
 class MOERingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : MOEPipeline() {
@@ -25,12 +28,12 @@ class MOERingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) :
 
 
     override fun process(input: Mat): Mat {
-//        Imgproc.cvtColor(input, frameHSV, Imgproc.COLOR_RGB2HSV)
-//        Core.inRange(frameHSV,
-//                Scalar(lowH, 0.0, 0.0),
-//                Scalar(highH, 0.0, 0.0),
-//                thresh)
-        return input
+        Imgproc.cvtColor(input, frameHSV, Imgproc.COLOR_RGB2HSV)
+        Core.inRange(frameHSV,
+                Scalar(lowH, 0.0, 0.0),
+                Scalar(highH, 0.0, 0.0),
+                thresh)
+        return thresh
 //        update(frame, thresh)
     }
 }

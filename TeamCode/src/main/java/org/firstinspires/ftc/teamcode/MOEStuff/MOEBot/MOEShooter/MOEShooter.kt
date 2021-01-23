@@ -35,14 +35,14 @@ class MOEShooter {
     // gap before extending servo out again
     private val resetGap = 150L
     var servoJob: Job = GlobalScope.launch { }
-    fun shoot() {
+    fun shootRings(rings: Int = 3) {
         if (servoJob.isActive) {
             servoJob.cancel()
             servo.setPosition(0.0)
             return
         }
         servoJob = GlobalScope.launch {
-            repeat(3) {
+            repeat(rings) {
                 servo.setPosition(1.0)
                 delay(extendDuration)
                 servo.setPosition(0.0)
@@ -50,6 +50,10 @@ class MOEShooter {
 
             }
         }
+    }
+
+    fun shootRing() {
+        shootRings(1)
     }
 
 //    fun shootRing() = trigger.rotate(180.toRadians())

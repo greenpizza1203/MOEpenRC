@@ -17,7 +17,7 @@ open class UltimateGoalTeleOp : MOETeleOp() {
             if (gpad1.y.isToggled) run() else stop()
         }
         gpad1.x.onKeyDown {
-            robot.shooter.shoot()
+            robot.shooter.shootRings()
         }
     }
 

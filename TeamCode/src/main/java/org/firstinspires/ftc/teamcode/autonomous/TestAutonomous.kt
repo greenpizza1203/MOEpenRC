@@ -25,7 +25,7 @@ class TestAutonomous : LinearOpMode() {
     }
 
     fun shootRing() {
-        trigger.setPosition(0.7)
+        trigger.setPosition(0.85)
         wait(0.15)
         trigger.setPosition(0.2)
     }
@@ -45,6 +45,10 @@ class TestAutonomous : LinearOpMode() {
     }
 
     fun getRingStack(x:Int, y:Int, width:Int, height:Int): Int{
+        // x = 288
+        // y = 6
+        // width = 285
+        // height = 170
         return -1;
     }
 
@@ -64,7 +68,7 @@ class TestAutonomous : LinearOpMode() {
         grabber = hardwareMap.servo["GWS21"]
         arm = hardwareMap.get(DcMotorEx::class.java, "WAM12")
         arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        var Config: Int = -1
+        var Config: Int = 0
 //      Temporary Config for testing
 
 
@@ -73,34 +77,34 @@ class TestAutonomous : LinearOpMode() {
 
         drive.poseEstimate = startPose
 
-        val traj1: Trajectory = drive.trajectoryBuilder(startPose)
+//        val traj1: Trajectory = drive.trajectoryBuilder(startPose)
 //               .splineTo(Vector2d(-24.0, 36.0), Math.toRadians(180.0))
-                .lineToLinearHeading(Pose2d(-24.0, 36.0, Math.toRadians(0.0)))
+//                .lineToLinearHeading(Pose2d(-24.0, 36.0, Math.toRadians(0.0)))
 //               .lineTo(Vector2d(-24.0, 36.0))
-                //intake stacked rings
-                .build()
+//                //intake stacked rings
+//                .build()
 
-        val depotLocation = when (Config) {
-            1 -> Vector2d(12.0, 60.0)
-            2 -> Vector2d(36.0, 36.0)
-            else -> Vector2d(60.0, 60.0)
-        }
-
-        val depotConfig = drive.trajectoryBuilder(traj1.end())
-                .splineTo(depotLocation, Math.toRadians(0.0))
-                .build()
-
-        // val backwardsDistance = (Config - 1)*24.0
-        val backwardsDistance = when (Config) {
-            1 -> 0.0
-            2 -> 24.0
-            else -> 48.0
-        }
-
-        val backward: Trajectory = drive.trajectoryBuilder(depotConfig.end())
-                .back(backwardsDistance)
-                .build()
-
+//        val depotLocation = when (Config) {
+//            1 -> Vector2d(12.0, 60.0)
+//            2 -> Vector2d(36.0, 36.0)
+//            else -> Vector2d(60.0, 60.0)
+//        }
+//
+//        val depotConfig = drive.trajectoryBuilder(traj1.end())
+//                .splineTo(depotLocation, Math.toRadians(0.0))
+//                .build()
+//
+//        // val backwardsDistance = (Config - 1)*24.0
+//        val backwardsDistance = when (Config) {
+//            1 -> 0.0
+//            2 -> 24.0
+//            else -> 48.0
+//        }
+//
+//        val backward: Trajectory = drive.trajectoryBuilder(depotConfig.end())
+//                .back(backwardsDistance)
+//                .build()
+//
         val tempConfig: Trajectory = drive.trajectoryBuilder(startPose)
                 .lineTo(Vector2d(-12.0, 16.0))
                 .build()
@@ -112,12 +116,12 @@ class TestAutonomous : LinearOpMode() {
                 .build()
 
         val Config1Part1: Trajectory = drive.trajectoryBuilder(startPose)
-                .splineTo(Vector2d(-24.0, 36.0), Math.toRadians(180.0))
-                .lineTo(Vector2d(0.0, 36.0))
+                .splineTo(Vector2d(-24.0, 36.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(0.0, 36.0), Math.toRadians(0.0))
                 .build()
 
         val Config1Part2: Trajectory = drive.trajectoryBuilder(Config1Part1.end())
-                .splineTo(Vector2d(12.0,40.0), Math.toRadians(-75.0))
+                .splineTo(Vector2d(12.0,40.0), Math.toRadians(75.0))
                 .build()
 
         val Config1Part3: Trajectory = drive.trajectoryBuilder(Config1Part2.end())
@@ -125,49 +129,58 @@ class TestAutonomous : LinearOpMode() {
                 .build()
 
         val Config1Part4: Trajectory = drive.trajectoryBuilder(Config1Part3.end())
-                .splineTo(Vector2d(0.0,48.0), Math.toRadians(-60.0))
+                .splineTo(Vector2d(0.0,48.0), Math.toRadians(60.0))
+                .build()
+
+        val Config1Part5: Trajectory = drive.trajectoryBuilder(Config1Part4.end())
+                .splineTo(Vector2d(12.0, 48.0), Math.toRadians(0.0))
                 .build()
 
 
         val Config2Part1: Trajectory = drive.trajectoryBuilder(startPose)
-                .splineTo(Vector2d(-12.0,16.0), Math.toRadians(180.0))
-                .splineTo(Vector2d(0.0,36.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(-12.0,16.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(0.0,36.0), Math.toRadians(0.0))
                 .build()
 
         val Config2Part2: Trajectory = drive.trajectoryBuilder(Config2Part1.end())
-                .splineTo(Vector2d(20.0,36.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(20.0,36.0), Math.toRadians(0.0))
                 .build()
 
         val Config2Part3: Trajectory = drive.trajectoryBuilder(Config2Part2.end())
-                .splineTo(Vector2d(-12.0, 52.0), Math.toRadians(0.0))
-                .splineTo(Vector2d(-36.0,48.0), Math.toRadians(5.0))
+                .splineTo(Vector2d(-12.0, 52.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(-36.0,48.0), Math.toRadians(185.0))
                 .build()
 
         val Config2Part4: Trajectory = drive.trajectoryBuilder(Config2Part3.end())
-                .splineTo(Vector2d(-12.0,52.0), Math.toRadians(0.0))
-                .splineTo(Vector2d(18.0,36.0), Math.toRadians(15.0))
+                .splineTo(Vector2d(-12.0,52.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(18.0,36.0), Math.toRadians(-10.0))
                 .build()
 
 
         val Config3Part1: Trajectory = drive.trajectoryBuilder(startPose)
-                .splineTo(Vector2d(-12.0,16.0), Math.toRadians(180.0))
-                .splineTo(Vector2d(0.0,36.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(-12.0,16.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(0.0,36.0), Math.toRadians(0.0))
                 .build()
 
         val Config3Part2: Trajectory = drive.trajectoryBuilder(Config3Part1.end())
-                .splineTo(Vector2d(48.0,60.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(48.0,60.0), Math.toRadians(0.0))
                 .build()
 
         val Config3Part3: Trajectory = drive.trajectoryBuilder(Config3Part2.end())
-                .splineTo(Vector2d(-36.0,48.0), Math.toRadians(5.0))
+                .splineTo(Vector2d(-36.0,48.0), Math.toRadians(185.0))
                 .build()
 
         val Config3Part4: Trajectory = drive.trajectoryBuilder(Config3Part3.end())
-                .splineTo(Vector2d(42.0,60.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(42.0,60.0), Math.toRadians(0.0))
                 .build()
 
+        val Config3Part5: Trajectory = drive.trajectoryBuilder(Config3Part4.end())
+                .lineTo(Vector2d(12.0,48.0))
+                .build()
+
+
         val PowerShot1: Trajectory = drive.trajectoryBuilder(startPose)
-                .splineTo(Vector2d(-12.0,19.5), Math.toRadians(180.0))
+                .splineTo(Vector2d(-12.0,19.5), Math.toRadians(0.0))
                 .build()
 
 
@@ -175,9 +188,12 @@ class TestAutonomous : LinearOpMode() {
         if(Config == -1){
             drive.followTrajectory(PowerShot1)
             shootRing()
+            wait(0.3)
             drive.turn(Math.toRadians(5.9))
+            wait(0.3)
             shootRing()
             drive.turn(Math.toRadians(5.6))
+            wait(0.3)
             shootRing()
         }
         if(Config == 0){
@@ -230,6 +246,8 @@ class TestAutonomous : LinearOpMode() {
             drive.followTrajectory(Config1Part4)
 
             release()
+
+            drive.followTrajectory(Config1Part5)
         }
         if (Config == 2){
             grabber.position = 0.05
@@ -278,6 +296,8 @@ class TestAutonomous : LinearOpMode() {
             drive.followTrajectory(Config3Part4)
 
             release()
+
+            drive.followTrajectory(Config3Part5)
         }
     }
 }

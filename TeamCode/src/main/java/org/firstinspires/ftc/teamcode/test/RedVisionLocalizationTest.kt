@@ -31,7 +31,7 @@ import org.firstinspires.ftc.teamcode.teleop.UltimateGoalTeleOp
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
 
 @TeleOp
-class VisionLocalizationTest : UltimateGoalTeleOp() {
+class RedVisionLocalizationTest : UltimateGoalTeleOp() {
     val turnPid = MOERawPid(0.003, 0.0, 0.0)
 
     override fun initOpMode() {

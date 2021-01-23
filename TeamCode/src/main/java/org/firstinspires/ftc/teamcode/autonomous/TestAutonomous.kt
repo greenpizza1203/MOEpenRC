@@ -68,7 +68,7 @@ class TestAutonomous : LinearOpMode() {
         grabber = hardwareMap.servo["GWS21"]
         arm = hardwareMap.get(DcMotorEx::class.java, "WAM12")
         arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        var Config: Int = 0
+        var Config: Int = 1
 //      Temporary Config for testing
 
 
@@ -235,6 +235,7 @@ class TestAutonomous : LinearOpMode() {
             wait(0.15)
             shootRing()
 
+
             drive.followTrajectory(Config1Part2)
 
             release()
@@ -253,13 +254,6 @@ class TestAutonomous : LinearOpMode() {
             grabber.position = 0.05
 
             drive.followTrajectory(Config2Part1)
-
-            wait(0.15)
-            shootRing()
-            wait(0.15)
-            shootRing()
-            wait(0.15)
-            shootRing()
 
             drive.followTrajectory(Config2Part2)
 

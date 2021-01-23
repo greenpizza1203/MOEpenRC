@@ -14,7 +14,7 @@ class MOEShooter {
     val outer = MOEtor(MOEHardwareConstants.Shooter.OuterFlywheel)
     val inner = MOEtor(MOEHardwareConstants.Shooter.InnerFlywheel)
     val servo = MOEServo(MOEHardwareConstants.Shooter.TriggerServo)
-    private val targetVelocity = 2300.0
+    private val targetVelocity = 2000.0
 
     init {
         servo.setPosition(0.3)

@@ -95,8 +95,8 @@ class UltimateGoalTeleOpFast : OpMode() {
         fromMecanum(fwd, str, rot)
     }
 
-    var shooterTarget = 2200.0
-    var powerShotTarget = 1600.0
+    var shooterTarget = 1800.0
+    var powerShotTarget = 1400.0
 
     private fun shooter() {
         if (yToggled) {

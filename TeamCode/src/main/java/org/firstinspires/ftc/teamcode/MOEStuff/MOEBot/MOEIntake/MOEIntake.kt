@@ -10,6 +10,10 @@ class MOEIntake {
         motor.power = power
     }
 
+    fun reverse(power:Double = -1.0){
+        motor.power = power
+    }
+    
     fun stop() {
         motor.power = 0.0
 

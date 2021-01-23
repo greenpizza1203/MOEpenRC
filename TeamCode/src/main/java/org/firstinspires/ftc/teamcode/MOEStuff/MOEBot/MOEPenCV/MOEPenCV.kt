@@ -24,7 +24,7 @@ class MOEPenCV(val config: MOEPenCVConfig) {
     }
 
     private fun getExternalCamera(): OpenCvCamera {
-        val webcamName = hardwareMap.get(WebcamName::class.java, "Webcam 1")
+        val webcamName = hardwareMap.get(WebcamName::class.java, "Highcam")
         return OpenCvCameraFactory.getInstance().createWebcam(webcamName, getCameraMonitorView())
     }
 

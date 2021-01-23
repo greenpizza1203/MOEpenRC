@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.constants.Ref.hardwareMap
 object MOEVuforiaConstants {
     val params = VuforiaLocalizer.Parameters().apply {
 //        vuforiaLicenseKey = openRawResource(R.raw.vuforia_key).readLine()
-        cameraName = hardwareMap.get(WebcamName::class.java, "Highcam")
+        cameraName = hardwareMap.get(WebcamName::class.java, "HighCam")
     }
 }
 
@@ -16,6 +16,6 @@ object MOEVuforiaConstants {
 //fun getVuforiaParameters(): VuforiaLocalizer.Parameters {
 //    return VuforiaLocalizer.Parameters().apply {
 //        vuforiaLicenseKey = MOEConstants.Vuforia.LICENSE_KEY
-//        cameraName = ReferenceHolder.hardwareMap.get(WebcamName::class.java, "Highcam")
+//        cameraName = ReferenceHolder.hardwareMap.get(WebcamName::class.java, "HighCam")
 //    }
 //}

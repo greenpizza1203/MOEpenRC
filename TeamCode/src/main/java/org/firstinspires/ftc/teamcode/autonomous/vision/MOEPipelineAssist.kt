@@ -16,7 +16,7 @@ class MOEPipelineAssist(val hardwareMap: HardwareMap, pipeline: OpenCvPipeline) 
 
     init {
         val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java, "Ringcam"), cameraMonitorViewId)
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java, "RingCam"), cameraMonitorViewId)
         webcam.setPipeline(pipeline)
 
         webcam.openCameraDeviceAsync {

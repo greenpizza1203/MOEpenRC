@@ -65,7 +65,7 @@ class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int)
 
     override fun processFrame(input: Mat): Mat {
         val submat = input.submat(y, y + height, x, x + width)
-//        Imgproc.resize(submat, small, Size(1.0, 4.0))
+        val small = submat
         Imgproc.cvtColor(small, frameHSV, Imgproc.COLOR_RGB2HSV)
         Core.inRange(frameHSV,
                 Scalar(lowH, 0.0, 0.0),

@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
 
 @Autonomous(group = "drive")
-class TestAutonomous : LinearOpMode() {
+class TestAutonomMOous : LinearOpMode() {
 
     val timer = ElapsedTime()
     fun wait(waitTime: Double) {

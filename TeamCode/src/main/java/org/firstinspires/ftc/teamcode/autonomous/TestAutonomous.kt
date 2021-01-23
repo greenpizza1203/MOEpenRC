@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.MOERingPipeline
 import org.firstinspires.ftc.teamcode.autonomous.vision.MOEPipelineAssist
+import org.firstinspires.ftc.teamcode.autonomous.vision.TestRingPipeline
 import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
 
 @Autonomous(group = "drive")
@@ -72,9 +73,8 @@ class TestAutonomMOous : LinearOpMode() {
         arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         var Config: Int = 1
 //      Temporary Config for testing
-        val pipeline = MOERingPipeline(x = 288, y = 6, width = 285, height = 170)
+        val pipeline = TestRingPipeline(x = 288, y = 6, width = 285, height = 170)
         val ringDetectAssist = MOEPipelineAssist(hardwareMap, pipeline)
-
 
         val drive = SampleMecanumDrive(hardwareMap)
         val startPose = Pose2d(-60.0, 24.0, Math.toRadians(180.0))

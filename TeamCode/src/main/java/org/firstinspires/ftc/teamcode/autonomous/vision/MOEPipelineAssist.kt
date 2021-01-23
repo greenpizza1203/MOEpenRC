@@ -30,7 +30,7 @@ class MOEPipelineAssist(val hardwareMap: HardwareMap, pipeline: OpenCvPipeline) 
 class TestRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : OpenCvPipeline() {
     @SuppressLint("SdCardPath")
     override fun init(mat: Mat) {
-        val filename = "/sdcard/ftc2021/ring_${System.currentTimeMillis()}.png"
+        val filename = "ring_${System.currentTimeMillis()}"
         saveMatToDisk(mat, filename)
         Log.e("file", "saved to $filename")
     }

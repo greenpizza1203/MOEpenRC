@@ -7,7 +7,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.core.Scalar
-import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
 import org.openftc.easyopencv.OpenCvCameraFactory
 import org.openftc.easyopencv.OpenCvCameraRotation
@@ -51,8 +50,6 @@ class TestRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) 
 class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : OpenCvPipeline() {
     val frameHSV = Mat()
     val small = Mat()
-    val lowH = 0.0
-    val highH = 180.0
     val thresh = Mat()
 
     @SuppressLint("SdCardPath")
@@ -68,8 +65,8 @@ class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int)
         val small = submat
         Imgproc.cvtColor(small, frameHSV, Imgproc.COLOR_RGB2HSV)
         Core.inRange(frameHSV,
-                Scalar(lowH, 0.0, 0.0),
-                Scalar(highH, 0.0, 0.0),
+                Scalar(0.0, 0.0, 0.0),
+                Scalar(12.0, 80.0, 0.0),
                 thresh)
         return thresh
 

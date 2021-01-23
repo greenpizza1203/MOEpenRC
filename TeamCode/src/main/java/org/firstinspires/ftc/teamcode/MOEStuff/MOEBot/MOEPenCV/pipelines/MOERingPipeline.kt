@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines
 
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPipeline
-import org.opencv.core.*
-import org.opencv.imgproc.Imgproc
+import org.opencv.core.Mat
 
 
-class MOERingPipeline : MOEPipeline() {
+class MOERingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : MOEPipeline() {
     val lowH = 0.0
     val highH = 180.0
 //    val how
@@ -16,21 +15,22 @@ class MOERingPipeline : MOEPipeline() {
 
     val frameHSV = Mat()
     val thresh = Mat()
-    val submat = Rect(10, 10, 100, 100)
+
+    //    val submat = Rect(10, 10, 100, 100)
     override fun preview(input: Mat): Mat {
         //TODO: the stuff
 //        val submat = Mat(input, submat)
-        return input
+        return input.submat(y, y + height, x, x + width)
     }
 
 
     override fun process(input: Mat): Mat {
-        Imgproc.cvtColor(input, frameHSV, Imgproc.COLOR_RGB2HSV)
-        Core.inRange(frameHSV,
-                Scalar(lowH, 0.0, 0.0),
-                Scalar(highH, 0.0, 0.0),
-                thresh)
-        return frameHSV
+//        Imgproc.cvtColor(input, frameHSV, Imgproc.COLOR_RGB2HSV)
+//        Core.inRange(frameHSV,
+//                Scalar(lowH, 0.0, 0.0),
+//                Scalar(highH, 0.0, 0.0),
+//                thresh)
+        return input
 //        update(frame, thresh)
     }
 }

@@ -12,10 +12,9 @@ data class MOEPenCVConfig(
         var pipeline: MOEPipeline,
         var resolution: Size = Size(800.0, 448.0)
 )
+
 class MOEPenCV(val config: MOEPenCVConfig) {
     var webcam: OpenCvCamera
-//    val pipeline = MOEPipeline(this)
-
     val pipeline = config.pipeline
 
     init {

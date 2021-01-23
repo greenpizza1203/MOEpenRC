@@ -59,7 +59,7 @@ class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int)
     override fun init(input: Mat) {
         val filename = "ring_${System.currentTimeMillis()}"
 //        val cropped = input.submat(y, y + height, x, x + width)
-        saveMatToDisk(processFrame(input), "${filename}_cropped")
+        saveMatToDisk(processFrame(input), "${filename}_processed")
         Log.e("file", "saved to $filename")
     }
 

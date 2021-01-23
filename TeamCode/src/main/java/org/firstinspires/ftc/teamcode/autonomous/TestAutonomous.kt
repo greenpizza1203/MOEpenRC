@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.autonomous.vision.TestRingPipeline
 import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
 
 @Autonomous(group = "drive")
-class TestAutonomMOous : LinearOpMode() {
+class TestAutonomous : LinearOpMode() {
 
     val timer = ElapsedTime()
     fun wait(waitTime: Double) {

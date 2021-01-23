@@ -74,7 +74,7 @@ class TestAutonomous : LinearOpMode() {
         arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         var Config: Int = 1
 //      Temporary Config for testing
-        val pipeline = BasicRingPipeline(x = 288, y = 6, width = 285, height = 170)
+        val pipeline = BasicRingPipeline(x = 34, y = 221, width = 95, height = 61)
         val ringDetectAssist = MOEPipelineAssist(hardwareMap, pipeline)
 
         val drive = SampleMecanumDrive(hardwareMap)

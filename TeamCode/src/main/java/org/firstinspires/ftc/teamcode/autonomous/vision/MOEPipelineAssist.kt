@@ -69,7 +69,7 @@ class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int)
         Imgproc.cvtColor(small, frameHSV, Imgproc.COLOR_RGB2HSV)
         Core.inRange(frameHSV,
                 Scalar(lowH, 0.0, 0.0),
-                Scalar(highH, 255.0, 255.0),
+                Scalar(highH, 0.0, 0.0),
                 thresh)
         return thresh
 

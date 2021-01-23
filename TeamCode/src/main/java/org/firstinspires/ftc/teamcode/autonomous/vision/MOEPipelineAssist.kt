@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous.vision
 
+import android.annotation.SuppressLint
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
@@ -28,6 +29,11 @@ class MOEPipelineAssist(val hardwareMap: HardwareMap, pipeline: OpenCvPipeline) 
 }
 
 class TestRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : OpenCvPipeline() {
+    @SuppressLint("SdCardPath")
+    override fun init(mat: Mat) {
+        saveMatToDisk(mat, "/sdcard/ftc2021/ring_${System.currentTimeMillis()}")
+    }
+
     override fun processFrame(input: Mat): Mat {
         return input.submat(y, y + height, x, x + width)
 

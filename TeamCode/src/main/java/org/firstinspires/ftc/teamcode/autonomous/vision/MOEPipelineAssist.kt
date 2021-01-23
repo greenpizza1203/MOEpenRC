@@ -20,7 +20,7 @@ class MOEPipelineAssist(val hardwareMap: HardwareMap, pipeline: OpenCvPipeline) 
         webcam.setPipeline(pipeline)
 
         webcam.openCameraDeviceAsync {
-            webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT)
+            webcam.startStreaming(640, 300, OpenCvCameraRotation.UPRIGHT)
         }
     }
 

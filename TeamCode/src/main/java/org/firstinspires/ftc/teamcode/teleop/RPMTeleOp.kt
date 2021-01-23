@@ -14,20 +14,20 @@ class RPMTeleOp : OpMode() {
     lateinit var innerShooterMotor: DcMotorEx
 
     override fun init() {
-        outerShooterMotor = hardwareMap.dcMotor["ORSM23"] as DcMotorEx
-        innerShooterMotor = hardwareMap.dcMotor["IRSM20"] as DcMotorEx
+        outerShooterMotor = hardwareMap.get(DcMotorEx::class.java, "OFM10")
+        innerShooterMotor = hardwareMap.get(DcMotorEx::class.java, "IFM11")
     }
 
     override fun loop() {
 //        shooterMotor.power = 1.0
 //
 //        shooterMotor.velocity
-        telemetry.addData("prevA", previousA)
-        telemetry.addData("a", gamepad1.a)
-        if (!previousA && gamepad1.a) {
+        telemetry.addData("prevY", previousY)
+        telemetry.addData("y", gamepad1.y)
+        if (!previousY && gamepad1.y) {
             enabled = !enabled
         }
-        previousA = gamepad1.a
+        previousY = gamepad1.y
         if (!enabled) {
             outerShooterMotor.velocity = 0.0
             innerShooterMotor.velocity = 0.0
@@ -40,7 +40,7 @@ class RPMTeleOp : OpMode() {
         targetVelocity += gamepad1.right_trigger.toDouble() * speed
         targetVelocity -= gamepad1.left_trigger.toDouble() * speed
 
-        telemetry.addData("a", gamepad1.a)
+        telemetry.addData("y", gamepad1.y)
         telemetry.addData("enabled", enabled)
         telemetry.addData("outerVelocity", outerShooterMotor.velocity)
         telemetry.addData("innerVelocity", innerShooterMotor.velocity)
@@ -53,7 +53,7 @@ class RPMTeleOp : OpMode() {
     val speed = 10
 
     var enabled = true
-    var previousA = false
+    var previousY = false
 }
 
 

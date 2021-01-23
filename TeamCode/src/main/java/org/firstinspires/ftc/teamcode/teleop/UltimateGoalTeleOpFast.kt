@@ -47,6 +47,8 @@ class UltimateGoalTeleOpFast : OpMode() {
         intakeMotor.zeroPowerBehavior = ZeroPowerBehavior.BRAKE
         outerShooterMotor = hardwareMap.get(DcMotorEx::class.java, "OFM10")
         innerShooterMotor = hardwareMap.get(DcMotorEx::class.java, "IFM11")
+        outerShooterMotor.zeroPowerBehavior = ZeroPowerBehavior.BRAKE
+        innerShooterMotor.zeroPowerBehavior = ZeroPowerBehavior.BRAKE
         trigger = hardwareMap.servo["RTS25"]
         grabber = hardwareMap.servo["GWS21"]
         angle = hardwareMap.servo["ACS20"]
@@ -93,8 +95,8 @@ class UltimateGoalTeleOpFast : OpMode() {
         fromMecanum(fwd, str, rot)
     }
 
-    var shooterTarget = 2300.0
-    var powerShotTarget = 1700.0
+    var shooterTarget = 2200.0
+    var powerShotTarget = 1600.0
 
     private fun shooter() {
         if (yToggled) {

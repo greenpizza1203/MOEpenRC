@@ -31,7 +31,7 @@ class TestAutonomous : LinearOpMode() {
     }
 
     fun release(){
-        arm.power = 0.4
+        arm.power = -0.4
         wait(0.8)
         arm.power = 0.0
         grabber.position = 0.25
@@ -39,7 +39,7 @@ class TestAutonomous : LinearOpMode() {
 
     fun grab(){
         grabber.position = 0.05
-        arm.power = -0.5
+        arm.power = 0.5
         wait(0.8)
         arm.power = 0.0
     }

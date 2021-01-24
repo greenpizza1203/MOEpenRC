@@ -30,7 +30,7 @@ class TestAutonomous : LinearOpMode() {
 
     fun shootRing() {
         trigger.setPosition(0.85)
-        wait(0.15)
+        wait(0.2)
         trigger.setPosition(0.2)
     }
 
@@ -62,7 +62,7 @@ class TestAutonomous : LinearOpMode() {
     lateinit var trigger: Servo
     lateinit var grabber: Servo
     lateinit var arm: DcMotor
-    val Velocity = 1750
+    val Velocity = 2000
 
     override fun runOpMode() {
         intakeMotor = hardwareMap.dcMotor["INM13"]
@@ -72,7 +72,7 @@ class TestAutonomous : LinearOpMode() {
         grabber = hardwareMap.servo["GWS21"]
         arm = hardwareMap.get(DcMotorEx::class.java, "WAM12")
         arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        var Config: Int = 1
+        var Config: Int = 0
 //      Temporary Config for testing
         val pipeline = BasicRingPipeline(x = 34, y = 221, width = 95, height = 61)
         val ringDetectAssist = MOEPipelineAssist(hardwareMap, pipeline)
@@ -212,22 +212,29 @@ class TestAutonomous : LinearOpMode() {
 
             outerShooterMotor.velocity = Velocity.toDouble()
             innerShooterMotor.velocity = Velocity.toDouble()
-            wait(0.15)
-            shootRing()
-            wait(0.15)
-            shootRing()
-            wait(0.15)
-            shootRing()
 
+            wait(0.5)
+            shootRing()
+            wait(0.5)
+            shootRing()
+            wait(0.5)
+            shootRing()
+            wait(0.5)
+            shootRing()
+            wait(3.0)
 
             outerShooterMotor.velocity = 0.0
             innerShooterMotor.velocity = 0.0
 
             drive.followTrajectory(tempConfig3)
             arm.power = 0.4
-            wait(0.6)
+            wait(0.8)
             arm.power = 0.0
             grabber.position = 0.25
+
+            arm.power = -0.4
+            wait(0.7)
+            arm.power = 0.0
         }
         if (Config == 1) {
             grabber.position = 0.05

@@ -69,10 +69,10 @@ class TestAutonomous : LinearOpMode() {
         outerShooterMotor = hardwareMap.dcMotor["OFM10"] as DcMotorEx
         innerShooterMotor = hardwareMap.dcMotor["IFM11"] as DcMotorEx
         trigger = hardwareMap.servo["RTS25"]
-        grabber = hardwareMap.servo["GWS21"]
+        grabber = hardwareMap.servo["WAS21"]
         arm = hardwareMap.get(DcMotorEx::class.java, "WAM12")
         arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        var Config: Int = 0
+//        var Config: Int = 0
 //      Temporary Config for testing
         val pipeline = BasicRingPipeline(x = 34, y = 221, width = 95, height = 61)
         val ringDetectAssist = MOEPipelineAssist(hardwareMap, pipeline)

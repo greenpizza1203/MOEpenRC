@@ -190,6 +190,7 @@ class TestAutonomous : LinearOpMode() {
 
 
         waitForStart()
+        val Config = pipeline.count
         if (Config == -1) {
             drive.followTrajectory(PowerShot1)
             shootRing()

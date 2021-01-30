@@ -297,6 +297,6 @@ class SampleMecanumDrive(hardwareMap: HardwareMap) : MecanumDrive(kV, kA, kStati
         backLeft.direction = DcMotorSimple.Direction.REVERSE
         // TODO: if desired, use setLocalizer() to change the localization method
 //        localizer = LeftWheelOdo(hardwareMap,imu)
-        localizer = ThreeWheelOdo(hardwareMap)
+        localizer = FastThreeWheelOdo(hardwareMap)
     }
 }

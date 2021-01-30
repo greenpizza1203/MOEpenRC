@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPid.MOERawPid
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPid.MOETurnPid
 import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
-import org.firstinspires.ftc.teamcode.test.rr.drive.ThreeWheelOdo
+import org.firstinspires.ftc.teamcode.test.rr.drive.FastThreeWheelOdo
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.closestAngleDifference
 
 
@@ -30,7 +30,7 @@ class RRStrafeTest : OpMode() {
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE)
         drive = SampleMecanumDrive(hardwareMap)
         forward.input = {
-            val d = ((drive.localizer as ThreeWheelOdo).leftEncoder.currentPosition + (drive.localizer as ThreeWheelOdo).rightEncoder.currentPosition) / 305.0
+            val d = ((drive.localizer as FastThreeWheelOdo).leftEncoder.currentPosition + (drive.localizer as FastThreeWheelOdo).rightEncoder.currentPosition) / 305.0
             d
         }
         forward.setpoint = { 0.0 }
@@ -76,8 +76,8 @@ class RRStrafeTest : OpMode() {
         packet.put("heading", imu.angularOrientation.firstAngle.toDouble().closestAngleDifference(0.0))
         packet.put("heading", drive.poseEstimate.heading)
         packet.put("forwardFix", forward)
-        packet.put("left", (drive.localizer as ThreeWheelOdo).leftEncoder.currentPosition)
-        packet.put("right", (drive.localizer as ThreeWheelOdo).rightEncoder.currentPosition)
+        packet.put("left", (drive.localizer as FastThreeWheelOdo).leftEncoder.currentPosition)
+        packet.put("right", (drive.localizer as FastThreeWheelOdo).rightEncoder.currentPosition)
 
 
         dashboard.sendTelemetryPacket(packet)

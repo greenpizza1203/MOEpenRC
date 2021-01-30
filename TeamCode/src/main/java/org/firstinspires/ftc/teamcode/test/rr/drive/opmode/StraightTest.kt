@@ -5,9 +5,8 @@ import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.test.rr.drive.DriveConstants
-import org.firstinspires.ftc.teamcode.test.rr.drive.LeftWheelOdo
+import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
 
 /*
  * This is a simple routine to test translational drive capabilities.
@@ -34,7 +33,7 @@ class StraightTest : LinearOpMode() {
         drive.followTrajectoryAsync(trajectory)
         while (opModeIsActive()) {
             drive.update()
-            telemetry.addData("pose", (drive.localizer as LeftWheelOdo).getRawPositions())
+//            telemetry.addData("pose", (drive.localizer as LeftWheelOdo).getRawPositions())
             telemetry.addData("pose", drive.localizer.poseEstimate)
             telemetry.update()
         }

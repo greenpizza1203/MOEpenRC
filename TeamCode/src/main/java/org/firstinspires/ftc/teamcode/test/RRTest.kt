@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
-import org.firstinspires.ftc.teamcode.test.rr.drive.ThreeWheelOdo
+import org.firstinspires.ftc.teamcode.test.rr.drive.FastThreeWheelOdo
 
 
 class RRTest : OpMode() {
@@ -17,7 +17,7 @@ class RRTest : OpMode() {
     lateinit var frontRight: DcMotorEx
     lateinit var backLeft: DcMotorEx
     lateinit var backRight: DcMotorEx
-    lateinit var localizer: ThreeWheelOdo
+    lateinit var localizer: FastThreeWheelOdo
     lateinit var gyro: BNO055IMU
     lateinit var dashboard: FtcDashboard
 
@@ -60,7 +60,7 @@ class RRTest : OpMode() {
         gyro.initialize(parameters)
 
 
-        localizer = ThreeWheelOdo(hardwareMap)
+        localizer = FastThreeWheelOdo(hardwareMap)
 
     }
 

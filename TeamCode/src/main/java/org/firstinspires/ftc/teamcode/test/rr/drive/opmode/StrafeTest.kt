@@ -34,7 +34,7 @@ class StrafeTest : LinearOpMode() {
         drive.followTrajectoryAsync(trajectory)
         while (opModeIsActive()) {
             drive.update()
-            telemetry.addData("pose", (drive.localizer as LeftWheelOdo).getRawPositions())
+//            telemetry.addData("pose", (drive.localizer as LeftWheelOdo).getRawPositions())
             telemetry.addData("pose", drive.localizer.poseEstimate)
             telemetry.update()
         }

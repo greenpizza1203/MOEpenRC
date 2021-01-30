@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.os.ParcelUuid
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import java.lang.reflect.Constructor
@@ -12,6 +13,7 @@ import java.util.*
 
 
 @TeleOp
+@Disabled
 class UDPTest : LinearOpMode() {
 
     override fun runOpMode() {

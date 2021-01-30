@@ -11,7 +11,7 @@ class MOEIMUGyro : MOEGyro() {
     val imu = hardwareMap.get(BNO055IMU::class, "imu")
     private var initStarted = false
 
-    override fun getRawAngle() = (imu.angularOrientation.firstAngle).toDouble()
+    override fun getRawAngle() = imu.angularOrientation.firstAngle.toDouble()
 
     /**
      * Initializes IMU parameters-126, -91.7

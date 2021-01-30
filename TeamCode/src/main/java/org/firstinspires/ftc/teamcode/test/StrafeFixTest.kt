@@ -2,11 +2,9 @@ package org.firstinspires.ftc.teamcode.test
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotorEx
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEGyro.MOEIMUGyro
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPid.MOETurnPid
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes.MOETeleOp
-import org.firstinspires.ftc.teamcode.test.rr.drive.LeftWheelOdo
-import org.firstinspires.ftc.teamcode.test.rr.drive.ThreeWheelOdo
+import org.firstinspires.ftc.teamcode.test.rr.drive.FastThreeWheelOdo
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toDegrees
 import org.firstinspires.ftc.teamcode.utilities.external.toFixed
 import kotlin.math.abs
@@ -19,7 +17,7 @@ class StrafeFixTest : MOETeleOp() {
     lateinit var backLeft: DcMotorEx
     lateinit var frontRight: DcMotorEx
     lateinit var backRight: DcMotorEx
-    lateinit var localizer: ThreeWheelOdo
+    lateinit var localizer: FastThreeWheelOdo
     private val turnPid = MOETurnPid(1.0, 0.0, 0.0)
 
     init {
@@ -28,7 +26,7 @@ class StrafeFixTest : MOETeleOp() {
 
     override fun initOpMode() {
 //        localizer = LeftWheelOdo(hardwareMap, (robot.gyro as MOEIMUGyro).imu)
-        localizer = ThreeWheelOdo(hardwareMap)
+        localizer = FastThreeWheelOdo(hardwareMap)
     }
 
     override fun mainLoop() {

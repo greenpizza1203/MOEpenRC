@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEBot
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEBotConstantsImpl
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig.MOEBotConstantsImpl
 import org.firstinspires.ftc.teamcode.constants.OpModeInterface
 import org.firstinspires.ftc.teamcode.constants.Ref
 

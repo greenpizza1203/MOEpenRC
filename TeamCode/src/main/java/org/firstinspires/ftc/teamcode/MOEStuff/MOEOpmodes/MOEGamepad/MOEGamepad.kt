@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes.MOEGamepad
 
 import com.qualcomm.robotcore.hardware.Gamepad
 
-class MOEGamepad(val gamepad: Gamepad) {
+class MOEGamepad(private val gamepad: Gamepad) {
     init {
-        gamepad.setJoystickDeadzone(0.12F)
+        gamepad.setJoystickDeadzone(0.15F)
     }
 
     val x = MOEButton { gamepad.x }
@@ -12,7 +12,7 @@ class MOEGamepad(val gamepad: Gamepad) {
     val a = MOEButton { gamepad.a }
     val b = MOEButton { gamepad.b }
     val back = MOEButton { gamepad.back }
-    val buttons = arrayOf(x, y, a, b, back)
+    private val buttons = arrayOf(x, y, a, b, back)
 
     val dpad = MOEDpad(
             { gamepad.dpad_up },

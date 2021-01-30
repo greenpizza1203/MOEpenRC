@@ -17,9 +17,8 @@ open class MOEPipeline : OpenCvPipeline() {
             lastFrame = input
             frameRequested = false
         }
-        var processed = process(input)
-        if (!moeOpMode.isActive()) processed = preview(processed)
-        return processed
+//        var processed = process(input)
+        return if (!moeOpMode.isActive()) preview(input) else process(input)
 //        val pre = preProcess(input)
     }
 
@@ -30,7 +29,6 @@ open class MOEPipeline : OpenCvPipeline() {
     open fun process(input: Mat): Mat {
         return input
     }
-
 //    private fun drawText(newMat: Mat) {
 //        val croppedMat = Mat()
 //        Imgproc.resize(newMat, croppedMat, Size(4.0, 1.0))
@@ -57,5 +55,7 @@ open class MOEPipeline : OpenCvPipeline() {
     fun requestFrame() {
         frameRequested = true
     }
+
+
 
 }

@@ -20,8 +20,6 @@ class ParkAuton : LinearOpMode() {
                 .back(75.0)
                 .build()
         drive.followTrajectory(traj1)
-//        while(opModeIsActive()){
-//
-//        }
+
     }
 }

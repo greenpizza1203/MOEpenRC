@@ -34,8 +34,7 @@ fun OpenCvCamera.startStreaming(res: Size, rotation: OpenCvCameraRotation) {
 //
 //}
 
-fun Mat.resize(size: Size): Mat {
-    val dest = Mat()
+fun Mat.resize(size: Size, dest: Mat = Mat()): Mat {
     Imgproc.resize(this, dest, size)
     return dest
 }
@@ -48,7 +47,22 @@ fun Mat.drawRect(rect: Rect, color: Scalar, thickness: Int = 3) {
 
 fun Mat.drawVerticalLine(x: Double, color: Scalar, thickness: Int = 3) {
     Imgproc.line(this, Point(x, 0.0), Point(x, this.height().toDouble()), color, thickness)
+}
 
+fun Mat.drawLine(x: Double = -1.0, y: Double = -1.0, color: Scalar, thickness: Int = 3) {
+    if (x == -1.0 && y == -1.0 || x != -1.0 && y != -1.0) {
+        return
+    }
+    if (x == -1.0) {
+        drawHorizontalLine(y, color, thickness)
+    } else {
+        drawVerticalLine(x, color, thickness)
+
+    }
+}
+
+fun Mat.drawHorizontalLine(y: Double, color: Scalar, thickness: Int = 3) {
+    Imgproc.line(this, Point(0.0, y), Point(this.width().toDouble(), y), color, thickness)
 }
 
 fun Mat.drawText(x: Double, y: Double, text: String, fontSize: Double = 2.0, color: Scalar) {

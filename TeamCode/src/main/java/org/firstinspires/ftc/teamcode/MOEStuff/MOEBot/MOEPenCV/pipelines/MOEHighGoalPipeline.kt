@@ -67,6 +67,7 @@ class MOEHighGoalPipeline(target: Target) : MOEPipeline() {
 
     var size: Size? = null
     override fun preview(input: Mat): Mat {
+        process(input)
         if (size == null) size = input.size()
         redRect?.let {
             val centerX = (it.x + it.width / 2).toDouble()

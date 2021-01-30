@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE
-import org.firstinspires.ftc.teamcode.test.rr.drive.ThreeWheelOdo
+import org.firstinspires.ftc.teamcode.test.rr.drive.FastThreeWheelOdo
 import org.firstinspires.ftc.teamcode.utilities.external.toFixed
 
 
@@ -16,7 +16,7 @@ class CorrectedEncoderDriveTest : OpMode() {
     lateinit var backLeft: DcMotorEx
     lateinit var frontRight: DcMotorEx
     lateinit var backRight: DcMotorEx
-    lateinit var localizer: ThreeWheelOdo
+    lateinit var localizer: FastThreeWheelOdo
     override fun init() {
 //        multi = MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().telemetry)
 //        val voltage = hardwareMap.voltageSensor.first().voltage
@@ -36,7 +36,7 @@ class CorrectedEncoderDriveTest : OpMode() {
         motors.forEach {
             it.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
         }
-        localizer = ThreeWheelOdo(hardwareMap)
+        localizer = FastThreeWheelOdo(hardwareMap)
         telemetry.addData("Init", "Complete")
         telemetry.update()
     }

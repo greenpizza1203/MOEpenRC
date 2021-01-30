@@ -3,15 +3,12 @@ package org.firstinspires.ftc.teamcode.utilities.internal
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.constants.OpModeInterface
 
-private val timer by lazy { ElapsedTime() }
+val timer by lazy { ElapsedTime() }
 
-infix fun OpModeInterface.wait(milliseconds: Number) {
+inline fun OpModeInterface.wait(milliseconds: Number, func: () -> Unit = { Thread.yield() }) {
     timer.reset()
     val length = milliseconds.toLong()
-    while (timer.milliseconds() < length && isActive()) {
-//        telemetry.addData("please wait another${timer.seconds()} seconds")
-//        telemetry.update()
-    }
+    while (timer.milliseconds() < length && isActive()) func()
 }
 
 infix fun OpModeInterface.waitSeconds(seconds: Number) = this.wait(seconds.toLong() * 1000)

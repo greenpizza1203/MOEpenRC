@@ -45,7 +45,7 @@ object DriveConstants {
     var kA = 20 * 0.0001
 
     @JvmField
-    var kStatic =0.0
+    var kStatic = 0.0
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
@@ -57,7 +57,7 @@ object DriveConstants {
      */
     @JvmField
     var BASE_CONSTRAINTS = DriveConstraints(
-            24.0, 20.0, 0.0,
+            48.0, 20.0, 0.0,
             Math.toRadians(60.0), Math.toRadians(180.0), 0.0
     )
 

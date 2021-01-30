@@ -1,20 +1,16 @@
 package org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEHardware
 
 import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior
-import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.RADIANS
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig.MOEHardware.MotorConfig
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.lerp
 
 
 class MOEtor(val config: MotorConfig) {
     var mMotor = config.getDevice()
-    val targetIsHigherThanCurrent
-        get() = mMotor.targetPosition > mMotor.currentPosition
-    val error
-        get() = mMotor.targetPosition - mMotor.currentPosition
+//    val targetIsHigherThanCurrent
+//        get() = mMotor.targetPosition > mMotor.currentPosition
+//    val error
+//        get() = mMotor.targetPosition - mMotor.currentPosition
 
     //    private var powerScale = config.minPow..config.maxPow
     private val powRange = 0.0..config.maxPow
@@ -27,8 +23,8 @@ class MOEtor(val config: MotorConfig) {
     val position: Int
         get() = mMotor.currentPosition
 
-    val isBusy: Boolean
-        get() = mMotor.isBusy
+//    val isBusy: Boolean
+//        get() = mMotor.isBusy
 
 
 //    fun getPower(power: Double) {
@@ -56,9 +52,9 @@ class MOEtor(val config: MotorConfig) {
         }
 
     fun resetEncoder() {
-        val oldMOde = mMotor.mode
+        val oldMode = mMotor.mode
         mMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        mMotor.mode = oldMOde
+        mMotor.mode = oldMode
     }
 
     fun setTargetPosition(position: Int) {

@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.test
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPid.MOETurnPid
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes.MOETeleOp
-import org.firstinspires.ftc.teamcode.test.rr.drive.ThreeWheelOdo
+import org.firstinspires.ftc.teamcode.test.rr.drive.FastThreeWheelOdo
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toDegrees
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
 import org.firstinspires.ftc.teamcode.utilities.external.toFixed
@@ -13,13 +14,14 @@ import kotlin.math.abs
 
 
 @TeleOp
+@Disabled
 class TurnPIDTest : MOETeleOp() {
     lateinit var motors: List<DcMotorEx>
     lateinit var frontLeft: DcMotorEx
     lateinit var backLeft: DcMotorEx
     lateinit var frontRight: DcMotorEx
     lateinit var backRight: DcMotorEx
-    lateinit var localizer: ThreeWheelOdo
+    lateinit var localizer: FastThreeWheelOdo
     val turnPid = MOETurnPid(1.0, 0.0, 0.0)
 
     init {
@@ -28,7 +30,7 @@ class TurnPIDTest : MOETeleOp() {
     }
 
     override fun initOpMode() {
-        localizer = ThreeWheelOdo(hardwareMap)
+        localizer = FastThreeWheelOdo(hardwareMap)
     }
 
     override fun mainLoop() {

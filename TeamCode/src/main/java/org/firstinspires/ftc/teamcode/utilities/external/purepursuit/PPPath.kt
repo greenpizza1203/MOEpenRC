@@ -1,20 +1,24 @@
 package org.firstinspires.ftc.teamcode.utilities.external.purepursuit
 
 
+import android.R.attr.path
+import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.Point
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.getCurvatureOfPoints
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toLineSegmentList
 import org.firstinspires.ftc.teamcode.utilities.external.clone
 import org.firstinspires.ftc.teamcode.utilities.external.coerceIn
 import org.firstinspires.ftc.teamcode.utilities.external.purepursuit.math.PPPoint
 import org.firstinspires.ftc.teamcode.utilities.external.purepursuit.math.getCircleLineIntersection
+import org.firstinspires.ftc.teamcode.utilities.external.zipThree
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 
-class PPPath(var points: List<PPPoint>, private val options: PPOptions) {
-    constructor(map: Map<Double, Double>, options: PPOptions) : this(map.map { PPPoint(it.key, it.value) }, options)
+class PPPath(var points: MutableList<PPPoint>, private val options: PPOptions) {
+    //    constructor(points: List<PPPoint>, options: PPOptions) : this(points.toMutableList(), options)
+    constructor(map: Map<Double, Double>, options: PPOptions) : this(map.map { PPPoint(it.key, it.value) }.toMutableList(), options)
     //    constructor(originalPoints: List<Point>, options: MOEPurePursuitOptions) :
     //            this(originalPoints.map { it.toPurePursuitPoint() }, options)
 
@@ -22,7 +26,7 @@ class PPPath(var points: List<PPPoint>, private val options: PPOptions) {
 
     //    constructor(srcX: Double, srcY: Double, destX: Double, destY: Double, options: MOEPurePursuitOptions) :
     //            this(mutableListOf<>(PurePursuitPoint(srcX, srcY), PurePursuitPoint(destX, destY)), options)
-    val originalPoints = points
+    val originalPoints = points.clone()
     lateinit var injectedPoints: MutableList<PPPoint>
     private lateinit var smoothedPoints: List<PPPoint>
 //
@@ -55,28 +59,38 @@ class PPPath(var points: List<PPPoint>, private val options: PPOptions) {
     }
 
     fun smoothPoints() {
-        smoothedPoints = points.clone()
-        var change = options.tolerance
-        while (change >= options.tolerance) {
-            change = 0.0
-            for (i in 1 until smoothedPoints.size - 1) repeat(2) { j ->
-                val aux = smoothedPoints[i][j]
-                smoothedPoints[i][j] += options.smoothingA * (smoothedPoints[i][j] - smoothedPoints[i][j]) +
-                        options.smoothingB * (smoothedPoints[i - 1][j] + smoothedPoints[i + 1][j] - 2.0 * smoothedPoints[i][j])
-                change += abs(aux - smoothedPoints[i][j])
+        //copy array
+        //copy array
+        val weight_data = options.smoothingB
+        val weight_smooth = options.smoothingA
+        val tolerance = options.smoothingTolerance
+        val newPath: List<PPPoint> = points.clone()
+
+        do {
+            var change = 0.0
+            for (i in 1 until points.size - 1) for (j in 0 until 2) {
+                val aux = newPath[i][j]
+                newPath[i][j] += weight_data * (points[i][j] - newPath[i][j]) + weight_smooth * (newPath[i - 1][j] + newPath[i + 1][j] - 2.0 * newPath[i][j])
+                change += abs(aux - newPath[i][j])
             }
-        }
-        points = smoothedPoints
+        } while (change >= tolerance)
+
+        points = newPath.toMutableList()
     }
 
-    private fun setMaxVelocities() {
-        for (i in 1 until points.size - 1) {
-            val curvature = getCurvatureOfPoints(points[i - 1], points[i], points[i + 1])
-            //            println("curvature; $curvature")
-            points[i].velocity = min(options.overallMaxVelocity, options.turningConstant / curvature)
+    fun setMaxVelocities() {
+        points.zipThree { a, b, c ->
+            val curvature = getCurvatureOfPoints(a, b, c)
+            b.velocity = min(options.overallMaxVelocity, options.turningConstant / curvature)
+            println(b.velocity)
         }
-        points[0].velocity = options.overallMaxVelocity
-        points[points.size - 1].velocity = 0.0
+//        for (i in 1 until points.size - 1) {
+//            val curvature = getCurvatureOfPoints(points[i - 1], points[i], points[i + 1])
+//            points[i].velocity = min(options.overallMaxVelocity, options.turningConstant / curvature)
+////            println("curvature; $curvature")
+//        }
+        points.first().velocity = options.overallMaxVelocity
+        points.last().velocity = 0.0
     }
 
     private fun smoothVelocities() {
@@ -121,6 +135,7 @@ class PPPath(var points: List<PPPoint>, private val options: PPOptions) {
         return startPoint + vectorSegment
     }
 
+
     fun findLookaheadPoint(currentPosition: PPPoint, lastIndex: Int, lookBack: Int = options.lookBack, lookForward: Int = options.lookForward): Pair<Int, PPPoint> {
         val searchIndexes = ((lastIndex - lookBack - 1)..(lastIndex + lookForward)).coerceIn(points.indices)
         if (searchIndexes.last == points.lastIndex) {
@@ -128,13 +143,11 @@ class PPPath(var points: List<PPPoint>, private val options: PPOptions) {
             if (currentPosition.distanceTo(lastPoint) < options.lookAheadDistance) return Pair(points.lastIndex, lastPoint)
         }
         for (i in searchIndexes.last - 1 downTo searchIndexes.first) {
-            val b = points[i]
-            val a = points[i + 1]
+            val a = points[i]
+            val b = points[i + 1]
             val lookaheadPoint = getLookaheadPointOnSegment(a, b, currentPosition)
             if (lookaheadPoint != null) return Pair(i + 1, lookaheadPoint)
         }
-
-
 
         return Pair(lastIndex, points[lastIndex])
     }

@@ -25,7 +25,7 @@ class PPPoint(override var x: Double, override var y: Double, var isCriticalPoin
 
     override fun clone(): PPPoint = create(x, y)
     operator fun rangeTo(b: PPPoint) = LineSegment(this, b)
-    fun distanceTo(point: PPPoint) = kotlin.math.hypot(this.x - point.x, this.y - point.y)
+    fun <T> distanceTo(point: PointImpl<T>) = kotlin.math.hypot(this.x - point.x, this.y - point.y)
 
     fun normalize() = divAssign(hypot())
 

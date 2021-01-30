@@ -16,6 +16,7 @@ object MOEHardwareConstants {
                 val BackLeft = MotorConfig("BL", 2, 1, REVERSE)
                 val FrontRight = MotorConfig("FR", 2, 2)
                 val BackRight = MotorConfig("BR", 2, 3)
+
             }
         }
     }
@@ -28,6 +29,12 @@ object MOEHardwareConstants {
         val OuterFlywheel = MotorConfig("OF", 1, 0)
         val InnerFlywheel = MotorConfig("IF", 1, 1)
         val TriggerServo = ServoConfig("RT", 2, 5, 0.2, 0.85)
+    }
+
+    object Wobble {
+        val WobbleArm = MotorConfig("WA", 1, 2, REVERSE, maxPow = 0.4)
+        val WobbleServo = ServoConfig("WA", 2, 1, 0.05, 0.4)
+
     }
 }
 

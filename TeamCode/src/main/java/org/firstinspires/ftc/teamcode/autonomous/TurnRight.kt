@@ -24,7 +24,7 @@ class TurnRight : MOEAuton() {
             telemetry.addData("waiting", timer.milliseconds())
             telemetry.update()
         }
-        robot.chassis.setPower(Powers.fromMecanum(0.0, 0.5, 0.5))
+        robot.chassis.setFromMecanum(0.0, 0.5, 0.5)
 //        robot.chassis.setPower(0.0 * power, 0.5 * power, 1.0 * power, -1.0 * power)
         timer.reset()
         while (timer.seconds() < 2 && opModeIsActive()) {

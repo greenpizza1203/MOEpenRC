@@ -37,12 +37,4 @@ class MOEServo(config: ServoConfig) {
             runBlocking { launch.join() }
         }
     }
-
-//    fun setRange(min: Double, max: Double) {
-//        mServo.scaleRange(min, max)
-//    }
-//
-//    fun setDirection(direction: Servo.Direction) {
-//        mServo.direction = direction
-//    }
 }

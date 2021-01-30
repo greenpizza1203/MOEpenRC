@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.utilities.external.purepursuit
 data class PPOptions(
         val overallMaxVelocity: Double = 0.0,
         val spacing: Double = 0.0,
-        val tolerance: Double = 0.0,
+        val smoothingTolerance: Double = 0.0,
         val smoothingA: Double = 0.0,
         val smoothingB: Double = 0.0,
         val turningConstant: Double = 0.0,

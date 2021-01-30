@@ -10,7 +10,8 @@ import org.openftc.easyopencv.*
 
 data class MOEPenCVConfig(
         var pipeline: MOEPipeline,
-        var resolution: Size = Size(800.0, 448.0)
+        var resolution: Size = Size(800.0, 448.0),
+        var camera: String = "HighCam"
 )
 
 class MOEPenCV(val config: MOEPenCVConfig) {
@@ -24,7 +25,7 @@ class MOEPenCV(val config: MOEPenCVConfig) {
     }
 
     private fun getExternalCamera(): OpenCvCamera {
-        val webcamName = hardwareMap.get(WebcamName::class.java, "HighCam")
+        val webcamName = hardwareMap.get(WebcamName::class.java, config.camera)
         return OpenCvCameraFactory.getInstance().createWebcam(webcamName, getCameraMonitorView())
     }
 

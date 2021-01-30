@@ -1,5 +1,3 @@
 package org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEConfig
 
-data class MOEBotSubSystemConfig(var useGyro: Boolean = true,
-                                 var useOdometry: Boolean = false
-)
+class MOEBotSubSystemConfig(var useGyro: Boolean = true, val useRR: Boolean = false, val useSlam: Boolean = false)

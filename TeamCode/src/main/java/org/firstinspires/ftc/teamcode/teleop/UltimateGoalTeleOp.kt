@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
-import com.acmerobotics.roadrunner.localization.TwoTrackingWheelLocalizer
-import com.acmerobotics.roadrunner.util.Angle
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes.MOETeleOp
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
@@ -32,6 +30,9 @@ open class UltimateGoalTeleOp : MOETeleOp() {
             if (gpad2.dpad.right.isToggled) close() else open()
 
         }
+        gpad1.back.onKeyDown {
+            openCVConfig?.pipeline?.savePicture()
+        }
 
     }
 
@@ -52,6 +53,7 @@ open class UltimateGoalTeleOp : MOETeleOp() {
         telemetry.addData("outerVelocity", robot.shooter.outer.velocity)
 
     }
+    override val initialPose = Pose2d(heading = 270.toRadians())
 
 
 }

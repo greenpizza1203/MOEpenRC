@@ -32,10 +32,10 @@ class MOEPenCV(val config: MOEPenCVConfig) {
     private fun getCameraMonitorView() = Ref.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
 
 
-    fun getBitmap(): Bitmap? {
-        pipeline.requestFrame()
-        while (moeOpMode.isActive() && pipeline.lastFrame == null) {
-        }
-        return pipeline.lastFrame!!.toBitMap()!!
-    }
+//    fun getBitmap(): Bitmap? {
+//        pipeline.requestFrame()
+//        while (moeOpMode.isActive() && pipeline.lastFrame == null) {
+//        }
+//        return pipeline.lastFrame!!.toBitMap()!!
+//    }
 }

@@ -25,49 +25,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.MOEHighGoalPipeline
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPenCVConfig
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.centerX
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.MOERingPipeline
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.Target
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPid.MOERawPid
 import org.firstinspires.ftc.teamcode.teleop.UltimateGoalTeleOp
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
 
 @TeleOp
-class RedVisionLocalizationTest : UltimateGoalTeleOp() {
-    val turnPid = MOERawPid(0.003, 0.0, 0.0)
+class Capture : UltimateGoalTeleOp() {
 
-    override fun initOpMode() {
-        super.initOpMode()
-        turnPid.setOutputLimits(0.4)
-
-    }
-
-    override fun initChassis() {
-        robot.chassis.loop {
-            val driveVector = gpad1.left.stick.vector()
-
-            //Field centric driving
-            driveVector.rotate(-robot.gyro.angle)
-
-            val redRect = (robot.opencv.pipeline as MOEHighGoalPipeline).redRect
-
-            telemetry.addData("middleRed", redRect?.centerX())
-            val rot = if (gpad1.dpad.left() && redRect != null) {
-                -turnPid.getOutput(redRect.centerX(), 423.0)
-            } else {
-                gpad1.right.stick.x()
-            }
-            telemetry.addData("rot", rot)
-//            telemetry.addData("middleBlue", middleBlue)
-            setFromPolar(driveVector, rot)
-        }
-    }
-
-    override fun mainLoop() {
-
-
-    }
-
-
-    override val openCVConfig = MOEPenCVConfig(MOEHighGoalPipeline(Target.RED))
+    override val openCVConfig = MOEPenCVConfig(MOERingPipeline(x = 34, y = 221, width = 95, height = 61))
 
 }
 

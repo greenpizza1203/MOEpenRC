@@ -66,7 +66,7 @@ class BlueVisionLocalizationTest : UltimateGoalTeleOp() {
 
     }
 
-    override val initialPose = Pose2d(heading = 270.toRadians())
+//    override val initialPose = Pose2d(heading = 270.toRadians())
 
     override val openCVConfig = MOEPenCVConfig(MOEHighGoalPipeline(Target.BLUE))
 

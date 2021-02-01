@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.firstinspires.ftc.teamcode.constants.Ref.moeOpMode
 import org.opencv.core.Mat
 import org.openftc.easyopencv.OpenCvPipeline
@@ -56,6 +60,17 @@ open class MOEPipeline : OpenCvPipeline() {
         frameRequested = true
     }
 
+    fun savePicture(sync: Boolean = false) {
+        val block: suspend CoroutineScope.() -> Unit = {
+            requestFrame()
+            while (moeOpMode.isActive() && lastFrame == null) {
+
+            }
+            if (lastFrame != null) saveMatToDisk(lastFrame, "${System.currentTimeMillis()}-teleop")
+        }
+        if (sync) runBlocking(block = block) else GlobalScope.launch(block = block)
+
+    }
 
 
 }

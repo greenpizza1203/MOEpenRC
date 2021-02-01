@@ -5,7 +5,6 @@ import android.util.Log
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.resize
-import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.core.Scalar
 import org.opencv.core.Size
@@ -30,22 +29,22 @@ class MOEPipelineAssist(val hardwareMap: HardwareMap, pipeline: OpenCvPipeline) 
     }
 
 }
-
-class TestRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : OpenCvPipeline() {
-    @SuppressLint("SdCardPath")
-    override fun init(input: Mat) {
-        val filename = "ring_${System.currentTimeMillis()}"
-        val cropped = input.submat(y, y + height, x, x + width)
-        saveMatToDisk(cropped, "${filename}_cropped")
-        Log.e("file", "saved to $filename")
-    }
-
-    override fun processFrame(input: Mat): Mat {
-        return input.submat(y, y + height, x, x + width)
-
-    }
-
-}
+//
+//class TestRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : OpenCvPipeline() {
+//    @SuppressLint("SdCardPath")
+//    override fun init(input: Mat) {
+//        val filename = "ring_${System.currentTimeMillis()}"
+//        val cropped = input.submat(y, y + height, x, x + width)
+//        saveMatToDisk(cropped, "${filename}_cropped")
+//        Log.e("file", "saved to $filename")
+//    }
+//
+//    override fun processFrame(input: Mat): Mat {
+//        return input.submat(y, y + height, x, x + width)
+//
+//    }
+//
+//}
 
 
 class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : OpenCvPipeline() {
@@ -86,12 +85,12 @@ class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int)
     override fun processFrame(input: Mat): Mat {
         val submat = input.submat(y, y + height, x, x + width)
         Imgproc.cvtColor(submat, frameHSV, Imgproc.COLOR_RGB2HSV)
-        Core.inRange(frameHSV, lower, upper, thresh)
+//        Core.inRange(frameHSV, lower, upper, thresh)
         thresh.resize(fourbyone, small)
 
         var sum = 0
         repeat(4) {
-            if (small.get(it, 0)[0] == 0.0) sum++
+            if (small.get(it, 0)[0] < 20.0) sum++
         }
         count = when (sum) {
             1, 2 -> 1

@@ -4,11 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.Colors.BLUE
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPipeline
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.drawLine
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.resize
-import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.lerp
 import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.core.Scalar
@@ -52,7 +48,7 @@ class TestRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) 
 }
 
 
-class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : MOEPipeline() {
+class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : OpenCvPipeline() {
     //    val lowH = 0.0
 //    val highH = 180.0
     val lower = Scalar(0.0, 0.0, 0.0)
@@ -67,37 +63,30 @@ class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int)
     val thresh = Mat()
     val small = Mat()
     var count = 0
-    override fun preview(input: Mat): Mat {
-        val color = (System.currentTimeMillis() / 1000 % 20) < 10
-        val submat = input.submat(y, y + height, x, x + width)
-        //TODO: the stuff
-        Imgproc.cvtColor(submat, frameHSV, Imgproc.COLOR_RGB2HSV)
-//        Core.split(frameHSV, channels)
-//        Core.extractChannel(frameHSV, hChannel, 0)
-//        Imgproc.threshold(hChannel, hChannel, 40.0, 0.0, THRESH_TOZERO)
-//        Core.insertChannel(submat)
+//    override fun preview(input: Mat): Mat {
+//        val color = (System.currentTimeMillis() / 1000 % 20) < 10
+//        val submat = input.submat(y, y + height, x, x + width)
+//        //TODO: the stuff
+//        Imgproc.cvtColor(submat, frameHSV, Imgproc.COLOR_RGB2HSV)
+////        Core.split(frameHSV, channels)
+////        Core.extractChannel(frameHSV, hChannel, 0)
+////        Imgproc.threshold(hChannel, hChannel, 40.0, 0.0, THRESH_TOZERO)
+////        Core.insertChannel(submat)
+//
+//        Core.inRange(frameHSV,
+//                lower,
+//                upper,
+//                thresh)
+//        val actual = if (color) submat else thresh
+//        for (i in 1 until 4) actual.drawLine(y = (0.0..submat.height().toDouble()).lerp(i / 4.0), color = BLUE, thickness = 1)
+//        return actual
+//    }
 
-        Core.inRange(frameHSV,
-                lower,
-                upper,
-                thresh)
-        val actual = if (color) submat else thresh
-        for (i in 1 until 4) actual.drawLine(y = (0.0..submat.height().toDouble()).lerp(i / 4.0), color = BLUE, thickness = 1)
-        return actual
-    }
-
-    var saved = false
     var smallSize = Size(1.0, 4.0)
-    override fun process(input: Mat): Mat {
-        if (!saved) {
-            saveMatToDisk(input, "test")
-            saved = true
-        }
-        Imgproc.cvtColor(input, frameHSV, Imgproc.COLOR_RGB2HSV)
-        Core.inRange(frameHSV,
-                lower,
-                upper,
-                thresh)
+    override fun processFrame(input: Mat): Mat {
+        val submat = input.submat(y, y + height, x, x + width)
+        Imgproc.cvtColor(submat, frameHSV, Imgproc.COLOR_RGB2HSV)
+        Core.inRange(frameHSV, lower, upper, thresh)
         thresh.resize(smallSize, small)
         var sum = 0
         repeat(4) {
@@ -110,6 +99,5 @@ class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int)
             else -> 0
         }
         return thresh
-//        update(frame, thresh)
     }
 }

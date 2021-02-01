@@ -32,7 +32,7 @@ import org.firstinspires.ftc.teamcode.teleop.UltimateGoalTeleOp
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
 
 @TeleOp
-class Capture : UltimateGoalTeleOp() {
+class CaptureTeleOp : UltimateGoalTeleOp() {
 
     override val openCVConfig = MOEPenCVConfig(MOERingPipeline(x = 34, y = 221, width = 95, height = 61))
 

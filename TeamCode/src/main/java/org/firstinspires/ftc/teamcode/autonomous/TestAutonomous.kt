@@ -72,10 +72,10 @@ class TestAutonomous : LinearOpMode() {
         grabber = hardwareMap.servo["WAS21"]
         arm = hardwareMap.get(DcMotorEx::class.java, "WAM12")
         arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-//        var Config: Int = 0
+      var Config: Int = 0
 //      Temporary Config for testing
-        val pipeline = BasicRingPipeline(x = 34, y = 221, width = 95, height = 61)
-        val ringDetectAssist = MOEPipelineAssist(hardwareMap, pipeline)
+        //val pipeline = BasicRingPipeline(x = 34, y = 221, width = 95, height = 61)
+        //val ringDetectAssist = MOEPipelineAssist(hardwareMap, pipeline)
 
         val drive = SampleMecanumDrive(hardwareMap)
         val startPose = Pose2d(-60.0, 24.0, Math.toRadians(180.0))
@@ -190,7 +190,7 @@ class TestAutonomous : LinearOpMode() {
 
 
         waitForStart()
-        val Config = pipeline.count
+        //val Config = pipeline.count
         if (Config == -1) {
             drive.followTrajectory(PowerShot1)
             shootRing()

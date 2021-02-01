@@ -14,22 +14,22 @@ open class UltimateGoalTeleOp : MOETeleOp() {
         gpad1.right.stick.button.onKeyDown { robot.gyro.angle = 90.toRadians() }
         initChassis()
         robot.intake.loop {
-            if (gpad1.a.isToggled) run() else stop()
+            if (gpad1.a.isToggled) run() else if (gpad1.b.isPressed) reverse() else stop()
         }
         robot.shooter.loop {
             if (gpad1.y.isToggled) enable() else disable()
-            if (gpad2.a.isToggled) target(1400.0) else target(1800.0)
+            if (gpad2.a.isToggled) target(1400.0) else target(1900.0)
         }
         gpad1.x.onKeyDown {
             if (gpad2.a.isToggled) robot.shooter.shootRing() else robot.shooter.shootRings()
         }
         robot.wobble.loop {
             when {
-                gpad1.dpad.up() -> raise()
-                gpad1.dpad.down() -> lower()
+                gpad2.dpad.up() -> raise()
+                gpad2.dpad.down() -> lower()
                 else -> stop()
             }
-            if (gpad1.dpad.right.isToggled) close() else open()
+            if (gpad2.dpad.right.isToggled) close() else open()
 
         }
 

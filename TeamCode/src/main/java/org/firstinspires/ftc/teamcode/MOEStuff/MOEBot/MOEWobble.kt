@@ -22,7 +22,7 @@ class MOEWobble {
     }
 
     fun lower() {
-        arm.power = -0.5
+        arm.power = -1.0
     }
 
     fun stop() {

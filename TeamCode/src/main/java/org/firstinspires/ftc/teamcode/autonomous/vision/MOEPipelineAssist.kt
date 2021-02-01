@@ -82,17 +82,17 @@ class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int)
 //        return actual
 //    }
 
-    var smallSize = Size(1.0, 4.0)
+    var fourbyone = Size(1.0, 4.0)
     override fun processFrame(input: Mat): Mat {
         val submat = input.submat(y, y + height, x, x + width)
         Imgproc.cvtColor(submat, frameHSV, Imgproc.COLOR_RGB2HSV)
         Core.inRange(frameHSV, lower, upper, thresh)
-        thresh.resize(smallSize, small)
+        thresh.resize(fourbyone, small)
+
         var sum = 0
         repeat(4) {
             if (small.get(it, 0)[0] == 0.0) sum++
         }
-
         count = when (sum) {
             1, 2 -> 1
             3, 4 -> 4

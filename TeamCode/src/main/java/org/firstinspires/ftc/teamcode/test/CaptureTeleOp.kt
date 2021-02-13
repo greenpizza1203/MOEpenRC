@@ -28,7 +28,7 @@ import org.firstinspires.ftc.teamcode.teleop.UltimateGoalTeleOp
 @TeleOp
 class CaptureTeleOp : UltimateGoalTeleOp() {
 
-    override val openCVConfig = MOEPenCVConfig(MOERingPipeline(x = 34, y = 221, width = 95, height = 61), camera = "LowCam")
+    override val openCVConfig = MOEPenCVConfig(MOERingPipeline(x = 34, y = 221, width = 95, height = 61), camera = "RingCam")
 
 }
 

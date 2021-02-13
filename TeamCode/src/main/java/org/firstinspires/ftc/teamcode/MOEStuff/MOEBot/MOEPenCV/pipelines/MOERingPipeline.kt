@@ -72,7 +72,8 @@ class MOERingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) :
             while (Ref.moeOpMode.isActive() && lastFrame == null) {
 
             }
-            if (lastFrame != null) saveMatToDisk(lastFrame, "${System.currentTimeMillis()}-teleop")
+            val submat = lastFrame!!.submat(y, y + height, x, x + width)
+            saveMatToDisk(submat, "${System.currentTimeMillis()}-teleop")
         }
         if (sync) runBlocking(block = block) else GlobalScope.launch(block = block)
 

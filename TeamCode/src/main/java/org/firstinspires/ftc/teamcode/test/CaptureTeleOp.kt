@@ -20,21 +20,15 @@
  */
 package org.firstinspires.ftc.teamcode.test
 
-import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.MOEHighGoalPipeline
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPenCVConfig
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.centerX
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.MOERingPipeline
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.Target
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPid.MOERawPid
 import org.firstinspires.ftc.teamcode.teleop.UltimateGoalTeleOp
-import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
 
 @TeleOp
 class CaptureTeleOp : UltimateGoalTeleOp() {
 
-    override val openCVConfig = MOEPenCVConfig(MOERingPipeline(x = 34, y = 221, width = 95, height = 61))
+    override val openCVConfig = MOEPenCVConfig(MOERingPipeline(x = 34, y = 221, width = 95, height = 61), camera = "LowCam")
 
 }
 

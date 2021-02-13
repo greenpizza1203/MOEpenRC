@@ -48,7 +48,8 @@ class MOERingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) :
     var saved = false
     override fun process(input: Mat): Mat {
         if (!saved) {
-            saveMatToDisk(input, "test")
+            val submat = input.submat(y, y + height, x, x + width)
+            saveMatToDisk(submat, "test")
             saved = true
         }
         Imgproc.cvtColor(input, frameHSV, Imgproc.COLOR_RGB2HSV)

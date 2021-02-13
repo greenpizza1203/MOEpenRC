@@ -185,9 +185,10 @@ class TestAutonomous : LinearOpMode() {
 
 
         waitForStart()
-//      Temporary Config for testing
-        //      var Config: Int = 0
         val Config = pipeline.count
+        telemetry.addData("RingCount", Config)
+        telemetry.update()
+        wait(5.0)
 
         if (Config == -1) {
             drive.followTrajectory(PowerShot1)

@@ -38,4 +38,3 @@ class CaptureTeleOp : UltimateGoalTeleOp() {
 
 }
 
-

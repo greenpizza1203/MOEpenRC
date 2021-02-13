@@ -95,7 +95,7 @@ class UltimateGoalTeleOpFast : OpMode() {
         fromMecanum(fwd, str, rot)
     }
 
-    var shooterTarget = 1800.0
+    var shooterTarget = 2400.0
     var powerShotTarget = 1400.0
 
     private fun shooter() {
@@ -117,7 +117,7 @@ class UltimateGoalTeleOpFast : OpMode() {
                     else -> 0.85
                 }
                 outerShooterMotor.velocity = shooterTarget
-                innerShooterMotor.velocity = shooterTarget
+                innerShooterMotor.velocity = 100.0
             }
         } else {
             outerShooterMotor.velocity = 0.0

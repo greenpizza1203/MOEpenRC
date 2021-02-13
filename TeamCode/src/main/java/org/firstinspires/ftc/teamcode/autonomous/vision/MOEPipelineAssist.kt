@@ -96,6 +96,6 @@ class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int)
             3, 4 -> 4
             else -> 0
         }
-        return frameHSV
+        return submat
     }
 }

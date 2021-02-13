@@ -1,8 +1,13 @@
 package org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.Colors.BLUE
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPipeline
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.drawLine
+import org.firstinspires.ftc.teamcode.constants.Ref
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.lerp
 import org.opencv.core.Core
 import org.opencv.core.Mat
@@ -59,5 +64,17 @@ class MOERingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) :
                 thresh)
         return thresh
 //        update(frame, thresh)
+    }
+
+    override fun savePicture(sync: Boolean) {
+        val block: suspend CoroutineScope.() -> Unit = {
+            requestFrame()
+            while (Ref.moeOpMode.isActive() && lastFrame == null) {
+
+            }
+            if (lastFrame != null) saveMatToDisk(lastFrame, "${System.currentTimeMillis()}-teleop")
+        }
+        if (sync) runBlocking(block = block) else GlobalScope.launch(block = block)
+
     }
 }

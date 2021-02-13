@@ -60,7 +60,7 @@ open class MOEPipeline : OpenCvPipeline() {
         frameRequested = true
     }
 
-    fun savePicture(sync: Boolean = false) {
+    open fun savePicture(sync: Boolean = false) {
         val block: suspend CoroutineScope.() -> Unit = {
             requestFrame()
             while (moeOpMode.isActive() && lastFrame == null) {

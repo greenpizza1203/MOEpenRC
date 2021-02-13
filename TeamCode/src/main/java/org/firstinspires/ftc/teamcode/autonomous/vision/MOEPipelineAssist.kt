@@ -89,7 +89,7 @@ class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int)
 
         var sum = 0
         repeat(4) {
-            if (small.get(it, 0)[0] < 20.0) sum++
+            if (small.get(it, 0)[0] < 40.0) sum++
         }
         count = when (sum) {
             1, 2 -> 1

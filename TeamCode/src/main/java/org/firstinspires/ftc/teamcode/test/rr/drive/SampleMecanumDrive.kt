@@ -266,7 +266,7 @@ class SampleMecanumDrive(hardwareMap: HardwareMap) : MecanumDrive(kV, kA, kStati
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap)
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next()
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
-            module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO
+//            module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO
         }
 
         // TODO: adjust the names of the following hardware devices to match your configuration

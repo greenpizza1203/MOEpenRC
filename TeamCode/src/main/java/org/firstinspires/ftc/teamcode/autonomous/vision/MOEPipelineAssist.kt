@@ -45,7 +45,6 @@ class MOEPipelineAssist(val hardwareMap: HardwareMap, pipeline: OpenCvPipeline) 
 //
 //}
 
-
 class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int) : OpenCvPipeline() {
     //    val lowH = 0.0
 //    val highH = 180.0

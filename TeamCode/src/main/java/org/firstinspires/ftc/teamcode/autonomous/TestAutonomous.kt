@@ -327,7 +327,7 @@ class TestAutonomous : LinearOpMode() {
         opencvAssist.webcam.activeCamera = opencvAssist.highCam
         opencvAssist.webcam.setPipeline(highGoal)
         val timer = ElapsedTime()
-        while (timer.seconds() < 4) telemetry.addData("centerX", highGoal.blueRect?.centerX())
+        while (timer.seconds() < 3) telemetry.addData("centerX", highGoal.blueRect?.centerX())
     }
 
 }

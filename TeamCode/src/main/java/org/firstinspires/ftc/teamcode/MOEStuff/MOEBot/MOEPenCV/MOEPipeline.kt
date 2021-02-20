@@ -33,17 +33,7 @@ open class MOEPipeline : OpenCvPipeline() {
     open fun process(input: Mat): Mat {
         return input
     }
-//    private fun drawText(newMat: Mat) {
-//        val croppedMat = Mat()
-//        Imgproc.resize(newMat, croppedMat, Size(4.0, 1.0))
-//        Imgproc.cvtColor(croppedMat, croppedMat, COLOR_BGR2HSV)
-//        val data = processData(croppedMat)
-//
-//        data.forEachIndexed { index, it ->
-//            newMat.drawText(60.0 + 300 * index, 295.0, it.roundToInt().toString(), color = PINK)
-//        }
-//
-//    }
+
 
     private fun processData(croppedMat: Mat): MutableList<Double> {
         val data = MutableList(4) {

@@ -5,12 +5,12 @@ import android.util.Log
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.hardware.camera.SwitchableCamera
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
-import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.resize
-import org.opencv.core.Mat
-import org.opencv.core.Scalar
-import org.opencv.core.Size
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.*
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.Target
+import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import org.openftc.easyopencv.*
+import kotlin.math.roundToInt
 
 
 class MOEPipelineAssist(val hardwareMap: HardwareMap, pipeline: OpenCvPipeline) {
@@ -98,4 +98,59 @@ class BasicRingPipeline(val x: Int, val y: Int, val width: Int, val height: Int)
 
         return submat
     }
+}
+class BasicHighGoalPipeline(target: Target) : OpenCvPipeline() {
+    var lowerRed = 155.0
+    var upperRed = 255.0
+    var lowerBlue = 155.0
+    var upperBlue = 255.0
+    private val matYCrCb = Mat()
+
+    private val redChannel = Mat()
+    private val blueChannel = Mat()
+
+    private val redContours = mutableListOf<MatOfPoint>()
+    private val blueContours = mutableListOf<MatOfPoint>()
+
+    var blueRect: Rect? = null
+    var redRect: Rect? = null
+
+    private val redThreshold = Mat()
+    private val blueThreshold = Mat()
+
+    private val identifyBlue = target == Target.BLUE || target == Target.BOTH
+    private val identifyRed = target == Target.RED || target == Target.BOTH
+    private var biggestBlueContour: MatOfPoint? = null
+    private var biggestRedContour: MatOfPoint? = null
+    var conversion = if (System.getenv("DESKTOP") != null) {
+        Imgproc.COLOR_BGR2YCrCb
+    } else {
+        Imgproc.COLOR_RGB2YCrCb
+    }
+
+    var tempMat = Mat()
+
+    override fun processFrame(input: Mat): Mat {
+        Imgproc.cvtColor(input, matYCrCb, conversion)
+        if (identifyRed) {
+            Core.extractChannel(matYCrCb, redChannel, 1)
+            Imgproc.threshold(redChannel, redThreshold, lowerRed, upperRed, Imgproc.THRESH_BINARY)
+            redContours.clear()
+            Imgproc.findContours(redThreshold, redContours, tempMat, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE)
+            biggestRedContour = redContours.maxByOrNull { Imgproc.contourArea(it) }
+            redRect = biggestRedContour?.boundingRect()
+
+        }
+        if (identifyBlue) {
+            Core.extractChannel(matYCrCb, blueChannel, 2)
+            Imgproc.threshold(blueChannel, blueThreshold, lowerBlue, upperBlue, Imgproc.THRESH_BINARY)
+            blueContours.clear()
+            Imgproc.findContours(blueThreshold, blueContours, tempMat, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE)
+            biggestBlueContour = blueContours.maxByOrNull { Imgproc.contourArea(it) }
+            blueRect = biggestBlueContour?.boundingRect()
+        }
+        return input
+    }
+
+
 }

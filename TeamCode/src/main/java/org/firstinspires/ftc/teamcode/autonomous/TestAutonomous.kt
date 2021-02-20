@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.centerX
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.MOEHighGoalPipeline
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.Target
+import org.firstinspires.ftc.teamcode.autonomous.vision.BasicHighGoalPipeline
 import org.firstinspires.ftc.teamcode.autonomous.vision.BasicRingPipeline
 import org.firstinspires.ftc.teamcode.autonomous.vision.MOEPipelineAssist
 import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
@@ -321,7 +322,7 @@ class TestAutonomous : LinearOpMode() {
         }
     }
 
-    val highGoal = MOEHighGoalPipeline(Target.BLUE)
+    val highGoal = BasicHighGoalPipeline(Target.BLUE)
 
     fun runPid() {
         opencvAssist.webcam.activeCamera = opencvAssist.highCam

@@ -36,19 +36,29 @@ class TestAutonomous : LinearOpMode() {
     }
 
     fun release() {
-        arm.power = 0.6
-        wait(0.5)
-        arm.power = 0.0
+        arm.power = 0.6//start putting out arm
+        wait(0.4)
+        arm.power = 0.0//stop arm
+        wait(0.6)
+        grabber.position = 0.25//drop the wobbly boi
+
+        wait(0.5)//let things settle
+
+        arm.power = 0.4//arm down more 2 grab next boi
         wait(0.1)
-        grabber.position = 0.25
+        arm.power = 0.0//stop arm
     }
 
     fun grab() {
         grabber.position = 0.05
         wait(0.1)
-        arm.power = -0.6
-        wait(0.7)
+        arm.power = -0.4
+        wait(0.2)
         arm.power = 0.0
+//        wait(1.0)
+//        arm.power = -0.4
+//        wait(0.7)
+//        arm.power = 0.0
     }
 
 //    fun getRingStack(x:Int, y:Int, width:Int, height:Int): Int{
@@ -65,7 +75,7 @@ class TestAutonomous : LinearOpMode() {
     lateinit var trigger: Servo
     lateinit var grabber: Servo
     lateinit var arm: DcMotor
-    val Velocity = 2000
+    val Velocity = 2100
     lateinit var opencvAssist: MOEPipelineAssist
 
     override fun runOpMode() {
@@ -133,84 +143,93 @@ class TestAutonomous : LinearOpMode() {
                 .build()
 
         val Config1Part3: Trajectory = drive.trajectoryBuilder(Config1Part2.end(), true)
-                .splineTo(Vector2d(-40.0, 48.0), Math.toRadians(170.0))
+                .splineTo(Vector2d(-34.0, 48.0), Math.toRadians(200.0))
                 .build()
 
         val Config1Part4: Trajectory = drive.trajectoryBuilder(Config1Part3.end(), true)
-                .splineTo(Vector2d(0.0, 48.0), Math.toRadians(60.0))
+                .splineTo(Vector2d(-24.0, 36.0), Math.toRadians(60.0))
                 .build()
 
         val Config1Part5: Trajectory = drive.trajectoryBuilder(Config1Part4.end(), true)
-                .splineTo(Vector2d(12.0, 48.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(12.0, 44.0), Math.toRadians(90.0))
+                .build()
+        val Config1Temp: Trajectory = drive.trajectoryBuilder(Config1Part3.end(),true)
+                .forward(54.0)
                 .build()
 
 
-        val Config2Part1: Trajectory = drive.trajectoryBuilder(startPose)
+        val Config2Part1: Trajectory = drive.trajectoryBuilder(startPose, true)
                 .splineTo(Vector2d(-12.0, 16.0), Math.toRadians(0.0))
                 .splineTo(Vector2d(0.0, 36.0), Math.toRadians(0.0))
                 .build()
 
-        val Config2Part2: Trajectory = drive.trajectoryBuilder(Config2Part1.end())
+        val Config2Part2: Trajectory = drive.trajectoryBuilder(Config2Part1.end(), true)
                 .splineTo(Vector2d(20.0, 36.0), Math.toRadians(0.0))
                 .build()
 
-        val Config2Part3: Trajectory = drive.trajectoryBuilder(Config2Part2.end())
+        val Config2Part3: Trajectory = drive.trajectoryBuilder(Config2Part2.end(), true)
                 .splineTo(Vector2d(-12.0, 52.0), Math.toRadians(180.0))
                 .splineTo(Vector2d(-36.0, 48.0), Math.toRadians(185.0))
                 .build()
 
-        val Config2Part4: Trajectory = drive.trajectoryBuilder(Config2Part3.end())
+        val Config2Part4: Trajectory = drive.trajectoryBuilder(Config2Part3.end(), true)
                 .splineTo(Vector2d(-12.0, 52.0), Math.toRadians(180.0))
                 .splineTo(Vector2d(18.0, 36.0), Math.toRadians(-10.0))
                 .build()
 
 
-        val Config3Part1: Trajectory = drive.trajectoryBuilder(startPose)
+        val Config3Part1: Trajectory = drive.trajectoryBuilder(startPose, true)
                 .splineTo(Vector2d(-12.0, 16.0), Math.toRadians(0.0))
                 .splineTo(Vector2d(0.0, 36.0), Math.toRadians(0.0))
                 .build()
 
-        val Config3Part2: Trajectory = drive.trajectoryBuilder(Config3Part1.end())
+        val Config3Part2: Trajectory = drive.trajectoryBuilder(Config3Part1.end(), true)
                 .splineTo(Vector2d(48.0, 60.0), Math.toRadians(0.0))
                 .build()
 
-        val Config3Part3: Trajectory = drive.trajectoryBuilder(Config3Part2.end())
+        val Config3Part3: Trajectory = drive.trajectoryBuilder(Config3Part2.end(), true)
                 .splineTo(Vector2d(-36.0, 48.0), Math.toRadians(185.0))
                 .build()
 
-        val Config3Part4: Trajectory = drive.trajectoryBuilder(Config3Part3.end())
+        val Config3Part4: Trajectory = drive.trajectoryBuilder(Config3Part3.end(), true)
                 .splineTo(Vector2d(42.0, 60.0), Math.toRadians(0.0))
                 .build()
 
-        val Config3Part5: Trajectory = drive.trajectoryBuilder(Config3Part4.end())
+        val Config3Part5: Trajectory = drive.trajectoryBuilder(Config3Part4.end(),true)
                 .lineTo(Vector2d(12.0, 48.0))
                 .build()
 
+        val Config3Temp: Trajectory = drive.trajectoryBuilder(Config3Part2.end(), true)
+                .forward(36.0)
+                .build()
 
         val PowerShot1: Trajectory = drive.trajectoryBuilder(startPose)
                 .splineTo(Vector2d(-12.0, 19.5), Math.toRadians(0.0))
                 .build()
 
-
+        grabber.position = 0.05
+        telemetry.addLine("Ready!")
+        telemetry.update()
         waitForStart()
-        val Config = pipeline.count
+        var Config = pipeline.count
         telemetry.addData("RingCount", Config)
         telemetry.update()
-        wait(1.0)
 
         if (Config == -1) {
-            drive.followTrajectory(PowerShot1)
-            shootRing()
-            wait(0.3)
-            drive.turn(Math.toRadians(5.9))
-            wait(0.3)
-            shootRing()
-            drive.turn(Math.toRadians(5.6))
-            wait(0.3)
-            shootRing()
+            telemetry.addLine("release")
+            telemetry.update()
+
+            release()
+            wait(3.0)
+            telemetry.addLine("grab")
+            telemetry.update()
+            grab()
+            wait(3.0)
+            telemetry.addLine("release")
+            telemetry.update()
+            release()
         }
         if (Config == -2) {
-            grabber.position = 0.05
 
             drive.followTrajectory(tempConfig)
             drive.followTrajectory(tempConfig2)
@@ -245,11 +264,12 @@ class TestAutonomous : LinearOpMode() {
             arm.power = 0.0
         }
         if (Config == 0) {
-            grabber.position = 0.05
             drive.followTrajectory(Config1Part1)
 
             innerShooterMotor.velocity = Velocity.toDouble()
             outerShooterMotor.velocity = Velocity.toDouble()
+
+           runPid()
 
             wait(0.15)
             shootRing()
@@ -267,58 +287,88 @@ class TestAutonomous : LinearOpMode() {
 
             release()
 
-            drive.followTrajectory(Config1Part3)
+//            drive.followTrajectory(Config1Part3)
+//
+//            grab()
+//
+//            drive.followTrajectory(Config1Temp)
 
-            grab()
+            grabber.position = 0.25
 
-            drive.followTrajectory(Config1Part4)
+//            drive.followTrajectory(Config1Part4)
+//            drive.followTrajectory(Config1Part5)
 
-            release()
+//            release()
 
-            drive.followTrajectory(Config1Part5)
+//            drive.followTrajectory(Config1Part5)
         }
         if (Config == 1) {
-            grabber.position = 0.05
 
             drive.followTrajectory(Config2Part1)
+
+            innerShooterMotor.velocity = Velocity.toDouble()
+            outerShooterMotor.velocity = Velocity.toDouble()
+
+            runPid()
+
+            wait(0.15)
+            shootRing()
+            wait(0.15)
+            shootRing()
+            wait(0.15)
+            shootRing()
+            wait(0.15)
+            shootRing()
+            innerShooterMotor.velocity = 0.0
+            outerShooterMotor.velocity = 0.0
 
             drive.followTrajectory(Config2Part2)
 
             release()
 
-            drive.followTrajectory(Config2Part3)
+//            drive.followTrajectory(Config2Part3)
 
-            grab()
+//            release()
 
-            drive.followTrajectory(Config2Part4)
 
-            release()
+//            drive.followTrajectory(Config2Part4)
+//
+//            release()
         }
         if (Config == 4) {
-            grabber.position = 0.05
 
             drive.followTrajectory(Config3Part1)
 
+            innerShooterMotor.velocity = Velocity.toDouble()
+            outerShooterMotor.velocity = Velocity.toDouble()
+
+            runPid()
+
             wait(0.15)
             shootRing()
             wait(0.15)
             shootRing()
             wait(0.15)
             shootRing()
+            wait(0.15)
+            shootRing()
+            innerShooterMotor.velocity = 0.0
+            outerShooterMotor.velocity = 0.0
 
             drive.followTrajectory(Config3Part2)
 
             release()
 
-            drive.followTrajectory(Config3Part3)
-
-            grab()
-
-            drive.followTrajectory(Config3Part4)
-
-            release()
-
-            drive.followTrajectory(Config3Part5)
+            drive.followTrajectory(Config3Temp)
+//            drive.followTrajectory(Config3Part3)
+//
+//            grab()
+//
+//            drive.followTrajectory(Config3Part4)
+//
+//            release()
+//
+//            drive.followTrajectory(Config3Part5)
         }
     }
 

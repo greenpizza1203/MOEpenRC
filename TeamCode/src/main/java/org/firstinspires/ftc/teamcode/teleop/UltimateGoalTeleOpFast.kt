@@ -117,7 +117,7 @@ class UltimateGoalTeleOpFast : OpMode() {
                     else -> 0.85
                 }
                 outerShooterMotor.velocity = shooterTarget
-                innerShooterMotor.velocity = 100.0
+                innerShooterMotor.velocity = shooterTarget
             }
         } else {
             outerShooterMotor.velocity = 0.0

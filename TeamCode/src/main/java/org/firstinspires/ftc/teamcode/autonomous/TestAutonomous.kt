@@ -31,16 +31,18 @@ class TestAutonomous : LinearOpMode() {
     }
 
     fun release() {
-        arm.power = -0.4
-        wait(0.8)
+        arm.power = 0.6
+        wait(0.5)
         arm.power = 0.0
+        wait(0.1)
         grabber.position = 0.25
     }
 
     fun grab() {
         grabber.position = 0.05
-        arm.power = 0.5
-        wait(0.8)
+        wait(0.1)
+        arm.power = -0.6
+        wait(0.7)
         arm.power = 0.0
     }
 
@@ -69,7 +71,7 @@ class TestAutonomous : LinearOpMode() {
         arm = hardwareMap.get(DcMotorEx::class.java, "WAM12")
         arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
-        val pipeline = BasicRingPipeline(x = 34, y = 221, width = 95, height = 61)
+        val pipeline = BasicRingPipeline(x = 128, y = 202, width = 95, height = 61)
         val ringDetectAssist = MOEPipelineAssist(hardwareMap, pipeline)
 
         val drive = SampleMecanumDrive(hardwareMap)
@@ -115,24 +117,24 @@ class TestAutonomous : LinearOpMode() {
                 .back(16.0)
                 .build()
 
-        val Config1Part1: Trajectory = drive.trajectoryBuilder(startPose)
+        val Config1Part1: Trajectory = drive.trajectoryBuilder(startPose, true)
                 .splineTo(Vector2d(-24.0, 36.0), Math.toRadians(0.0))
                 .splineTo(Vector2d(0.0, 36.0), Math.toRadians(0.0))
                 .build()
 
-        val Config1Part2: Trajectory = drive.trajectoryBuilder(Config1Part1.end())
+        val Config1Part2: Trajectory = drive.trajectoryBuilder(Config1Part1.end(), true)
                 .splineTo(Vector2d(12.0, 40.0), Math.toRadians(75.0))
                 .build()
 
-        val Config1Part3: Trajectory = drive.trajectoryBuilder(Config1Part2.end())
+        val Config1Part3: Trajectory = drive.trajectoryBuilder(Config1Part2.end(), true)
                 .splineTo(Vector2d(-40.0, 48.0), Math.toRadians(170.0))
                 .build()
 
-        val Config1Part4: Trajectory = drive.trajectoryBuilder(Config1Part3.end())
+        val Config1Part4: Trajectory = drive.trajectoryBuilder(Config1Part3.end(), true)
                 .splineTo(Vector2d(0.0, 48.0), Math.toRadians(60.0))
                 .build()
 
-        val Config1Part5: Trajectory = drive.trajectoryBuilder(Config1Part4.end())
+        val Config1Part5: Trajectory = drive.trajectoryBuilder(Config1Part4.end(), true)
                 .splineTo(Vector2d(12.0, 48.0), Math.toRadians(0.0))
                 .build()
 
@@ -188,7 +190,7 @@ class TestAutonomous : LinearOpMode() {
         val Config = pipeline.count
         telemetry.addData("RingCount", Config)
         telemetry.update()
-        wait(5.0)
+        wait(1.0)
 
         if (Config == -1) {
             drive.followTrajectory(PowerShot1)
@@ -201,7 +203,7 @@ class TestAutonomous : LinearOpMode() {
             wait(0.3)
             shootRing()
         }
-        if (Config == 0) {
+        if (Config == -2) {
             grabber.position = 0.05
 
             drive.followTrajectory(tempConfig)
@@ -236,10 +238,15 @@ class TestAutonomous : LinearOpMode() {
             wait(0.7)
             arm.power = 0.0
         }
-        if (Config == 1) {
+        if (Config == 0) {
             grabber.position = 0.05
             drive.followTrajectory(Config1Part1)
 
+            innerShooterMotor.velocity = Velocity.toDouble()
+            outerShooterMotor.velocity = Velocity.toDouble()
+
+            wait(0.15)
+            shootRing()
             wait(0.15)
             shootRing()
             wait(0.15)
@@ -247,6 +254,8 @@ class TestAutonomous : LinearOpMode() {
             wait(0.15)
             shootRing()
 
+            innerShooterMotor.velocity = 0.0
+            outerShooterMotor.velocity = 0.0
 
             drive.followTrajectory(Config1Part2)
 
@@ -262,7 +271,7 @@ class TestAutonomous : LinearOpMode() {
 
             drive.followTrajectory(Config1Part5)
         }
-        if (Config == 2) {
+        if (Config == 1) {
             grabber.position = 0.05
 
             drive.followTrajectory(Config2Part1)
@@ -279,7 +288,7 @@ class TestAutonomous : LinearOpMode() {
 
             release()
         }
-        if (Config == 3) {
+        if (Config == 4) {
             grabber.position = 0.05
 
             drive.followTrajectory(Config3Part1)

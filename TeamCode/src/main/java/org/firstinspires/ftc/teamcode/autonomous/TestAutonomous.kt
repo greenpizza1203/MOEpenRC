@@ -9,9 +9,13 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.centerX
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.MOEHighGoalPipeline
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.Target
 import org.firstinspires.ftc.teamcode.autonomous.vision.BasicRingPipeline
 import org.firstinspires.ftc.teamcode.autonomous.vision.MOEPipelineAssist
 import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
+import java.util.*
 
 @Autonomous(group = "drive")
 class TestAutonomous : LinearOpMode() {
@@ -61,6 +65,7 @@ class TestAutonomous : LinearOpMode() {
     lateinit var grabber: Servo
     lateinit var arm: DcMotor
     val Velocity = 2000
+    lateinit var opencvAssist: MOEPipelineAssist
 
     override fun runOpMode() {
         intakeMotor = hardwareMap.dcMotor["INM13"]
@@ -72,7 +77,7 @@ class TestAutonomous : LinearOpMode() {
         arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
         val pipeline = BasicRingPipeline(x = 128, y = 202, width = 95, height = 61)
-        val ringDetectAssist = MOEPipelineAssist(hardwareMap, pipeline)
+        opencvAssist = MOEPipelineAssist(hardwareMap, pipeline)
 
         val drive = SampleMecanumDrive(hardwareMap)
         val startPose = Pose2d(-60.0, 24.0, Math.toRadians(180.0))
@@ -315,4 +320,13 @@ class TestAutonomous : LinearOpMode() {
             drive.followTrajectory(Config3Part5)
         }
     }
+
+    val highGoal = MOEHighGoalPipeline(Target.BLUE)
+
+    fun runPid() {
+        opencvAssist.webcam.activeCamera = opencvAssist.highCam
+        val timer = ElapsedTime()
+        while (timer.seconds() < 4) telemetry.addData("centerX", highGoal.blueRect?.centerX())
+    }
+
 }

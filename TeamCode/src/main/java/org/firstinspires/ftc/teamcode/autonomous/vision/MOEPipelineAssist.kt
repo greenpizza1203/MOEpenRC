@@ -3,26 +3,25 @@ package org.firstinspires.ftc.teamcode.autonomous.vision
 import android.annotation.SuppressLint
 import android.util.Log
 import com.qualcomm.robotcore.hardware.HardwareMap
+import org.firstinspires.ftc.robotcore.external.hardware.camera.SwitchableCamera
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.resize
 import org.opencv.core.Mat
 import org.opencv.core.Scalar
 import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
-import org.openftc.easyopencv.OpenCvCameraFactory
-import org.openftc.easyopencv.OpenCvCameraRotation
-import org.openftc.easyopencv.OpenCvPipeline
-import org.openftc.easyopencv.OpenCvWebcam
+import org.openftc.easyopencv.*
 
 
 class MOEPipelineAssist(val hardwareMap: HardwareMap, pipeline: OpenCvPipeline) {
-    var webcam: OpenCvWebcam
+    var webcam: OpenCvSwitchableWebcam
+    var ringCam = hardwareMap.get(WebcamName::class.java, "RingCam")
+    var highCam = hardwareMap.get(WebcamName::class.java, "HighCam")
 
     init {
         val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java, "RingCam"), cameraMonitorViewId)
+        webcam = OpenCvCameraFactory.getInstance().createSwitchableWebcam(cameraMonitorViewId, ringCam, highCam)
         webcam.setPipeline(pipeline)
-
         webcam.openCameraDeviceAsync {
             webcam.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT)
         }

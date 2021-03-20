@@ -4,11 +4,8 @@ import com.qualcomm.hardware.bosch.BNO055IMU
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.*
 import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior
-import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.DcMotorSimple
-import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.util.ElapsedTime
 import kotlin.math.cos
 import kotlin.math.max
@@ -29,6 +26,7 @@ class UltimateGoalTeleOpFast : OpMode() {
     lateinit var grabber: Servo
     lateinit var angle: Servo
     lateinit var arm: DcMotor
+
     var timer = ElapsedTime()
     override fun init() {
         gyro = hardwareMap.get(BNO055IMU::class.java, "imu")
@@ -57,6 +55,7 @@ class UltimateGoalTeleOpFast : OpMode() {
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
             module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO
         }
+
     }
 
     override fun init_loop() {
@@ -80,6 +79,10 @@ class UltimateGoalTeleOpFast : OpMode() {
         telemetry.addData("Loop ms", (System.nanoTime() - startTime) / 1000000.0)
         telemetry.addData("innerVelocity", innerShooterMotor.getVelocity())
         telemetry.addData("outerVelocity", outerShooterMotor.getVelocity())
+
+        var position = arm.getCurrentPosition()
+
+        telemetry.addData("arm", position)
     }
 
     fun loopChassis() {

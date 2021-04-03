@@ -36,36 +36,37 @@ class TestAutonomous : LinearOpMode() {
     }
 
     fun release() {
-        arm.setTargetPosition(100)
-        arm.setPower(-0.5)
-        wait(0.2)
-        grabber.position = 0.25
-//        arm.power = 0.6//start putting out arm
-//        wait(0.55)
-//        arm.power = 0.0//stop arm
-//        wait(0.6)
-//        grabber.position = 0.25//drop the wobbly boi
+//        if(arm.currentPosition > -550){arm.velocity = 0.5}
+//        wait(0.2)
+//        grabber.position = 0.25
+        ////////
+        arm.power = 0.8//start putting out arm
+        wait(0.25)
+        arm.power = 0.0//stop arm
+        wait(0.5)
+        wait(0.5)
+        wait(0.5)
+        grabber.position = 0.25//drop the wobbly boi
 
-//        wait(0.5)//let things settle
+        wait(0.5)//let things settle
 
-//        arm.power = 0.4//arm down more 2 grab next boi
-//        wait(0.1)
-//        arm.power = 0.0//stop arm
+        arm.power = 0.25//arm down more 2 grab next boi
+        wait(0.1)
+        arm.power = 0.0//stop arm
     }
 
     fun grab() {
-        arm.setTargetPosition(700)
-        arm.setPower(0.5)
-        wait(0.2)
-        grabber.position = 0.05
-        arm.setTargetPosition(-565)
-        arm.setPower(0.5)
-//        grabber.position = 0.05
-//        wait(0.1)
-//        arm.power = -0.4
+//        if(arm.currentPosition > -700){arm.velocity = 0.5}
 //        wait(0.2)
-//        arm.power = 0.0
-//        wait(1.0)
+//        grabber.position = 0.05
+//        if(arm.currentPosition < -565){arm.velocity = -0.5}
+        //////
+        grabber.position = 0.05
+        wait(0.3)
+        arm.power = -0.4
+        wait(0.2)
+        arm.power = 0.0
+        wait(1.0)
 //        arm.power = -0.4
 //        wait(0.7)
 //        arm.power = 0.0
@@ -90,8 +91,8 @@ class TestAutonomous : LinearOpMode() {
         arm = hardwareMap.get(DcMotorEx::class.java, "WAM12")
         arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
-        arm.targetPosition = -500
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION)
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
+        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER)
 
         val pipeline = BasicRingPipeline(x = 128, y = 202, width = 95, height = 61)
         opencvAssist = MOEPipelineAssist(hardwareMap, pipeline)
@@ -117,15 +118,15 @@ class TestAutonomous : LinearOpMode() {
                 .build()
 
         val Config1Part2: Trajectory = drive.trajectoryBuilder(Config1Part1.end(), true)
-                .splineTo(Vector2d(12.0, 40.0), Math.toRadians(75.0))
+                .splineTo(Vector2d(12.0, 40.0), Math.toRadians(82.0))
                 .build()
 
         val Config1Part3: Trajectory = drive.trajectoryBuilder(Config1Part2.end(), true)
-                .splineTo(Vector2d(-34.0, 48.0), Math.toRadians(208.0))
+                .splineTo(Vector2d(-31.0, 48.0), Math.toRadians(208.0))
                 .build()
 
-        val Config1Part4: Trajectory = drive.trajectoryBuilder(Config1Part3.end(), true)
-                .forward(36.0)
+        val Config1Part4: Trajectory = drive.trajectoryBuilder(Config1Part3.end().plus( Pose2d(0.0, 0.0, Math.toRadians(-35.0))), true)
+                .forward(44.0)
                 .build()
 
 
@@ -140,11 +141,11 @@ class TestAutonomous : LinearOpMode() {
 
         val Config2Part3: Trajectory = drive.trajectoryBuilder(Config2Part2.end(), true)
                 .splineTo(Vector2d(-12.0, 52.0), Math.toRadians(180.0))
-                .splineTo(Vector2d(-33.0, 48.0), Math.toRadians(200.0))
+                .splineTo(Vector2d(-35.0, 48.0), Math.toRadians(200.0))
                 .build()
 
-        val Config2Part4: Trajectory = drive.trajectoryBuilder(Config2Part3.end(), true)
-                .forward(60.0)
+        val Config2Part4: Trajectory = drive.trajectoryBuilder(Config2Part3.end().plus(Pose2d(0.0,0.0,Math.toRadians(-20.0))), true)
+                .forward(50.0)
                 .build()
 
 
@@ -162,7 +163,7 @@ class TestAutonomous : LinearOpMode() {
                 .build()
 
         val Config3Part3a: Trajectory = drive.trajectoryBuilder(Config3Part2.end(), true)
-                .splineToSplineHeading(Pose2d(-36.0, 48.0, Math.toRadians(185.0)), Math.toRadians(185.0))
+                .splineToSplineHeading(Pose2d(-32.0, 48.0, Math.toRadians(0.0)), Math.toRadians(185.0))
                 .build()
 
         val Config3Part4: Trajectory = drive.trajectoryBuilder(Config3Part3.end(), true)
@@ -174,13 +175,7 @@ class TestAutonomous : LinearOpMode() {
                 .build()
 
         val Config3Part5: Trajectory = drive.trajectoryBuilder(Config3Part4.end(),true)
-                .lineTo(Vector2d(12.0, 48.0))
-                .build()
-
-
-        val PowerShot1: Trajectory = drive.trajectoryBuilder(startPose)
-                .splineTo(Vector2d(-12.0, 19.5), Math.toRadians(0.0))
-                .splineTo(Vector2d(0.0, 19.5),Math.toRadians(0.0))
+                .forward(36.0)
                 .build()
 
         grabber.position = 0.02
@@ -192,11 +187,13 @@ class TestAutonomous : LinearOpMode() {
         telemetry.addData("RingCount", Config)
         telemetry.update()
 
-
         if(Config == -3){
 
         }
         if (Config == -1) {
+            telemetry.addData("arm", arm.getCurrentPosition())
+            telemetry.update()
+            wait(5.0)
             telemetry.addLine("release")
             telemetry.update()
 
@@ -272,11 +269,11 @@ class TestAutonomous : LinearOpMode() {
 
             grab()
 
-            drive.turn(Math.toRadians(-48.0))
+            drive.turn(Math.toRadians(-20.0))
 
             drive.followTrajectory(Config1Part4)
 
-            drive.turn(Math.toRadians(190.0))
+            drive.turn(Math.toRadians(-70.0))
 
             grabber.position = 0.25
         }
@@ -310,8 +307,11 @@ class TestAutonomous : LinearOpMode() {
 
             drive.turn(Math.toRadians(-10.0))
             drive.followTrajectory(Config2Part4)
-            drive.turn(Math.toRadians(150.0))
-
+            drive.turn(Math.toRadians(160.0))
+            arm.power = -0.7
+            wait(0.2)
+            arm.power = 0.0
+            wait(0.1)
             grabber.position = 0.25
         }
         if (Config == 4) {

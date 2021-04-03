@@ -34,12 +34,16 @@ class NewBotTest: OpMode() {
         targetVelocity += gamepad1.right_trigger.toDouble() * speed
         targetVelocity -= gamepad1.left_trigger.toDouble() * speed
 
-        servoA.power = gamepad1.left_stick_y.toDouble() * 0.5
-        servoB.power = gamepad1.left_stick_y.toDouble() * 0.5
+        servoA.power = gamepad1.left_stick_y.toDouble() * 0.4
+        servoB.power = gamepad1.left_stick_y.toDouble() * -0.4
 
+        servoA.power = power
+        servoB.power = power
 
         telemetry.addData("Velocity", shooter.velocity)
     }
+    var power = 0.0
+
     var targetVelocity = 0.0
     val speed = 10
 

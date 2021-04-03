@@ -25,7 +25,7 @@ class UltimateGoalTeleOpFast : OpMode() {
     lateinit var trigger: Servo
     lateinit var grabber: Servo
     lateinit var angle: Servo
-    lateinit var arm: DcMotor
+    lateinit var arm: DcMotorEx
 
     var timer = ElapsedTime()
     override fun init() {

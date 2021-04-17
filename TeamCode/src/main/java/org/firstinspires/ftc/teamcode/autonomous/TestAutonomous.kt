@@ -25,7 +25,6 @@ class TestAutonomous : LinearOpMode() {
     fun wait(waitTime: Double) {
         timer.reset()
         while (timer.time() < waitTime && opModeIsActive()) {
-
         }
     }
 
@@ -187,9 +186,6 @@ class TestAutonomous : LinearOpMode() {
         telemetry.addData("RingCount", Config)
         telemetry.update()
 
-        if(Config == -3){
-
-        }
         if (Config == -1) {
             telemetry.addData("arm", arm.getCurrentPosition())
             telemetry.update()

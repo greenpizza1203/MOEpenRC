@@ -39,10 +39,10 @@ object DriveConstants {
      * empirically tuned.
      */
     @JvmField
-    var kV = 180 * 0.0001
+    var kV = 0.01916310659617813
 
     @JvmField
-    var kA = 20 * 0.0001
+    var kA = 0.003
 
     @JvmField
     var kStatic = 0.0

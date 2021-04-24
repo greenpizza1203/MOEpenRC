@@ -38,9 +38,10 @@ class NewAutonomous : LinearOpMode() {
     }
 
     fun release() {
-        wobbleArmMotor.setPower(0.75)
         leftWobbleServo.position = 0.76
         rightWobbleServo.position = 0.16
+        wobbleArmMotor.targetPosition = 1000
+        wobbleArmMotor.power = 1.0
     }
 
     fun grab() {
@@ -76,7 +77,6 @@ class NewAutonomous : LinearOpMode() {
         wobbleArmMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
         wobbleArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
-        wobbleArmMotor.setTargetPosition(1000)//Down position
         wobbleArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION)
 
         leftWobbleServo = hardwareMap.servo["LWS10"]

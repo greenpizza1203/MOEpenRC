@@ -3,11 +3,9 @@ package org.firstinspires.ftc.teamcode.test.rr.drive
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer
-import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.test.rr.util.Encoder
-import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
 import java.util.*
 
 /*
@@ -24,64 +22,53 @@ import java.util.*
 *
 */
 @Config
-class FastThreeWheelOdo(hardwareMap: HardwareMap) : ThreeTrackingWheelLocalizer(listOf(
-        Pose2d(-0.343, 6.84484540983),  // left parallel
-        Pose2d(-0.343, -8.027830534778314),  // right parallel
-        Pose2d(-0.276, 0.343, 90.toRadians()) //strafe
+class FastThreeWheelOdo(hardwareMap: HardwareMap) : ThreeTrackingWheelLocalizer(Arrays.asList(
+        Pose2d(0.0, LATERAL_DISTANCE / 2, 0.0),  // left
+        Pose2d(0.0, -LATERAL_DISTANCE / 2, 0.0),  // right
+        Pose2d(FORWARD_OFFSET, 0.0, Math.toRadians(90.0)) // front
 )) {
-    val leftEncoder = Encoder(hardwareMap.get(DcMotorEx::class.java, "BRM23")) // Right Rear
-    val rightEncoder = Encoder(hardwareMap.get(DcMotorEx::class.java, "FRM22")) // Exhub 3
-    val strafeEncoder = Encoder(hardwareMap.get(DcMotorEx::class.java, "FLM20")) // Exhub 2
-    var LEFT_SCALAR = -305.3191489
-    var RIGHT_SCALAR = 305.3309693
-    var STRAFE_SCALAR = 305.1867612
-
-    init {
-        listOf(leftEncoder, rightEncoder, strafeEncoder).map {
-            val mode = it.motor.mode
-            it.motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-            it.motor.mode = mode
-        }
-    }
-
-    fun getRawPositions(): List<Int> {
-
-        return listOf(
-                leftEncoder.motor.currentPosition,
-                rightEncoder.motor.currentPosition,
-                strafeEncoder.motor.currentPosition
-        )
-
-    }
+    private val leftEncoder: Encoder
+    private val rightEncoder: Encoder
+    private val frontEncoder: Encoder
 
     override fun getWheelPositions(): List<Double> {
-
-        return listOf(
-                leftEncoder.motor.currentPosition / LEFT_SCALAR,
-                rightEncoder.motor.currentPosition / RIGHT_SCALAR,
-                strafeEncoder.motor.currentPosition / STRAFE_SCALAR
+        return Arrays.asList(
+                encoderTicksToInches(leftEncoder.getCurrentPosition().toDouble()) * X_MULTIPLIER,
+                encoderTicksToInches(rightEncoder.getCurrentPosition().toDouble()) * X_MULTIPLIER,
+                encoderTicksToInches(frontEncoder.getCurrentPosition().toDouble()) * Y_MULTIPLIER
         )
-
     }
 
-    override fun getWheelVelocities(): List<Double> {
-        return listOf(
-                leftEncoder.motor.velocity / LEFT_SCALAR,
-                rightEncoder.motor.velocity / RIGHT_SCALAR,
-                strafeEncoder.motor.velocity / STRAFE_SCALAR
+    override fun getWheelVelocities(): List<Double>? {
+        // TODO: If your encoder velocity can exceed 32767 counts / second (such as the REV Through Bore and other
+        //  competing magnetic encoders), change Encoder.getRawVelocity() to Encoder.getCorrectedVelocity() to enable a
+        //  compensation method
+        return Arrays.asList(
+                encoderTicksToInches(leftEncoder.getCorrectedVelocity()) * X_MULTIPLIER,
+                encoderTicksToInches(rightEncoder.getCorrectedVelocity()) * X_MULTIPLIER,
+                encoderTicksToInches(frontEncoder.getCorrectedVelocity()) * Y_MULTIPLIER
         )
     }
 
     companion object {
-        var TICKS_PER_REV = 0.0
-        var WHEEL_RADIUS = 2.0 // in
-        var LATERAL_DISTANCE = 10.0 // in; distance between the left and right wheels
-        var FORWARD_OFFSET = 4.0 // in; offset of the lateral wheel
+        var TICKS_PER_REV = 8192.0
+        var WHEEL_RADIUS = 0.7480 // in
+        var GEAR_RATIO = 1.0 // output (wheel) speed / input (encoder) speed
+        var LATERAL_DISTANCE = 15.00158 // in; distance between the left and right wheels
+        var FORWARD_OFFSET = -0.2756 // in; offset of the lateral wheel
+        var X_MULTIPLIER = 1.001785292
+        var Y_MULTIPLIER = 1.002938262
         fun encoderTicksToInches(ticks: Double): Double {
-            val wheelCircumference = WHEEL_RADIUS * 2 * Math.PI
-            return wheelCircumference * ticks / TICKS_PER_REV
+            return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV
         }
     }
 
+    init {
+        leftEncoder = Encoder(hardwareMap[DcMotorEx::class.java, "rightRear"])
+        rightEncoder = Encoder(hardwareMap[DcMotorEx::class.java, "rightEncoder"])
+        frontEncoder = Encoder(hardwareMap[DcMotorEx::class.java, "frontEncoder"])
 
+        // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
+        leftEncoder.setDirection(Encoder.Direction.REVERSE)
+    }
 }

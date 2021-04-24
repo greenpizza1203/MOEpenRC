@@ -54,7 +54,6 @@ class NewTeleop : OpMode() {
 
         wobbleArmMotor = hardwareMap.get(DcMotorEx::class.java, "WAM13")
         wobbleArmMotor.zeroPowerBehavior = ZeroPowerBehavior.BRAKE
-
         leftWobbleServo = hardwareMap.servo["LWS10"]
         rightWobbleServo = hardwareMap.servo["RWS11"]
         hopperLiftServo = hardwareMap.servo["HLS13"]

@@ -244,9 +244,9 @@ class SampleMecanumDrive(hardwareMap: HardwareMap) : MecanumDrive(kV, kA, kStati
         get() = imu.angularOrientation.firstAngle.toDouble()
 
     companion object {
-        var TRANSLATIONAL_PID = PIDCoefficients(8.0, 0.0, 0.0)
-        var HEADING_PID = PIDCoefficients(8.0, 0.0, 0.0)
-        var LATERAL_MULTIPLIER = 1.0
+        var TRANSLATIONAL_PID = PIDCoefficients(7.0, 0.0, 1.0)
+        var HEADING_PID = PIDCoefficients(7.0, 0.0, 0.0)
+        var LATERAL_MULTIPLIER = 0.99254157333
         var VX_WEIGHT = 1.0
         var VY_WEIGHT = 1.0
         var OMEGA_WEIGHT = 1.0

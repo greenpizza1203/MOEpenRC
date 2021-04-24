@@ -130,6 +130,7 @@ class NewAutonomous : LinearOpMode() {
                 .splineTo(Vector2d(22.0, 44.0), Math.toRadians(0.0))
                 .build()
 
+
         val Config3Part1: Trajectory = drive.trajectoryBuilder(startPose)
                 .splineTo(Vector2d(-12.0, 16.0), Math.toRadians(0.0))
                 .splineTo(Vector2d(0.0, 36.0), Math.toRadians(0.0))

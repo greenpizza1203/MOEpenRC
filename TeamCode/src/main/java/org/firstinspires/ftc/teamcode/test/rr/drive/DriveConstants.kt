@@ -16,7 +16,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints
  */
 @Config
 object DriveConstants {
-    const val MAX_RPM = 312.0
+    const val MAX_RPM = 435.0
 
     /*
      * These are physical constants that can be determined from your robot (including the track
@@ -26,11 +26,11 @@ object DriveConstants {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
-    private var WHEEL_RADIUS = 1.9685 // in
-    var GEAR_RATIO = 1 // output (wheel) speed / input (motor) speed
+    private var WHEEL_RADIUS = 1.88976 // in
+    var GEAR_RATIO = 0.71668254535 // output (wheel) speed / input (motor) speed
 
     @JvmStatic
-    var TRACK_WIDTH = 15.60 // in
+    var TRACK_WIDTH = 13.73189 // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -57,8 +57,8 @@ object DriveConstants {
      */
     @JvmField
     var BASE_CONSTRAINTS = DriveConstraints(
-            48.0, 20.0, 0.0,
-            Math.toRadians(60.0), Math.toRadians(180.0), 0.0
+            49.191, 49.191, 0.0,
+            Math.toRadians(80.0), Math.toRadians(180.0), 0.0
     )
 
     @JvmStatic

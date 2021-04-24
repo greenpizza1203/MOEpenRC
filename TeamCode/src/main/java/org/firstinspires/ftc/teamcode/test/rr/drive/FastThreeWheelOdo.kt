@@ -29,9 +29,9 @@ class FastThreeWheelOdo(hardwareMap: HardwareMap) : ThreeTrackingWheelLocalizer(
         Pose2d(-0.343, -8.027830534778314),  // right parallel
         Pose2d(-0.276, 0.343, 90.toRadians()) //strafe
 )) {
-    val leftEncoder = Encoder(hardwareMap.get(DcMotorEx::class.java, "BRM23"))
-    val rightEncoder = Encoder(hardwareMap.get(DcMotorEx::class.java, "FRM22"))
-    val strafeEncoder = Encoder(hardwareMap.get(DcMotorEx::class.java, "FLM20"))
+    val leftEncoder = Encoder(hardwareMap.get(DcMotorEx::class.java, "BRM23")) // Right Rear
+    val rightEncoder = Encoder(hardwareMap.get(DcMotorEx::class.java, "FRM22")) // Exhub 3
+    val strafeEncoder = Encoder(hardwareMap.get(DcMotorEx::class.java, "FLM20")) // Exhub 2
     var LEFT_SCALAR = -305.3191489
     var RIGHT_SCALAR = 305.3309693
     var STRAFE_SCALAR = 305.1867612

@@ -77,15 +77,18 @@ class NewTeleop : OpMode() {
         handleToggles()
         if (gamepad1.right_stick_button) gyroOffset = 90 + gyro.angularOrientation.firstAngle.toDouble()
         loopChassis()
-        frontIntakeMotor.power = if (aToggled) 1.0 else if (dpadDownToggled) -1.0 else 0.0
-        backIntakeMotor.power = if (aToggled) 1.0 else if (dpadDownToggled) -1.0 else 0.0
-        leftWobbleServo.position = if (dpadLeftToggled) 0.4 else 0.05
-        rightWobbleServo.position = if (dpadLeftToggled) 0.4 else 0.05
+        frontIntakeMotor.power = if (aToggled) -1.0 else if (dpadDownToggled) 1.0 else 0.0
+        backIntakeMotor.power = if (aToggled) -1.0 else if (dpadDownToggled) 1.0 else 0.0
+        leftWobbleServo.position = if (dpadLeft2Toggled) 0.76 else 0.26
+        rightWobbleServo.position = if (dpadLeft2Toggled) 0.16 else 1.0
         wobbleArmMotor.power = gamepad2.right_stick_y.toDouble() * 0.3
+        shooterMotor.velocity = if (y2Toggled && !yToggled) shooterTarget else 0.0
+        hopperLiftServo.position = if (!yToggled && a2Toggled) 0.4 else 0.1
         shooter()
         if (bToggled){
             //Lock Straight Heading
         }
+        grabber()
         telemetry.addData("Loop ms", (System.nanoTime() - startTime) / 1000000.0)
         telemetry.addData("shooterVelocity", shooterMotor.getVelocity())
     }
@@ -120,12 +123,13 @@ class NewTeleop : OpMode() {
 
     private fun shooter() {
         if (yToggled) {
-            hopperLiftServo.position = 1.0
-            if (dpadUpToggled && oldDpadUp == false) {
+            hopperLiftServo.position = 0.4
+            if (gamepad1.dpad_up && !oldDpadUp) {
                 flickerServo.position = when {
                     timer.time() > 0.15 -> 0.2
                     else -> 0.85
                 }
+                timer.reset()
             } else {
                 flickerServo.position = when {
                     timer.time() > 0.75 -> 0.2
@@ -138,8 +142,28 @@ class NewTeleop : OpMode() {
                 shooterMotor.velocity = shooterTarget
             }
         } else {
-            hopperLiftServo.position = 0.1
+            if (!a2Toggled) hopperLiftServo.position = 0.1
             shooterMotor.velocity = 0.0
+        }
+    }
+    var armState = 1 //Up
+    private fun grabber() {
+        if(gamepad1.dpad_right && !oldDpadRight && armState == 1){
+            wobbleArmMotor //straight
+            armState = 2
+        } else if(gamepad1.dpad_right && !oldDpadRight && armState == 2){
+            wobbleArmMotor // diagonal down
+            leftWobbleServo.position = 0.26
+            rightWobbleServo.position = 1.0 //Closed
+            wobbleArmMotor // Up
+            armState = 3 //Up Closed
+        } else if (gamepad1.dpad_right && !oldDpadRight && armState == 3){
+            wobbleArmMotor // diagonal up
+            leftWobbleServo.position = 0.76
+            rightWobbleServo.position = 0.16 //Open
+            armState = 4 // open Dropped
+            wobbleArmMotor // Up
+            armState = 1
         }
     }
     var oldA = false
@@ -163,6 +187,10 @@ class NewTeleop : OpMode() {
     var oldDpadLeft = false
     var dpadRightToggled = false
     var oldDpadRight = false
+    var dpadLeft2Toggled = false
+    var oldDpadLeft2 = false
+    var oldY2 = false
+    var y2Toggled = false
     fun handleToggles() {
         if (gamepad1.a && !oldA) aToggled = !aToggled
         oldA = gamepad1.a
@@ -186,5 +214,9 @@ class NewTeleop : OpMode() {
         oldDpadLeft = gamepad1.dpad_left
         if (gamepad1.dpad_right && !oldDpadRight) dpadRightToggled = !dpadRightToggled
         oldDpadRight = gamepad1.dpad_right
+        if (gamepad2.dpad_left && !oldDpadLeft2) dpadLeft2Toggled = !dpadLeft2Toggled
+        oldDpadLeft2 = gamepad2.dpad_left
+        if (gamepad2.y && !oldY2) y2Toggled = !y2Toggled
+        oldY2 = gamepad2.y
     }
 }

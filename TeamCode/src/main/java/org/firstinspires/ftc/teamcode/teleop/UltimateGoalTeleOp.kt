@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.teleop
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes.MOETeleOp
 import org.firstinspires.ftc.teamcode.utilities.external.AdvancedMath.toRadians
 
+@Disabled
 @TeleOp
 open class UltimateGoalTeleOp : MOETeleOp() {
 

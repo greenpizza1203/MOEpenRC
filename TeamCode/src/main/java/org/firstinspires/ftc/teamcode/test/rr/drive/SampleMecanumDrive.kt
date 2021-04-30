@@ -279,9 +279,9 @@ class SampleMecanumDrive(hardwareMap: HardwareMap) : MecanumDrive(kV, kA, kStati
         // upward (normal to the floor) using a command like the following:
         // BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
         frontLeft = hardwareMap.get(DcMotorEx::class.java, "FLM20")
-        backLeft = hardwareMap.get(DcMotorEx::class.java, "BLM21")
-        frontRight = hardwareMap.get(DcMotorEx::class.java, "FRM22")
-        backRight = hardwareMap.get(DcMotorEx::class.java, "BRM23")
+        backLeft = hardwareMap.get(DcMotorEx::class.java, "BLM23")
+        frontRight = hardwareMap.get(DcMotorEx::class.java, "FRM12")
+        backRight = hardwareMap.get(DcMotorEx::class.java, "BRM13")
         motors = listOf(frontLeft, backLeft, backRight, frontRight)
         for (motor in motors) {
             val motorConfigurationType = motor.motorType.clone()

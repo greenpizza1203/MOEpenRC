@@ -3,10 +3,11 @@ package org.firstinspires.ftc.teamcode.autonomous
 //import org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes.opmodeutils.MOEGamePad.Button
 import android.util.Log
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEChassis.Powers
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes.MOEAuton
-
+@Disabled
 @Autonomous
 class TurnRight : MOEAuton() {
 

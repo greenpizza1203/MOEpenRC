@@ -27,7 +27,7 @@ object DriveConstants {
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
     private var WHEEL_RADIUS = 1.88976 // in
-    var GEAR_RATIO = 0.71668254535 // output (wheel) speed / input (motor) speed
+    var GEAR_RATIO = 0.71668254535 // 10.0/14.0 * 1.0033555635 (Straight Test)
 
     @JvmStatic
     var TRACK_WIDTH = 13.73189 // in

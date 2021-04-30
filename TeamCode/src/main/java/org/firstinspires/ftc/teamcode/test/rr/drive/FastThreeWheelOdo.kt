@@ -64,9 +64,9 @@ class FastThreeWheelOdo(hardwareMap: HardwareMap) : ThreeTrackingWheelLocalizer(
     }
 
     init {
-        leftEncoder = Encoder(hardwareMap[DcMotorEx::class.java, "rightRear"])
-        rightEncoder = Encoder(hardwareMap[DcMotorEx::class.java, "rightEncoder"])
-        frontEncoder = Encoder(hardwareMap[DcMotorEx::class.java, "frontEncoder"])
+        leftEncoder = Encoder(hardwareMap[DcMotorEx::class.java, "BRM13"])
+        rightEncoder = Encoder(hardwareMap[DcMotorEx::class.java, "BLM23"])
+        frontEncoder = Encoder(hardwareMap[DcMotorEx::class.java, "BIM22"])
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
         leftEncoder.setDirection(Encoder.Direction.REVERSE)

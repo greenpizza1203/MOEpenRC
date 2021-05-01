@@ -31,59 +31,60 @@ class NewAutonomous : LinearOpMode() {
         }
     }
 
-//    fun shootRing() {
-//        flickerServo.setPosition(0.85)
-//        wait(0.2)
-//        flickerServo.setPosition(0.2)
-//    }
-//
-//    fun release() {
-//        wobbleArmMotor.targetPosition = 1000 // diagonal up
-//        wobbleArmMotor.power = 1.0
-//        leftWobbleServo.position = 0.76
-//        rightWobbleServo.position = 0.16
-//    }
-//
-//    fun grab() {
-//        wobbleArmMotor.targetPosition = 1500 // all the way down (angle)
-//        wobbleArmMotor.power = 1.0
-//        leftWobbleServo.position = 0.26
-//        rightWobbleServo.position = 1.0
-//        wobbleArmMotor.targetPosition = 750 // up
-//        wobbleArmMotor.power = 1.0
-//    }
+    fun shootRing() {
+        flickerServo.setPosition(0.85)
+        wait(0.2)
+        flickerServo.setPosition(0.2)
+    }
 
-//    lateinit var frontIntakeMotor: DcMotor
-//    lateinit var backIntakeMotor: DcMotor
-//    lateinit var shooterMotor: DcMotorEx
-//    lateinit var wobbleArmMotor: DcMotorEx
-//
-//    lateinit var hopperLiftServo: Servo
-//    lateinit var flickerServo: Servo
-//    lateinit var leftWobbleServo: Servo
-//    lateinit var rightWobbleServo: Servo
+    fun release() {
+        wobbleArmMotor.targetPosition = 1000 // diagonal up
+        wobbleArmMotor.power = 1.0
+        leftWobbleServo.position = 0.76
+        rightWobbleServo.position = 0.16
+    }
+
+    fun grab() {
+        wobbleArmMotor.targetPosition = 1500 // all the way down (angle)
+        wobbleArmMotor.power = 1.0
+        leftWobbleServo.position = 0.26
+        rightWobbleServo.position = 1.0
+        wobbleArmMotor.targetPosition = 750 // up
+        wobbleArmMotor.power = 1.0
+    }
+
+    lateinit var frontIntakeMotor: DcMotor
+    lateinit var backIntakeMotor: DcMotor
+    lateinit var shooterMotor: DcMotorEx
+    lateinit var wobbleArmMotor: DcMotorEx
+
+    lateinit var hopperLiftServo: Servo
+    lateinit var flickerServo: Servo
+    lateinit var leftWobbleServo: Servo
+    lateinit var rightWobbleServo: Servo
 
     val Velocity = 2100
     lateinit var opencvAssist: MOEPipelineAssist
 
     override fun runOpMode() {
-//        frontIntakeMotor = hardwareMap.dcMotor["FIM10"]
-//        frontIntakeMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-//        backIntakeMotor = hardwareMap.dcMotor["BIM11"]
-//        backIntakeMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-//
-//        shooterMotor = hardwareMap.get(DcMotorEx::class.java, "RSM12")
-//        shooterMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-//
-//        wobbleArmMotor = hardwareMap.get(DcMotorEx::class.java, "WAM13")
-//        wobbleArmMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-//
-//        wobbleArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
-//        wobbleArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION)
-//
-//        leftWobbleServo = hardwareMap.servo["LWS10"]
-//        rightWobbleServo = hardwareMap.servo["RWS11"]
-//        hopperLiftServo = hardwareMap.servo["HLS13"]
+        frontIntakeMotor = hardwareMap.dcMotor["FIM21"]
+        frontIntakeMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        backIntakeMotor = hardwareMap.dcMotor["BIM22"]
+        backIntakeMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+
+        shooterMotor = hardwareMap.get(DcMotorEx::class.java, "RSM10")
+        shooterMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+
+        wobbleArmMotor = hardwareMap.get(DcMotorEx::class.java, "WAM11")
+        wobbleArmMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+
+        wobbleArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
+        wobbleArmMotor.targetPosition = 0
+        wobbleArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION)
+
+        leftWobbleServo = hardwareMap.servo["LWS20"]
+        rightWobbleServo = hardwareMap.servo["RWS11"]
+        hopperLiftServo = hardwareMap.servo["HLS10"]
 //        flickerServo = hardwareMap.servo["FLS14"]
 
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
@@ -106,7 +107,7 @@ class NewAutonomous : LinearOpMode() {
                 .splineTo(Vector2d(12.0, 40.0), Math.toRadians(-75.0))
                 .build()
 
-        val Config1Part3: Trajectory = drive.trajectoryBuilder(Config1Part2.end())
+        val Config1Part3: Trajectory = drive.trajectoryBuilder(Config1Part2.end(), true)
                 .splineTo(Vector2d(-34.0, 48.0), Math.toRadians(180.0))
                 .build()
 
@@ -125,8 +126,8 @@ class NewAutonomous : LinearOpMode() {
                 .build()
 
         val Config2Part3: Trajectory = drive.trajectoryBuilder(Config2Part2.end(), true)
-                .splineTo(Vector2d(-12.0, 52.0), Math.toRadians(0.0))
-                .splineTo(Vector2d(-35.0, 48.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(-12.0, 52.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(-35.0, 48.0), Math.toRadians(180.0))
                 .build()
 
         val Config2Part4: Trajectory = drive.trajectoryBuilder(Config2Part3.end(), true)
@@ -169,13 +170,11 @@ class NewAutonomous : LinearOpMode() {
 //        var Config = pipeline.count
 //        telemetry.addData("RingCount", Config)
 //        telemetry.update()
-var Config = -1
-        if(Config == -1){
-            drive.followTrajectory(Test)
-        }
+var Config = 4
+
         if (Config == 0) {
             drive.followTrajectory(Config1Part1)
-
+            wait(1.0)
 //            shooterMotor.velocity = Velocity.toDouble()
 
 //            runPid()
@@ -186,15 +185,14 @@ var Config = -1
 //            shootRing()
 //            wait(0.15)
 //            shootRing()
-
+//
 //            shooterMotor.velocity = 0.0
 
             drive.followTrajectory(Config1Part2)
-
+wait(2.0)
 //            release()
-
             drive.followTrajectory(Config1Part3)
-
+wait(2.0)
 //            grab()
 
             drive.followTrajectory(Config1Part4)
@@ -202,10 +200,38 @@ var Config = -1
 //            leftWobbleServo.position = 0.76
 //            rightWobbleServo.position = 0.16
         }
-//        if (Config == 1) {
+        if (Config == 1) {
+
+            drive.followTrajectory(Config2Part1)
+
+//            shooterMotor.velocity = Velocity.toDouble()
+
+//            runPid()
 //
-//            drive.followTrajectory(Config2Part1)
+//            wait(0.15)
+//            shootRing()
+//            wait(0.15)
+//            shootRing()
+//            wait(0.15)
+//            shootRing()
 //
+//            shooterMotor.velocity = 0.0
+
+            drive.followTrajectory(Config2Part2)
+
+//            release()
+
+            drive.followTrajectory(Config2Part3)
+
+//            grab()
+
+            drive.followTrajectory(Config2Part4)
+            drive.turn(-9.0)
+        }
+        if (Config == 4) {
+
+            drive.followTrajectory(Config3Part1)
+
 //            shooterMotor.velocity = Velocity.toDouble()
 //
 //            runPid()
@@ -218,58 +244,29 @@ var Config = -1
 //            shootRing()
 //
 //            shooterMotor.velocity = 0.0
-//
-//            drive.followTrajectory(Config2Part2)
-//
+
+            drive.followTrajectory(Config3Part2)
+
 //            release()
-//
-//            drive.followTrajectory(Config2Part3)
-//
+
+            drive.followTrajectory(Config3Part3)
+
 //            grab()
-//
-//            drive.followTrajectory(Config2Part4)
-//            drive.turn(165.0)
-//        }
-//        if (Config == 4) {
-//
-//            drive.followTrajectory(Config3Part1)
-//
-//            shooterMotor.velocity = Velocity.toDouble()
-//
-//            runPid()
-//
-//            wait(0.15)
-//            shootRing()
-//            wait(0.15)
-//            shootRing()
-//            wait(0.15)
-//            shootRing()
-//
-//            shooterMotor.velocity = 0.0
-//
-//            drive.followTrajectory(Config3Part2)
-//
-//            release()
-//
-//            drive.followTrajectory(Config3Part3)
-//
-//            grab()
-//
-//            drive.followTrajectory(Config3Part4)
-//
+
+            drive.followTrajectory(Config3Part4)
+
 //            leftWobbleServo.position = 0.76
 //            rightWobbleServo.position = 0.16
-//
-//            drive.followTrajectory(Config3Part5)
-//        }
-//    }
-    val highGoal = BasicHighGoalPipeline(Target.BLUE)
 
-    fun runPid() {
-        opencvAssist.webcam.activeCamera = opencvAssist.highCam
-        opencvAssist.webcam.setPipeline(highGoal)
-        val timer = ElapsedTime()
-        while (timer.seconds() < 3) telemetry.addData("centerX", highGoal.blueRect?.centerX())
+            drive.followTrajectory(Config3Part5)
+        }
     }
-}
+//    val highGoal = BasicHighGoalPipeline(Target.BLUE)
+
+//    fun runPid() {
+//        opencvAssist.webcam.activeCamera = opencvAssist.highCam
+//        opencvAssist.webcam.setPipeline(highGoal)
+//        val timer = ElapsedTime()
+//        while (timer.seconds() < 3) telemetry.addData("centerX", highGoal.blueRect?.centerX())
+//    }
 }

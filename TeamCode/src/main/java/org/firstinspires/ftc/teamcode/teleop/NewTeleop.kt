@@ -25,10 +25,10 @@ class NewTeleop : OpMode() {
     lateinit var shooterMotor: DcMotorEx
     lateinit var wobbleArmMotor: DcMotorEx
 
-//    lateinit var hopperLiftServo: Servo
+    lateinit var hopperLiftServo: Servo
 //    lateinit var flickerServo: Servo
-//    lateinit var leftWobbleServo: Servo
-//    lateinit var rightWobbleServo: Servo
+    lateinit var leftWobbleServo: Servo
+    lateinit var rightWobbleServo: Servo
 
     var timer = ElapsedTime()
     override fun init(){
@@ -54,12 +54,13 @@ class NewTeleop : OpMode() {
 
         shooterMotor = hardwareMap.get(DcMotorEx::class.java, "RSM10")
         shooterMotor.zeroPowerBehavior = ZeroPowerBehavior.BRAKE
+        shooterMotor.direction = DcMotorSimple.Direction.REVERSE
 
-        wobbleArmMotor = hardwareMap.get(DcMotorEx::class.java, "WAM13")
+        wobbleArmMotor = hardwareMap.get(DcMotorEx::class.java, "WAM11")
         wobbleArmMotor.zeroPowerBehavior = ZeroPowerBehavior.BRAKE
-//        leftWobbleServo = hardwareMap.servo["LWS10"]
-//        rightWobbleServo = hardwareMap.servo["RWS11"]
-//        hopperLiftServo = hardwareMap.servo["HLS13"]
+        leftWobbleServo = hardwareMap.servo["LWS20"]
+        rightWobbleServo = hardwareMap.servo["RWS11"]
+        hopperLiftServo = hardwareMap.servo["HLS10"]
 //        flickerServo = hardwareMap.servo["FLS14"]
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
             module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO
@@ -84,9 +85,8 @@ class NewTeleop : OpMode() {
 //        leftWobbleServo.position = if (dpadLeft2Toggled) 0.76 else 0.26
 //        rightWobbleServo.position = if (dpadLeft2Toggled) 0.16 else 1.0
         wobbleArmMotor.power = gamepad2.right_stick_y.toDouble() * 0.3
-        shooterMotor.velocity = if (y2Toggled && !yToggled) shooterTarget else 0.0
 //        hopperLiftServo.position = if (!yToggled && a2Toggled) 0.4 else 0.1
-//        shooter()
+        shooter()
 //        grabber()
         telemetry.addData("Loop ms", (System.nanoTime() - startTime) / 1000000.0)
         telemetry.addData("shooterVelocity", shooterMotor.getVelocity())
@@ -118,12 +118,13 @@ class NewTeleop : OpMode() {
     }
 
     val powerShotTarget = 1700.0
-    val shooterTarget = 2400.0
+    val shooterTarget = 1900.0
 
-//    private fun shooter() {
-//        if (yToggled) {
+    private fun shooter() {
+        if (yToggled) {
 //            hopperLiftServo.position = 0.4
-//            if (gamepad1.dpad_up && !oldDpadUp) {
+            shooterMotor.velocity = shooterTarget
+//            if (gamepad1.dpad_up) {
 //                flickerServo.position = when {
 //                    timer.time() > 0.15 -> 0.2
 //                    else -> 0.85
@@ -138,38 +139,37 @@ class NewTeleop : OpMode() {
 //                    timer.time() > 0.15 -> 0.2
 //                    else -> 0.85
 //                }
-//                shooterMotor.velocity = shooterTarget
+
 //            }
-//        } else {
+        } else {
 //            if (!a2Toggled) hopperLiftServo.position = 0.1
-//            shooterMotor.velocity = 0.0
-//        }
-//    }
-//    var armState = 1 //Up
-//    private fun grabber() {
-//        if(gamepad1.dpad_right && !oldDpadRight && armState == 1){
-//            wobbleArmMotor.targetPosition = 1750
-//            wobbleArmMotor.power = 1.0
-//            armState = 2 // straight
-//        } else if(gamepad1.dpad_right && !oldDpadRight && armState == 2){
-//            wobbleArmMotor.targetPosition = 2250 // diagonal down
-//            wobbleArmMotor.power = 1.0
-//            leftWobbleServo.position = 0.26
-//            rightWobbleServo.position = 1.0 //Closed
-//            wobbleArmMotor.targetPosition = 500 // Up
-//            wobbleArmMotor.power = 1.0
-//            armState = 3 //Up Closed
-//        } else if (gamepad1.dpad_right && !oldDpadRight && armState == 3){
-//            wobbleArmMotor.targetPosition = 750 // diagonal up
-//            wobbleArmMotor.power = 1.0
-//            leftWobbleServo.position = 0.76
-//            rightWobbleServo.position = 0.16 //Open
-//            armState = 4 // open Dropped
-//            wobbleArmMotor.targetPosition = 500// Up
-//            wobbleArmMotor.power = 1.0
-//            armState = 1
-//        }
-//    }
+            shooterMotor.velocity = 0.0
+        }
+    }
+    var armState = 1 //Up
+    private fun grabber() {
+        if(gamepad1.dpad_right && !oldDpadRight && armState == 1){
+            wobbleArmMotor.targetPosition = 1750
+            wobbleArmMotor.power = 1.0
+            armState = 2 // straight
+        } else if(gamepad1.dpad_right && !oldDpadRight && armState == 2){
+            wobbleArmMotor.targetPosition = 2250 // diagonal down
+            wobbleArmMotor.power = 1.0
+            leftWobbleServo.position = 0.26
+            rightWobbleServo.position = 1.0 //Closed
+            wobbleArmMotor.targetPosition = 500 // Up
+            wobbleArmMotor.power = 1.0
+            armState = 3 //Up Closed
+        } else if (gamepad1.dpad_right && !oldDpadRight && armState == 3){
+            wobbleArmMotor.targetPosition = 750 // diagonal up
+            wobbleArmMotor.power = 1.0
+            leftWobbleServo.position = 0.76
+            rightWobbleServo.position = 0.16 //Open
+            wobbleArmMotor.targetPosition = 500// Up
+            wobbleArmMotor.power = 1.0
+            armState = 1
+        }
+    }
     var oldA = false
     var aToggled = false
     var oldY = false

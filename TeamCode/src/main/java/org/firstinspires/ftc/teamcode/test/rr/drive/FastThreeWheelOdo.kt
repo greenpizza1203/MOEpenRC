@@ -70,5 +70,6 @@ class FastThreeWheelOdo(hardwareMap: HardwareMap) : ThreeTrackingWheelLocalizer(
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
         leftEncoder.setDirection(Encoder.Direction.REVERSE)
+        rightEncoder.setDirection(Encoder.Direction.REVERSE)
     }
 }

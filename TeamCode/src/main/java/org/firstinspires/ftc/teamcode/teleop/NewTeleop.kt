@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop
 
+import com.acmerobotics.roadrunner.control.PIDFController
 import com.qualcomm.hardware.bosch.BNO055IMU
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
@@ -26,11 +27,14 @@ class NewTeleop : OpMode() {
     lateinit var wobbleArmMotor: DcMotorEx
 
     lateinit var hopperLiftServo: Servo
-//    lateinit var flickerServo: Servo
+    lateinit var flickerServo: Servo
     lateinit var leftWobbleServo: Servo
     lateinit var rightWobbleServo: Servo
 
     var timer = ElapsedTime()
+    var timer2 = ElapsedTime()
+
+
     override fun init(){
         gyro = hardwareMap.get(BNO055IMU::class.java, "imu")
         gyro.initialize(BNO055IMU.Parameters())
@@ -55,16 +59,23 @@ class NewTeleop : OpMode() {
         shooterMotor = hardwareMap.get(DcMotorEx::class.java, "RSM10")
         shooterMotor.zeroPowerBehavior = ZeroPowerBehavior.BRAKE
         shooterMotor.direction = DcMotorSimple.Direction.REVERSE
+        shooterMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER
 
         wobbleArmMotor = hardwareMap.get(DcMotorEx::class.java, "WAM11")
         wobbleArmMotor.zeroPowerBehavior = ZeroPowerBehavior.BRAKE
+        wobbleArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
+        wobbleArmMotor.targetPosition = 0
+        wobbleArmMotor.mode = DcMotor.RunMode.RUN_TO_POSITION
+
         leftWobbleServo = hardwareMap.servo["LWS20"]
         rightWobbleServo = hardwareMap.servo["RWS11"]
         hopperLiftServo = hardwareMap.servo["HLS10"]
-//        flickerServo = hardwareMap.servo["FLS14"]
+        flickerServo = hardwareMap.servo["FLS21"]
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
             module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO
         }
+        shooterMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, PIDFCoefficients(0.0, 0.0, 0.0, 0.0))
+//        shooterMotor.setVelocityPIDFCoefficients(0.0, 0.0, 0.0, 0.0)
     }
 
     override fun init_loop() {
@@ -80,16 +91,16 @@ class NewTeleop : OpMode() {
         handleToggles()
         if (gamepad1.right_stick_button) gyroOffset = 90 + gyro.angularOrientation.firstAngle.toDouble()
         loopChassis()
-        frontIntakeMotor.power = if (aToggled) -1.0 else if (dpadDownToggled) 1.0 else 0.0
-        backIntakeMotor.power = if (aToggled) -1.0 else if (dpadDownToggled) 1.0 else 0.0
-//        leftWobbleServo.position = if (dpadLeft2Toggled) 0.76 else 0.26
-//        rightWobbleServo.position = if (dpadLeft2Toggled) 0.16 else 1.0
-        wobbleArmMotor.power = gamepad2.right_stick_y.toDouble() * 0.3
-//        hopperLiftServo.position = if (!yToggled && a2Toggled) 0.4 else 0.1
+        frontIntakeMotor.power = if (aToggled) 0.6 else if (gamepad1.dpad_down) -1.0 else 0.0
+        backIntakeMotor.power = if (aToggled) 0.6 else if (gamepad1.dpad_down) -1.0 else 0.0
         shooter()
-//        grabber()
+        grabber()
         telemetry.addData("Loop ms", (System.nanoTime() - startTime) / 1000000.0)
         telemetry.addData("shooterVelocity", shooterMotor.getVelocity())
+        telemetry.addData("state", armState)
+        telemetry.addData("timer", timer2.time())
+        telemetry.addData("y",yToggled)
+        telemetry.addData("a",a )
     }
 
     fun loopChassis() {
@@ -118,12 +129,17 @@ class NewTeleop : OpMode() {
     }
 
     val powerShotTarget = 1700.0
-    val shooterTarget = 1900.0
+    val shooterTarget = 1450.0
+    var a = 1
+//1700 squishy
 
+    //flicker back .24
+    //flicker forward 0.0
     private fun shooter() {
         if (yToggled) {
 //            hopperLiftServo.position = 0.4
             shooterMotor.velocity = shooterTarget
+            a = 2
 //            if (gamepad1.dpad_up) {
 //                flickerServo.position = when {
 //                    timer.time() > 0.15 -> 0.2
@@ -139,36 +155,123 @@ class NewTeleop : OpMode() {
 //                    timer.time() > 0.15 -> 0.2
 //                    else -> 0.85
 //                }
-
 //            }
         } else {
 //            if (!a2Toggled) hopperLiftServo.position = 0.1
             shooterMotor.velocity = 0.0
         }
     }
+
+    var wgGrab = false
+    var wgDrop = false
     var armState = 1 //Up
+
+
     private fun grabber() {
+//
         if(gamepad1.dpad_right && !oldDpadRight && armState == 1){
-            wobbleArmMotor.targetPosition = 1750
-            wobbleArmMotor.power = 1.0
-            armState = 2 // straight
-        } else if(gamepad1.dpad_right && !oldDpadRight && armState == 2){
-            wobbleArmMotor.targetPosition = 2250 // diagonal down
-            wobbleArmMotor.power = 1.0
-            leftWobbleServo.position = 0.26
-            rightWobbleServo.position = 1.0 //Closed
-            wobbleArmMotor.targetPosition = 500 // Up
-            wobbleArmMotor.power = 1.0
-            armState = 3 //Up Closed
-        } else if (gamepad1.dpad_right && !oldDpadRight && armState == 3){
-            wobbleArmMotor.targetPosition = 750 // diagonal up
-            wobbleArmMotor.power = 1.0
-            leftWobbleServo.position = 0.76
-            rightWobbleServo.position = 0.16 //Open
-            wobbleArmMotor.targetPosition = 500// Up
-            wobbleArmMotor.power = 1.0
-            armState = 1
+            armState = 2
         }
+        else if(gamepad1.dpad_right && !oldDpadRight && armState == 2){
+            timer2.reset()
+            wobbleArmMotor.targetPosition = 300
+            wobbleArmMotor.power = 0.3
+            wgGrab = true
+        }
+        else if(gamepad1.dpad_right && !oldDpadRight && armState == 3){
+            timer2.reset()
+            wobbleArmMotor.targetPosition = 200
+            wobbleArmMotor.power = 0.2
+            wgDrop = true
+        }
+
+        if(armState==1){
+            //UP
+            wobbleArmMotor.targetPosition = 90
+            wobbleArmMotor.power = 0.3
+            leftWobbleServo.position = 0.66
+            rightWobbleServo.position = 0.12
+        }
+        else if(armState==2){
+            //DIAGONAL UP
+            if(!wgGrab){
+                wobbleArmMotor.targetPosition = 200
+                wobbleArmMotor.power = 0.3
+                leftWobbleServo.position = 0.66
+                rightWobbleServo.position = 0.12
+            }
+        }
+        else if(armState ==3){
+            //UP WITH WOBBLE GOAL
+            if(!wgDrop){
+                wobbleArmMotor.targetPosition = 90
+                wobbleArmMotor.power = 0.3
+                leftWobbleServo.position = 0.26
+                rightWobbleServo.position = 0.7
+            }
+
+        }
+
+
+        if(wgGrab){
+            if(timer2.time() > 0.2){
+                leftWobbleServo.position = 0.26
+                rightWobbleServo.position = 0.7
+            }
+            if(timer2.time() > 1){
+                wgGrab = false
+                armState = 3
+            }
+        }
+        if(wgDrop){
+            if(timer2.time() > 0.5){
+                leftWobbleServo.position = 0.66
+                rightWobbleServo.position = 0.12
+            }
+            if(timer2.time() > 1.3) {
+                wgDrop = false
+                armState = 1
+            }
+        }
+
+
+
+
+//        if(gamepad1.dpad_right && !oldDpadRight && armState == 1){
+//            wobbleArmMotor.targetPosition = 200
+//            wobbleArmMotor.power = 0.5
+//            leftWobbleServo.position = 0.66
+//            rightWobbleServo.position = 0.12
+//            armState = 2 // straight
+//        } else if(gamepad1.dpad_right && !oldDpadRight && armState == 2){
+//            wobbleArmMotor.targetPosition = 320 // diagonal down
+//            wobbleArmMotor.power = 0.5
+//            timer2.reset()
+//            if (timer2.time() > 1.0) {
+//                leftWobbleServo.position = 0.26
+//                rightWobbleServo.position = 0.7 //Closed
+//                timer2.reset()
+//            }
+//            if (timer2.time() > 0.5) {
+//                wobbleArmMotor.targetPosition = 90 // Up
+//                wobbleArmMotor.power = 0.5
+//            }
+//            armState = 3 //Up Closed
+//        } else if (gamepad1.dpad_right && !oldDpadRight && armState == 3){
+//            wobbleArmMotor.targetPosition = 200 // diagonal up
+//            wobbleArmMotor.power = -0.5
+//            timer2.reset()
+//            if (timer2.time() > 1.0) {
+//                leftWobbleServo.position = 0.66
+//                rightWobbleServo.position = 0.12 //Open
+//            }
+//            timer2.reset()
+//            if (timer2.time() > 1.0) {
+//                wobbleArmMotor.targetPosition = 90// Up
+//                wobbleArmMotor.power = 0.5
+//            }
+//            armState = 1
+//        }
     }
     var oldA = false
     var aToggled = false

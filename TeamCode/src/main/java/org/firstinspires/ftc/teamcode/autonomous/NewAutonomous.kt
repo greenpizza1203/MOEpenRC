@@ -47,8 +47,8 @@ class NewAutonomous : LinearOpMode() {
     fun grab() {
         wobbleArmMotor.targetPosition = 1500 // all the way down (angle)
         wobbleArmMotor.power = 1.0
-        leftWobbleServo.position = 0.26
-        rightWobbleServo.position = 1.0
+        leftWobbleServo.position = 0.16
+        rightWobbleServo.position = 0.7
         wobbleArmMotor.targetPosition = 750 // up
         wobbleArmMotor.power = 1.0
     }
@@ -144,8 +144,8 @@ class NewAutonomous : LinearOpMode() {
                 .splineToSplineHeading(Pose2d(42.0, 54.0, Math.toRadians(180.0)), Math.toRadians(0.0))
                 .build()
 
-        val Config3Part3: Trajectory = drive.trajectoryBuilder(Config3Part2.end())
-                .splineToSplineHeading(Pose2d(-32.0, 48.0, Math.toRadians(180.0)), Math.toRadians(0.0))
+        val Config3Part3: Trajectory = drive.trajectoryBuilder(Config3Part2.end(),true)
+                .splineToSplineHeading(Pose2d(-32.0, 54.0, Math.toRadians(0.0)), Math.toRadians(0.0))
                 .build()
 
         val Config3Part4: Trajectory = drive.trajectoryBuilder(Config3Part3.end())

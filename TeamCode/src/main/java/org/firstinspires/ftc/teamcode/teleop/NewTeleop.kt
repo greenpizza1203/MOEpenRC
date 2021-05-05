@@ -13,7 +13,7 @@ import kotlin.math.max
 import kotlin.math.sin
 
 @TeleOp
-class NewTeleop : OpMode() {
+open class NewTeleop : OpMode() {
     var gyroOffset = Math.toRadians(90.0)
     lateinit var gyro: BNO055IMU
 
@@ -104,6 +104,7 @@ class NewTeleop : OpMode() {
         telemetry.addData("timer2", timer2.time())
         telemetry.addData("y",yToggled)
         telemetry.addData("lift",hopperLiftServo.position)
+
     }
 
     fun loopChassis() {

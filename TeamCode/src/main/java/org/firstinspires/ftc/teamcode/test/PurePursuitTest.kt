@@ -17,7 +17,7 @@ import java.lang.reflect.Constructor
 import java.net.*
 import java.util.*
 
-
+@Disabled
 @TeleOp
 class PurePursuitTest : MOETeleOp() {
     val system = PPSystem(listOf(0.0, 0.0, 20.0, 20.0).zipWithNext { a, b -> PPPoint(a, b) }.toMutableList(), options)

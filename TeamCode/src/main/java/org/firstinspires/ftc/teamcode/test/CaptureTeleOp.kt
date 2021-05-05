@@ -25,11 +25,13 @@ import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.MOEPenCVConfig
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.MOEHighGoalPipeline
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.MOERingPipeline
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.Target
+import org.firstinspires.ftc.teamcode.teleop.NewTeleop
 import org.firstinspires.ftc.teamcode.teleop.UltimateGoalTeleOp
 
 @TeleOp
-class CaptureTeleOp : UltimateGoalTeleOp() {
+class CaptureTeleOp : NewTeleop() {
 
-    override val openCVConfig = MOEPenCVConfig(MOEHighGoalPipeline(Target.BLUE), camera = "HighCam")
+    val openCVConfig = MOEPenCVConfig(MOERingPipeline(x = 128, y = 202, width = 95, height = 61), camera = "RingCam")
+//    override val openCVConfig = MOEPenCVConfig(MOEHighGoalPipeline(Target.BLUE), camera = "HighCam")
 }
 

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.test
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
@@ -8,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE
 import org.firstinspires.ftc.teamcode.test.rr.drive.FastThreeWheelOdo
 import org.firstinspires.ftc.teamcode.utilities.external.toFixed
 
-
+@Disabled
 @TeleOp
 class CorrectedEncoderDriveTest : OpMode() {
     lateinit var motors: List<DcMotorEx>

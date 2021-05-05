@@ -59,7 +59,7 @@ class NewTeleop : OpMode() {
         shooterMotor = hardwareMap.get(DcMotorEx::class.java, "RSM10")
         shooterMotor.zeroPowerBehavior = ZeroPowerBehavior.BRAKE
         shooterMotor.direction = DcMotorSimple.Direction.REVERSE
-        shooterMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER
+//        shooterMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER
 
         wobbleArmMotor = hardwareMap.get(DcMotorEx::class.java, "WAM11")
         wobbleArmMotor.zeroPowerBehavior = ZeroPowerBehavior.BRAKE
@@ -74,8 +74,10 @@ class NewTeleop : OpMode() {
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
             module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO
         }
-        shooterMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, PIDFCoefficients(0.0, 0.0, 0.0, 0.0))
-//        shooterMotor.setVelocityPIDFCoefficients(0.0, 0.0, 0.0, 0.0)
+//        shooterMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, PIDFCoefficients(0.1, 0.0, 0.0, 0.0))
+        shooterMotor.setVelocityPIDFCoefficients(100.0, 0.0, 0.0, 12.6)
+//        wobbleArmMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, PIDFCoefficients(10.0, 0.0, 0.0, 3.0))
+        wobbleArmMotor.setPositionPIDFCoefficients(11.0)
     }
 
     override fun init_loop() {
@@ -98,9 +100,10 @@ class NewTeleop : OpMode() {
         telemetry.addData("Loop ms", (System.nanoTime() - startTime) / 1000000.0)
         telemetry.addData("shooterVelocity", shooterMotor.getVelocity())
         telemetry.addData("state", armState)
-        telemetry.addData("timer", timer2.time())
+        telemetry.addData("timer1", timer.time())
+        telemetry.addData("timer2", timer2.time())
         telemetry.addData("y",yToggled)
-        telemetry.addData("a",a )
+        telemetry.addData("lift",hopperLiftServo.position)
     }
 
     fun loopChassis() {
@@ -130,34 +133,33 @@ class NewTeleop : OpMode() {
 
     val powerShotTarget = 1700.0
     val shooterTarget = 1450.0
-    var a = 1
 //1700 squishy
 
     //flicker back .24
     //flicker forward 0.0
     private fun shooter() {
         if (yToggled) {
-//            hopperLiftServo.position = 0.4
+            hopperLiftServo.position = 0.8
             shooterMotor.velocity = shooterTarget
-            a = 2
-//            if (gamepad1.dpad_up) {
-//                flickerServo.position = when {
-//                    timer.time() > 0.15 -> 0.2
-//                    else -> 0.85
-//                }
-//                timer.reset()
-//            } else {
-//                flickerServo.position = when {
-//                    timer.time() > 0.75 -> 0.2
-//                    timer.time() > 0.6 -> 0.85
-//                    timer.time() > 0.45 -> 0.2
-//                    timer.time() > 0.3 -> 0.85
-//                    timer.time() > 0.15 -> 0.2
-//                    else -> 0.85
-//                }
-//            }
+            if (gamepad1.dpad_up) {
+                flickerServo.position = when {
+                    timer.time() > 0.55 -> 0.24
+                    else -> 0.0
+                }
+                timer.reset()
+            } else {
+                flickerServo.position = when {
+                    timer.time() > 1.4 -> 0.0
+                    timer.time() > 1.0 -> 0.24
+                    timer.time() > 0.85 -> 0.0
+                    timer.time() > 0.7 -> 0.24
+                    timer.time() > 0.55 -> 0.0
+                    else -> 0.24
+                }
+            }
         } else {
-//            if (!a2Toggled) hopperLiftServo.position = 0.1
+            hopperLiftServo.position = 0.0
+            flickerServo.position = 0.24
             shooterMotor.velocity = 0.0
         }
     }
@@ -169,41 +171,37 @@ class NewTeleop : OpMode() {
 
     private fun grabber() {
 //
-        if(gamepad1.dpad_right && !oldDpadRight && armState == 1){
+        if (gamepad1.dpad_right && !oldDpadRight && armState == 1) {
             armState = 2
-        }
-        else if(gamepad1.dpad_right && !oldDpadRight && armState == 2){
+        } else if (gamepad1.dpad_right && !oldDpadRight && armState == 2) {
             timer2.reset()
             wobbleArmMotor.targetPosition = 300
             wobbleArmMotor.power = 0.3
             wgGrab = true
-        }
-        else if(gamepad1.dpad_right && !oldDpadRight && armState == 3){
+        } else if (gamepad1.dpad_right && !oldDpadRight && armState == 3) {
             timer2.reset()
             wobbleArmMotor.targetPosition = 200
             wobbleArmMotor.power = 0.2
             wgDrop = true
         }
 
-        if(armState==1){
+        if (armState == 1) {
             //UP
             wobbleArmMotor.targetPosition = 90
             wobbleArmMotor.power = 0.3
             leftWobbleServo.position = 0.66
             rightWobbleServo.position = 0.12
-        }
-        else if(armState==2){
+        } else if (armState == 2) {
             //DIAGONAL UP
-            if(!wgGrab){
+            if (!wgGrab) {
                 wobbleArmMotor.targetPosition = 200
                 wobbleArmMotor.power = 0.3
                 leftWobbleServo.position = 0.66
                 rightWobbleServo.position = 0.12
             }
-        }
-        else if(armState ==3){
+        } else if (armState == 3) {
             //UP WITH WOBBLE GOAL
-            if(!wgDrop){
+            if (!wgDrop) {
                 wobbleArmMotor.targetPosition = 90
                 wobbleArmMotor.power = 0.3
                 leftWobbleServo.position = 0.26
@@ -213,27 +211,27 @@ class NewTeleop : OpMode() {
         }
 
 
-        if(wgGrab){
-            if(timer2.time() > 0.2){
+        if (wgGrab) {
+            if (timer2.time() > 0.2) {
                 leftWobbleServo.position = 0.26
                 rightWobbleServo.position = 0.7
             }
-            if(timer2.time() > 1){
+            if (timer2.time() > 1) {
                 wgGrab = false
                 armState = 3
             }
         }
-        if(wgDrop){
-            if(timer2.time() > 0.5){
+        if (wgDrop) {
+            if (timer2.time() > 0.5) {
                 leftWobbleServo.position = 0.66
                 rightWobbleServo.position = 0.12
             }
-            if(timer2.time() > 1.3) {
+            if (timer2.time() > 1.3) {
                 wgDrop = false
                 armState = 1
             }
         }
-
+    }
 
 
 
@@ -272,7 +270,7 @@ class NewTeleop : OpMode() {
 //            }
 //            armState = 1
 //        }
-    }
+
     var oldA = false
     var aToggled = false
     var oldY = false

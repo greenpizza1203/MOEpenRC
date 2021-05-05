@@ -32,9 +32,9 @@ class NewAutonomous : LinearOpMode() {
     }
 
     fun shootRing() {
-        flickerServo.setPosition(0.85)
+        flickerServo.setPosition(0.0)
         wait(0.2)
-        flickerServo.setPosition(0.2)
+        flickerServo.setPosition(0.24)
     }
 
     fun release() {
@@ -63,7 +63,7 @@ class NewAutonomous : LinearOpMode() {
     lateinit var leftWobbleServo: Servo
     lateinit var rightWobbleServo: Servo
 
-    val Velocity = 2100
+    val Velocity = 1450
     lateinit var opencvAssist: MOEPipelineAssist
 
     override fun runOpMode() {
@@ -85,7 +85,7 @@ class NewAutonomous : LinearOpMode() {
         leftWobbleServo = hardwareMap.servo["LWS20"]
         rightWobbleServo = hardwareMap.servo["RWS11"]
         hopperLiftServo = hardwareMap.servo["HLS10"]
-//        flickerServo = hardwareMap.servo["FLS14"]
+        flickerServo = hardwareMap.servo["FLS21"]
 
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
             module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO
@@ -170,35 +170,35 @@ class NewAutonomous : LinearOpMode() {
 //        var Config = pipeline.count
 //        telemetry.addData("RingCount", Config)
 //        telemetry.update()
-var Config = 4
+var Config = 0
 
         if (Config == 0) {
             drive.followTrajectory(Config1Part1)
             wait(1.0)
-//            shooterMotor.velocity = Velocity.toDouble()
+            shooterMotor.velocity = Velocity.toDouble()
 
 //            runPid()
 
-//            wait(0.15)
-//            shootRing()
-//            wait(0.15)
-//            shootRing()
-//            wait(0.15)
-//            shootRing()
-//
-//            shooterMotor.velocity = 0.0
+            wait(0.15)
+            shootRing()
+            wait(0.15)
+            shootRing()
+            wait(0.15)
+            shootRing()
+
+            shooterMotor.velocity = 0.0
 
             drive.followTrajectory(Config1Part2)
-wait(2.0)
-//            release()
+            wait(2.0)
+            release()
             drive.followTrajectory(Config1Part3)
-wait(2.0)
-//            grab()
+            wait(2.0)
+            grab()
 
             drive.followTrajectory(Config1Part4)
 
-//            leftWobbleServo.position = 0.76
-//            rightWobbleServo.position = 0.16
+            leftWobbleServo.position = 0.76
+            rightWobbleServo.position = 0.16
         }
         if (Config == 1) {
 

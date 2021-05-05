@@ -8,6 +8,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.*
 import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior
 import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.centerX
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.MOEHighGoalPipeline
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPenCV.pipelines.Target
+import org.firstinspires.ftc.teamcode.MOEStuff.MOEBot.MOEPid.MOERawPid
+import org.firstinspires.ftc.teamcode.autonomous.vision.BasicHighGoalPipeline
+import org.firstinspires.ftc.teamcode.autonomous.vision.MOEPipelineAssist
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.sin
@@ -33,9 +39,10 @@ open class NewTeleop : OpMode() {
 
     var timer = ElapsedTime()
     var timer2 = ElapsedTime()
+    lateinit var opencvAssist: MOEPipelineAssist
 
 
-    override fun init(){
+    override fun init() {
         gyro = hardwareMap.get(BNO055IMU::class.java, "imu")
         gyro.initialize(BNO055IMU.Parameters())
 
@@ -78,6 +85,10 @@ open class NewTeleop : OpMode() {
         shooterMotor.setVelocityPIDFCoefficients(100.0, 0.0, 0.0, 12.6)
 //        wobbleArmMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, PIDFCoefficients(10.0, 0.0, 0.0, 3.0))
         wobbleArmMotor.setPositionPIDFCoefficients(11.0)
+        opencvAssist.webcam.activeCamera = opencvAssist.highCam
+        opencvAssist.webcam.setPipeline(highGoal)
+        val timer = ElapsedTime()
+        while (timer.seconds() < 3) telemetry.addData("centerX", highGoal.blueRect?.centerX())
     }
 
     override fun init_loop() {
@@ -88,6 +99,7 @@ open class NewTeleop : OpMode() {
         }
     }
 
+
     override fun loop() {
         val startTime = System.nanoTime()
         handleToggles()
@@ -97,20 +109,32 @@ open class NewTeleop : OpMode() {
         backIntakeMotor.power = if (aToggled) 0.6 else if (gamepad1.dpad_down) -1.0 else 0.0
         shooter()
         grabber()
+
+        telemetry.addData("centerX", highGoal.blueRect?.centerX())
         telemetry.addData("Loop ms", (System.nanoTime() - startTime) / 1000000.0)
         telemetry.addData("shooterVelocity", shooterMotor.getVelocity())
         telemetry.addData("state", armState)
         telemetry.addData("timer1", timer.time())
         telemetry.addData("timer2", timer2.time())
-        telemetry.addData("y",yToggled)
-        telemetry.addData("lift",hopperLiftServo.position)
+        telemetry.addData("y", yToggled)
+        telemetry.addData("lift", hopperLiftServo.position)
 
     }
 
+    val highGoal = BasicHighGoalPipeline(Target.BLUE)
+
+    val turnPid = MOERawPid(0.003, 0.0, 0.0)
     fun loopChassis() {
         val y = -gamepad1.left_stick_y.toDouble()
         val x = -gamepad1.left_stick_x.toDouble()
-        val rot = gamepad1.right_stick_x.toDouble()
+        val blueRect = highGoal.blueRect
+
+        val rot = if (gamepad1.dpad_left && blueRect != null) {
+            -turnPid.getOutput(blueRect.centerX(), 423.0)
+        } else {
+            gamepad1.right_stick_x.toDouble()
+        }
+//        val rot = gamepad1.right_stick_x.toDouble()
         val angle = gyro.angularOrientation.firstAngle - gyroOffset
         val s = sin(angle)
         val c = cos(angle)
@@ -233,7 +257,6 @@ open class NewTeleop : OpMode() {
             }
         }
     }
-
 
 
 //        if(gamepad1.dpad_right && !oldDpadRight && armState == 1){

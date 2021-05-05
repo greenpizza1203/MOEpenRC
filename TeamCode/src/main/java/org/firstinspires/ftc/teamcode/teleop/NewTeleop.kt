@@ -160,7 +160,7 @@ open class NewTeleop : OpMode() {
             }
         } else {
             hopperLiftServo.position = 0.0
-            flickerServo.position = 0.24
+            flickerServo.position = 0.0
             shooterMotor.velocity = 0.0
         }
     }

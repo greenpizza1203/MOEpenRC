@@ -38,19 +38,34 @@ class NewAutonomous : LinearOpMode() {
     }
 
     fun release() {
-        wobbleArmMotor.targetPosition = 1000 // diagonal up
-        wobbleArmMotor.power = 1.0
+        wobbleArmMotor.targetPosition = 200 // diagonal up
+        wobbleArmMotor.power = 0.5
+        wait(1.0)
         leftWobbleServo.position = 0.76
         rightWobbleServo.position = 0.16
+        wait(1.0)
     }
 
     fun grab() {
-        wobbleArmMotor.targetPosition = 1500 // all the way down (angle)
-        wobbleArmMotor.power = 1.0
+        wobbleArmMotor.targetPosition = 320 // all the way down (angle)
+        wobbleArmMotor.power = 0.8
+        wait(1.0)
         leftWobbleServo.position = 0.16
         rightWobbleServo.position = 0.7
-        wobbleArmMotor.targetPosition = 750 // up
-        wobbleArmMotor.power = 1.0
+        wait(0.5)
+        wobbleArmMotor.targetPosition = 90 // up
+        wobbleArmMotor.power = 0.5
+        wait(1.0)
+
+    }
+
+    fun end(){
+        wait(1.0)
+        leftWobbleServo.position = 0.76
+        rightWobbleServo.position = 0.16
+        wait(0.5)
+        wobbleArmMotor.targetPosition = 90
+        wobbleArmMotor.power = 0.5
     }
 
     lateinit var frontIntakeMotor: DcMotor
@@ -165,6 +180,8 @@ class NewAutonomous : LinearOpMode() {
 
         telemetry.addLine("Ready!")
         telemetry.update()
+        leftWobbleServo.position = 0.16
+        rightWobbleServo.position = 0.7
         waitForStart()
 
 //        var Config = pipeline.count
@@ -173,11 +190,11 @@ class NewAutonomous : LinearOpMode() {
 var Config = 0
 
         if (Config == 0) {
-            drive.followTrajectory(Config1Part1)
-            wait(1.0)
+//            drive.followTrajectory(Config1Part1)
+//            wait(1.0)
             shooterMotor.velocity = Velocity.toDouble()
 
-//            runPid()
+            hopperLiftServo.position = 0.8
 
             wait(0.15)
             shootRing()
@@ -185,20 +202,23 @@ var Config = 0
             shootRing()
             wait(0.15)
             shootRing()
+
+            hopperLiftServo.position = 0.0
 
             shooterMotor.velocity = 0.0
 
-            drive.followTrajectory(Config1Part2)
-            wait(2.0)
-            release()
-            drive.followTrajectory(Config1Part3)
-            wait(2.0)
-            grab()
-
-            drive.followTrajectory(Config1Part4)
-
-            leftWobbleServo.position = 0.76
-            rightWobbleServo.position = 0.16
+//            drive.followTrajectory(Config1Part2)
+//            wait(2.0)
+//            release()
+//            drive.followTrajectory(Config1Part3)
+//            wait(2.0)
+//            grab()
+//
+//            drive.followTrajectory(Config1Part4)
+//
+//            leftWobbleServo.position = 0.76
+//            rightWobbleServo.position = 0.16
+//            end()
         }
         if (Config == 1) {
 
@@ -227,6 +247,8 @@ var Config = 0
 
             drive.followTrajectory(Config2Part4)
             drive.turn(-9.0)
+
+            end()
         }
         if (Config == 4) {
 
@@ -259,6 +281,8 @@ var Config = 0
 //            rightWobbleServo.position = 0.16
 
             drive.followTrajectory(Config3Part5)
+
+            end()
         }
     }
 //    val highGoal = BasicHighGoalPipeline(Target.BLUE)

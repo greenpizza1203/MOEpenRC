@@ -22,23 +22,24 @@ import org.firstinspires.ftc.teamcode.autonomous.vision.MOEPipelineAssist
 import org.firstinspires.ftc.teamcode.test.rr.drive.SampleMecanumDrive
 import java.util.*
 
+
 @Autonomous(group = "drive")
-class NewAutonomous : LinearOpMode() {
+class NewAutonomousRed : LinearOpMode() {
 
     val timer = ElapsedTime()
-     fun wait(waitTime: Double) {
+    fun wait(waitTime: Double) {
         timer.reset()
         while (timer.time() < waitTime && opModeIsActive()) {
         }
     }
 
-     fun shootRing() {
+    fun shootRing() {
         flickerServo.setPosition(0.0)
         wait(0.4)
         flickerServo.setPosition(0.3)
     }
 
-     fun release() {
+    fun release() {
         wobbleArmMotor.targetPosition = 200 // diagonal up
         wobbleArmMotor.power = 0.5
         wait(0.5)
@@ -47,7 +48,7 @@ class NewAutonomous : LinearOpMode() {
         wait(0.5)
     }
 
-     fun grab() {
+    fun grab() {
         wobbleArmMotor.targetPosition = 320 // all the way down (angle)
         wobbleArmMotor.power = 0.8
         wait(0.5)
@@ -58,7 +59,7 @@ class NewAutonomous : LinearOpMode() {
         wobbleArmMotor.power = 0.5
     }
 
-     fun end(){
+    fun end(){
         wait(1.0)
         leftWobbleServo.position = 0.76
         rightWobbleServo.position = 0.16
@@ -68,12 +69,12 @@ class NewAutonomous : LinearOpMode() {
         wait(1.5)
     }
 
-     fun bruh(){
+    fun bruh(){
         wobbleArmMotor.targetPosition = 125
         wobbleArmMotor.power = 0.5
     }
 
-     fun shooting(){
+    fun shooting(){
 //        wait(0.5)
         shooterMotor.velocity = Velocity.toDouble()
 //
@@ -109,6 +110,7 @@ class NewAutonomous : LinearOpMode() {
 
         shooterMotor.velocity = Velocity.toDouble()
     }
+
 
     lateinit var frontIntakeMotor: DcMotor
     lateinit var backIntakeMotor: DcMotor
@@ -156,16 +158,16 @@ class NewAutonomous : LinearOpMode() {
         opencvAssist = MOEPipelineAssist(hardwareMap, pipeline)
 
         val drive = SampleMecanumDrive(hardwareMap)
-        val startPose = Pose2d(-60.0, 24.0, Math.toRadians(0.0))
+        val startPose = Pose2d(-60.0, -48.0, Math.toRadians(0.0))
 
         drive.poseEstimate = startPose
 
         val Config1Part1: Trajectory = drive.trajectoryBuilder(startPose)
-                .splineTo(Vector2d(0.0, 36.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(0.0, -36.0), Math.toRadians(0.0))
                 .build()
 
         val Config1Part2: Trajectory = drive.trajectoryBuilder(Config1Part1.end())
-                .splineTo(Vector2d(18.0, 43.0), Math.toRadians(-110.0))
+                .splineTo(Vector2d(5.0, -45.0), Math.toRadians(100.0))
                 .build()
 
         val Config1Part2b: Trajectory = drive.trajectoryBuilder(Config1Part2.end())
@@ -173,25 +175,24 @@ class NewAutonomous : LinearOpMode() {
                 .build()
 
         val Config1Part3: Trajectory = drive.trajectoryBuilder(Config1Part2b.end(), true)
-                .splineTo(Vector2d(-34.0, 48.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(-34.0, -24.0), Math.toRadians(180.0))
                 .build()
 
         val Config1Part4: Trajectory = drive.trajectoryBuilder(Config1Part3.end(), true)
-                .splineTo(Vector2d(-2.0, 51.0), Math.toRadians(25.0))
+                .splineTo(Vector2d(0.0, -48.0), Math.toRadians(-40.0))
                 .build()
 
         val Config1Part5: Trajectory = drive.trajectoryBuilder(Config1Part4.end())
-                .splineTo(Vector2d(12.0, 12.0), Math.toRadians(0.0))
+                .lineTo(Vector2d(12.0, -12.0))
                 .build()
 
-
         val Config2Part1: Trajectory = drive.trajectoryBuilder(startPose)
-                .splineTo(Vector2d(-12.0, 16.0), Math.toRadians(0.0))
-                .splineTo(Vector2d(0.0, 36.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(-12.0, -56.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(0.0, -36.0), Math.toRadians(0.0))
                 .build()
 
         val Config2Part2: Trajectory = drive.trajectoryBuilder(Config2Part1.end())
-                .splineToSplineHeading(Pose2d(28.0, 36.0, Math.toRadians(170.0)), Math.toRadians(0.0))
+                .splineToSplineHeading(Pose2d(28.0, -36.0, Math.toRadians(170.0)), Math.toRadians(0.0))
                 .build()
 
         val Config2Part2b: Trajectory = drive.trajectoryBuilder(Config2Part2.end(), true)
@@ -199,51 +200,53 @@ class NewAutonomous : LinearOpMode() {
                 .build()
 
         val Config2Part3: Trajectory = drive.trajectoryBuilder(Config2Part2b.end(), true)
-                .splineTo(Vector2d(-12.0, 52.0), Math.toRadians(180.0))
-                .splineTo(Vector2d(-35.0, 48.0), Math.toRadians(170.0))
+                .splineTo(Vector2d(-12.0, -10.0), Math.toRadians(180.0))
+                .splineTo(Vector2d(-30.0, -24.0), Math.toRadians(170.0))
                 .build()
 
         val Config2Part3b: Trajectory = drive.trajectoryBuilder(Config2Part3.end())
-                .forward(12.0)
+                .forward(10.0)
                 .build()
 
         val Config2Part4: Trajectory = drive.trajectoryBuilder(Config2Part3b.end(), true)
-                .splineTo(Vector2d(22.0, 40.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(22.0, -32.0), Math.toRadians(0.0))
                 .build()
 
         val Config2Part5: Trajectory = drive.trajectoryBuilder(Config1Part4.end())
-                .forward(4.0)
+                .lineTo(Vector2d(8.0, -32.0))
                 .build()
 
 
         val Config3Part1: Trajectory = drive.trajectoryBuilder(startPose)
-                .splineTo(Vector2d(-12.0, 16.0), Math.toRadians(0.0))
-                .splineTo(Vector2d(0.0, 36.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(-12.0, -56.0), Math.toRadians(0.0))
+                .splineTo(Vector2d(0.0, -36.0), Math.toRadians(0.0))
                 .build()
 
         val Config3Part2: Trajectory = drive.trajectoryBuilder(Config3Part1.end())
-                .splineToSplineHeading(Pose2d(46.0, 54.0, Math.toRadians(180.0)), Math.toRadians(0.0))
+                .splineTo(Vector2d(18.0,-36.0), Math.toRadians(0.0))
+                .splineToSplineHeading(Pose2d(46.0, -64.0, Math.toRadians(180.0)), Math.toRadians(0.0))
                 .build()
 
         val Config3Part3: Trajectory = drive.trajectoryBuilder(Config3Part2.end(),true)
-                .splineToSplineHeading(Pose2d(-20.0, 54.0, Math.toRadians(0.0)), Math.toRadians(0.0))
+                .splineToSplineHeading(Pose2d(-28.0, -24.0, Math.toRadians(0.0)), Math.toRadians(0.0))
                 .build()
 
         val Config3Part3b: Trajectory = drive.trajectoryBuilder(Config3Part3.end(), true)
                 .back(14.0)
                 .build()
 
-        val Config3Part4: Trajectory = drive.trajectoryBuilder(Config3Part3b.end())
-                .splineToSplineHeading(Pose2d(41.0, 54.0, Math.toRadians(170.0)), Math.toRadians(0.0))
+        val Config3Part3c: Trajectory = drive.trajectoryBuilder(Config3Part3b.end(), true)
+                .forward(28.0)
+                .build()
+
+        val Config3Part4: Trajectory = drive.trajectoryBuilder(Config3Part3c.end())
+                .splineToSplineHeading(Pose2d(45.0, -54.0, Math.toRadians(160.0)), Math.toRadians(0.0))
                 .build()
 
         val Config3Part5: Trajectory = drive.trajectoryBuilder(Config3Part4.end())
-                .lineTo(Vector2d(12.0, 48.0))
+                .lineTo(Vector2d(12.0, -36.0))
                 .build()
 
-        val Test: Trajectory = drive.trajectoryBuilder(startPose)
-                .forward(12.0)
-                .build()
 
 //        leftWobbleServo.position = 0.26
 //        rightWobbleServo.position = 1.0
@@ -261,7 +264,7 @@ class NewAutonomous : LinearOpMode() {
         var Config = pipeline.count
         telemetry.addData("RingCount", Config)
         telemetry.update()
-        wait(15.0)
+        Config = 4
         if (Config == 0) {
             begin()
 
@@ -280,7 +283,7 @@ class NewAutonomous : LinearOpMode() {
 
             drive.followTrajectory(Config1Part4)
 
-            end()
+            release()
 
             drive.followTrajectory(Config1Part5)
             lower()
@@ -325,6 +328,7 @@ class NewAutonomous : LinearOpMode() {
 
             grab()
 
+            drive.followTrajectory(Config3Part3c)
             drive.followTrajectory(Config3Part4)
 
             release()

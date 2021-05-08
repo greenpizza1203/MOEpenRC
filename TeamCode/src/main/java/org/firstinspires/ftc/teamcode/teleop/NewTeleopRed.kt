@@ -19,7 +19,7 @@ import kotlin.math.max
 import kotlin.math.sin
 import org.firstinspires.ftc.teamcode.MOEStuff.MOEOpmodes.MOEGamepad.MOEButton
 @TeleOp
-open class NewTeleop : OpMode() {
+open class NewTeleopRed : OpMode() {
     var gyroOffset = Math.toRadians(90.0)
     lateinit var gyro: BNO055IMU
 
@@ -89,7 +89,7 @@ open class NewTeleop : OpMode() {
         opencvAssist.webcam.openCameraDevice()
         opencvAssist.webcam.activeCamera = opencvAssist.highCam
         val timer = ElapsedTime()
-        while (timer.seconds() < 3) telemetry.addData("centerX", highGoal.blueRect?.centerX())
+        while (timer.seconds() < 3) telemetry.addData("centerX", highGoal.redRect?.centerX())
     }
 
     override fun init_loop() {
@@ -111,7 +111,7 @@ open class NewTeleop : OpMode() {
         shooter()
         grabber()
 
-        telemetry.addData("centerX", highGoal.blueRect?.centerX())
+        telemetry.addData("centerX", highGoal.redRect?.centerX())
         telemetry.addData("Loop ms", (System.nanoTime() - startTime) / 1000000.0)
         telemetry.addData("shooterVelocity", shooterMotor.getVelocity())
         telemetry.addData("state", armState)
@@ -123,16 +123,16 @@ open class NewTeleop : OpMode() {
         telemetry.addData("wobble", wobbleArmMotor.currentPosition)
     }
 
-    val highGoal = BasicHighGoalPipeline(Target.BLUE)
+    val highGoal = BasicHighGoalPipeline(Target.RED)
 
     val turnPid = MOERawPid(0.003, 0.0, 0.0)
     fun loopChassis() {
         val y = -gamepad1.left_stick_y.toDouble()
         val x = -gamepad1.left_stick_x.toDouble()
-        val blueRect = highGoal.blueRect
+        val redRect = highGoal.redRect
 
-        val rot = if (gamepad1.dpad_left && blueRect != null) {
-            -turnPid.getOutput(blueRect.centerX(), 423.0)
+        val rot = if (gamepad1.dpad_left && redRect != null) {
+            -turnPid.getOutput(redRect.centerX(), 423.0)
         } else {
             gamepad1.right_stick_x.toDouble() + gamepad1.right_trigger.toDouble() * 0.05 - gamepad1.left_trigger.toDouble() * 0.05
         }
